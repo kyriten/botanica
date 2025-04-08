@@ -176,11 +176,17 @@ class MapController extends Controller
         return redirect()->back()->with('success', 'Success! Your post has been deleted.');
     }
 
-    // public function getStateDetails($id)
-    // {
-    //     $state = State::find($id);
-    //     return response()->json($state);
-    // }
+    public function getCityDetails($id)
+    {
+        $city = City::find($id);
+        return response()->json($city);
+    }
+
+    public function getProvinceDetails($id)
+    {
+        $province = Province::find($id);
+        return response()->json($province);
+    }
 
     // public function getRempahDetails($id)
     // {

@@ -52,4 +52,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/get-province/{cityId}', [DistrictController::class, 'getProvince'])->name('get.province');
 Route::get('/get-city/{cityId}', [VillageController::class, 'getCity'])->name('get.city');
+Route::get('/get-city-details/{id}', [MapController::class, 'getCityDetails']);
+Route::get('/get-province-details/{id}', [MapController::class, 'getProvinceDetails']);
 

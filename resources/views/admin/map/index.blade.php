@@ -4,11 +4,11 @@
         <div class="pagetitle">
             <div class="row">
                 <div class="col-lg-4">
-                    <h1>View Map</h1>
+                    <h1>Lihat Data Pin</h1>
                     <nav>
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('map.index') }}">Maps</a></li>
-                            <li class="breadcrumb-item active"><a href="{{ route('map.index') }}">View Map</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('map.index') }}">Peta</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('map.index') }}">Lihat Data Pin</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -39,7 +39,9 @@
                     </div>
                 @endif
 
-                <div id="map" style="height: 500px; width:500px"></div>
+                <div class="col-lg-12">
+                    <div class="mb-3" id="map" style="height: 500px; width: 100%"></div>
+                </div>
                 <script>
                     var map = L.map('map').setView([1.2448327, 120.830595], 5);
 
@@ -92,7 +94,7 @@
                     // });
                 </script>
 
-                <div class="col">
+                <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
@@ -100,9 +102,10 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Kategori</th>
-                                            <th scope="col">Nama Provinsi</th>
-                                            <th scope="col">Persebaran Rempah</th>
+                                            <th scope="col">Kebun Raya</th>
+                                            <th scope="col">Kota/Kabupaten</th>
+                                            <th scope="col">Provinsi</th>
+                                            <th scope="col">Persebaran</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -110,9 +113,10 @@
                                         @forelse ($map as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->category_name }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->nama_rempah }}</td>
+                                                <td>{{ $item->garden_name }}</td>
+                                                <td>{{ $item->city_name }}</td>
+                                                <td>{{ $item->province_name }}</td>
+                                                <td>{{ $item->local }}</td>
                                                 <td>
                                                     <div class="d-flex gap-3">
                                                         <a class="btn btn-warning" href="/map/{{ $item->id }}/edit">
@@ -123,7 +127,7 @@
                                                             @method('delete')
                                                             @csrf
                                                             <button class="btn btn-danger"
-                                                                onclick="return confirm('Are you sure to delete your post?')">
+                                                                onclick="return confirm('Apakah kamu yakin menghapus data?')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>

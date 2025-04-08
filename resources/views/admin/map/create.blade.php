@@ -23,7 +23,7 @@
                 @csrf
                 <div class="row">
                     {{-- Upload Image --}}
-                    <div class="col-lg-4">
+                    <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
 
@@ -38,24 +38,110 @@
                                         ekstensi .png, .jpg, .jpeg</p>
                                 </h5>
 
-                                <div>
-                                    <div class="mb-4 d-flex justify-content-center">
-                                        <img id="imgPreview"
-                                            src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
-                                            alt="image placeholder" style="width: 300px;" />
+                                <div class="row">
+                                    <!-- Gambar Tumbuhan -->
+                                    <div class="col-sm-4">
+                                        <div class="position-relative mb-4 text-center">
+                                            <!-- Label di atas gambar -->
+                                            <div
+                                                class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                                Tumbuhan
+                                            </div>
+
+                                            <!-- Gambar -->
+                                            <img id="imgPreviewPlant"
+                                                src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                                alt="image placeholder" style="width: 200px;" />
+                                        </div>
+
+                                        <!-- Error message -->
+                                        <div class="mb-2 text-center text-danger">
+                                            @error('plant_image')
+                                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Tombol Upload -->
+                                        <div class="d-flex justify-content-center">
+                                            <div class="btn btn-primary btn-rounded mb-3">
+                                                <label class="form-label text-white mb-0" for="customFilePlant">Pilih gambar
+                                                    tumbuhan</label>
+                                                <input
+                                                    class="form-control d-none @error('plant_image') is-invalid @enderror"
+                                                    id="customFilePlant" name="plant_image" type="file"
+                                                    accept="image/png, image/jpeg, image/jpg"
+                                                    onchange="showPreview(event, 'imgPreviewPlant');">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="mb-2 d-block text-center text-danger">
-                                        @error('image')
-                                            <span class="text-red-600 text-sm">{{ $message }}</span>
-                                        @enderror
+
+                                    <!-- Gambar Daun -->
+                                    <div class="col-sm-4">
+                                        <div class="position-relative mb-4 text-center">
+                                            <!-- Label di atas gambar -->
+                                            <div
+                                                class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                                Daun
+                                            </div>
+
+                                            <!-- Gambar -->
+                                            <img id="imgPreviewLeaf"
+                                                src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                                alt="image placeholder" style="width: 200px;" />
+                                        </div>
+
+                                        <!-- Error message -->
+                                        <div class="mb-2 text-center text-danger">
+                                            @error('leaf_image')
+                                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Tombol Upload -->
+                                        <div class="d-flex justify-content-center">
+                                            <div class="btn btn-primary btn-rounded mb-3">
+                                                <label class="form-label text-white mb-0" for="customFileLeaf">Pilih gambar
+                                                    daun</label>
+                                                <input class="form-control d-none @error('leaf_image') is-invalid @enderror"
+                                                    id="customFileLeaf" name="leaf_image" type="file"
+                                                    accept="image/png, image/jpeg, image/jpg"
+                                                    onchange="showPreview(event, 'imgPreviewLeaf');">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="d-flex justify-content-center">
-                                        <div class="btn btn-primary btn-rounded">
-                                            <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                                            <input
-                                                class="imgPreview form-control d-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('image') is-invalid @enderror"
-                                                id="customFile1" name="image" type="file"
-                                                accept="image/png, image/jpeg, image/jpg" onchange="showPreview(event);">
+
+                                    <!-- Gambar Batang -->
+                                    <div class="col-sm-4">
+                                        <div class="position-relative mb-4 text-center">
+                                            <!-- Label di atas gambar -->
+                                            <div
+                                                class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                                Batang
+                                            </div>
+
+                                            <!-- Gambar -->
+                                            <img id="imgPreviewStem"
+                                                src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                                alt="image placeholder" style="width: 200px;" />
+                                        </div>
+
+                                        <!-- Error message -->
+                                        <div class="mb-2 text-center text-danger">
+                                            @error('stem_image')
+                                                <span class="text-red-600 text-sm">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <!-- Tombol Upload -->
+                                        <div class="d-flex justify-content-center">
+                                            <div class="btn btn-primary btn-rounded mb-3">
+                                                <label class="form-label text-white mb-0" for="customFileStem">Pilih gambar
+                                                    batang</label>
+                                                <input class="form-control d-none @error('stem_image') is-invalid @enderror"
+                                                    id="customFileStem" name="stem_image" type="file"
+                                                    accept="image/png, image/jpeg, image/jpg"
+                                                    onchange="showPreview(event, 'imgPreviewStem');">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -63,13 +149,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 w-full">
+                    <div class="col-lg-12 w-full">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title fs-4">Tambah Pin</h5>
 
                                 <!-- Nama Tumbuhan -->
-                                <div class="row mb-3">
+                                <div class="row mb-5">
+                                    <div class="col-md-12">
+                                        <span class="text-sm note-flag fw-bold">Tumbuhan</span>
+                                    </div>
                                     <label for="namaTumbuhan" class="col-sm-2 col-form-label text-dark align-items-center"
                                         style="font-size: 14px">Nama
                                         Tumbuhan <span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -94,132 +183,98 @@
                                     @enderror
                                 </div>
 
-                                <!-- Kelurahan/Desa -->
                                 <div class="row mb-3">
-                                    <label for="villageID" class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Kelurahan/Desa <span class="text-danger"
-                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Wajib diisi">*</span></label>
-                                    <div class="col-sm-10 mb-3">
-                                        <select name="village_id" id="villageID"
-                                            class="form-select select2 @error('village_id') is-invalid @enderror"
-                                            data-placeholder="-- Pilih Kelurahan/Desa --" required>
-                                            <option value="">-- Pilih Kelurahan/Desa --</option>
-                                            @foreach ($villages as $village)
-                                                <option value="{{ $village->id }}"
-                                                    {{ old('pvillage_id') == $village->id ? 'selected' : '' }}>
-                                                    {{ $village->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('name')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
+                                    <div class="col-md-6">
+                                        <span class="text-sm note-flag fw-bold">Kota/Kabupaten</span>
+                                        <!-- Kota/Kabupaten -->
+                                        <div class="row mb-1">
+                                            <label for="cityID"
+                                                class="col-sm-4 col-form-label text-dark align-items-center"
+                                                style="font-size: 14px">Nama <span class="text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="Wajib diisi">*</span></label>
+                                            <div class="col-sm-12 mb-2">
+                                                <select name="city_id" id="cityID"
+                                                    class="form-select select2 @error('city_id') is-invalid @enderror"
+                                                    data-placeholder="-- Pilih Kota/Kabupaten --" required>
+                                                    <option value="">-- Pilih Kota/Kabupaten --</option>
+                                                    @foreach ($cities as $city)
+                                                        <option value="{{ $city->id }}"
+                                                            {{ old('city_id') == $city->id ? 'selected' : '' }}>
+                                                            {{ $city->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            @error('name')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
-                                    @enderror
-                                </div>
 
-                                <!-- Kecamatan -->
-                                <div class="row mb-3">
-                                    <label for="districtID" class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Kecamatan <span class="text-danger"
-                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Wajib diisi">*</span></label>
-                                    <div class="col-sm-10 mb-3">
-                                        <select name="district_id" id="districtID"
-                                            class="form-select select2 @error('district_id') is-invalid @enderror"
-                                            data-placeholder="-- Pilih Kecamatan --" required>
-                                            <option value="">-- Pilih Kecamatan --</option>
-                                            @foreach ($districts as $district)
-                                                <option value="{{ $district->id }}"
-                                                    {{ old('district_id') == $district->id ? 'selected' : '' }}>
-                                                    {{ $district->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('name')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
+                                        <!-- Latitude -->
+                                        <div class="row mb-1">
+                                            <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                                style="font-size: 14px">Latitude <span class="text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="Wajib diisi">*</span></label>
+                                            <div class="col-sm-12 mb-2">
+                                                <input class="form-control" type="text" name="latitude"
+                                                    id="latCity" readonly>
+                                            </div>
                                         </div>
-                                    @enderror
-                                </div>
 
-                                <!-- Kota/Kabupaten -->
-                                <div class="row mb-3">
-                                    <label for="cityID" class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Kota/Kabupaten <span class="text-danger"
-                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Wajib diisi">*</span></label>
-                                    <div class="col-sm-10 mb-3">
-                                        <select name="city_id" id="cityID"
-                                            class="form-select select2 @error('city_id') is-invalid @enderror"
-                                            data-placeholder="-- Pilih Kota/Kabupaten --" required>
-                                            <option value="">-- Pilih Kota/Kabupaten --</option>
-                                            @foreach ($cities as $city)
-                                                <option value="{{ $city->id }}"
-                                                    {{ old('city_id') == $city->id ? 'selected' : '' }}>
-                                                    {{ $city->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('name')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
+                                        <!-- Longitude -->
+                                        <div class="row mb-1">
+                                            <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                                style="font-size: 14px">Longitude <span class="text-danger"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    title="Wajib diisi">*</span></label>
+                                            <div class="col-sm-12 mb-3">
+                                                <input class="form-control" type="text" name="longitude"
+                                                    id="longCity" readonly>
+                                            </div>
                                         </div>
-                                    @enderror
-                                </div>
-
-                                <!-- Provinsi -->
-                                <div class="row mb-3">
-                                    <label for="provinceID" class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Provinsi <span class="text-danger"
-                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Wajib diisi">*</span></label>
-                                    <div class="col-sm-10 mb-3">
-                                        <select name="province_id" id="provinceID"
-                                            class="form-select select2 @error('province_id') is-invalid @enderror"
-                                            data-placeholder="-- Pilih Provinsi --" required>
-                                            <option value="">-- Pilih Provinsi --</option>
-                                            @foreach ($provinces as $province)
-                                                <option value="{{ $province->id }}"
-                                                    {{ old('province_id') == $province->id ? 'selected' : '' }}>
-                                                    {{ $province->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
                                     </div>
-                                    @error('name')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
+
+                                    <div class="col-md-6">
+                                        <span class="text-sm note-flag fw-bold">Provinsi</span>
+                                        <!-- Provinsi -->
+                                        <div class="row mb-1">
+                                            <label for="provinceID"
+                                                class="col-sm-4 col-form-label text-dark align-items-center"
+                                                style="font-size: 14px">Nama</label>
+                                            <div class="col-sm-12 mb-1" data-mdb-input-init>
+                                                <input class="form-control" id="provinceID" type="text"
+                                                    value="" aria-label="readonly" readonly />
+                                            </div>
                                         </div>
-                                    @enderror
-                                </div>
 
-                                <!-- Latitude -->
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Latitude</label>
-                                    <div class="col-sm-10 mb-3">
-                                        <input class="form-control" type="text" name="latitude" id="latitude"
-                                            readonly>
-                                    </div>
-                                </div>
+                                        <!-- Latitude -->
+                                        <div class="row mb-1">
+                                            <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                                style="font-size: 14px">Latitude</label>
+                                            <div class="col-sm-12 mb-1">
+                                                <input class="form-control" type="text" name="latitude"
+                                                    id="latProvince" readonly>
+                                            </div>
+                                        </div>
 
-                                <!-- Longitude -->
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Longitude</label>
-                                    <div class="col-sm-10 mb-3">
-                                        <input class="form-control" type="text" name="longitude" id="longitude"
-                                            readonly>
+                                        <!-- Longitude -->
+                                        <div class="row mb-1">
+                                            <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                                style="font-size: 14px">Longitude</label>
+                                            <div class="col-sm-12 mb-1">
+                                                <input class="form-control" type="text" name="longitude"
+                                                    id="longProvince" readonly>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="text-end">
-                                    <button class="btn btn-secondary fw-bold text-primary" id="reset"
+                                    <button class="btn btn-dark fw-bold text-light" id="reset"
                                         type="reset">{{ __('RESET') }}</button>
                                     <button class="btn btn-primary fw-bold text-light" id="submit"
                                         type="submit">{{ __('SUBMIT') }}</button>

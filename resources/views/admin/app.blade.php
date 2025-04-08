@@ -96,6 +96,19 @@
             color: #75350d;
             background: #ddbba8;
         }
+
+        .note-flag {
+            background-color: #fff3cd;
+            /* Light yellow */
+            color: #856404;
+            /* Dark yellow text */
+            padding: 0.25rem 0.5rem;
+            border-left: 4px solid #ffc107;
+            /* Yellow border */
+            border-radius: 0.25rem;
+            display: inline-block;
+            font-size: 0.875rem;
+        }
     </style>
 
     {{-- IconScout --}}
@@ -122,7 +135,7 @@
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>
 
-    {{-- @include('admin.post.feature.image') --}}
+    @include('admin.post.feature.image')
     <!-- Vendor JS Files -->
     <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
@@ -153,33 +166,73 @@
         });
     </script>
 
-    {{-- AJAX Generate Lat and Long of Province --}}
+    {{-- AJAX Generate Lat and Long of City and Province --}}
     <script>
         $(document).ready(function() {
-            $('#provinsi').on('change', function() {
-                var provinsiId = $(this).val();
-                if (provinsiId) {
+            $('#cityID').on('change', function() {
+                var cityId = $(this).val();
+
+                if (cityId) {
                     $.ajax({
-                        url: '/get-state-details/' + provinsiId,
+                        url: '/get-city-details/' + cityId,
                         type: 'GET',
                         dataType: 'json',
                         success: function(data) {
                             if (data) {
-                                $('#latitude').val(data.latitude);
-                                $('#longitude').val(data.longitude);
+                                // Set lat & long city
+                                $('#latCity').val(data.latitude);
+                                $('#longCity').val(data.longitude);
+
+                                // Set province ID
+                                if (data.province_id) {
+                                    $('#provinceID').val(data.province_id).trigger('change');
+                                }
                             } else {
-                                $('#latitude').val('');
-                                $('#longitude').val('');
+                                $('#latCity').val('');
+                                $('#longCity').val('');
+                                $('#provinceID').val('').trigger('change');
                             }
+                        },
+                        error: function() {
+                            alert('Gagal mengambil data kota.');
                         }
                     });
                 } else {
-                    $('#latitude').val('');
-                    $('#longitude').val('');
+                    $('#latCity').val('');
+                    $('#longCity').val('');
+                    $('#provinceID').val('').trigger('change');
+                }
+            });
+
+            $('#provinceID').on('change', function() {
+                var provinceId = $(this).val();
+
+                if (provinceId) {
+                    $.ajax({
+                        url: '/get-province-details/' + provinceId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            if (data) {
+                                $('#latProvince').val(data.latitude);
+                                $('#longProvince').val(data.longitude);
+                            } else {
+                                $('#latProvince').val('');
+                                $('#longProvince').val('');
+                            }
+                        },
+                        error: function() {
+                            alert('Gagal mengambil data provinsi.');
+                        }
+                    });
+                } else {
+                    $('#latProvince').val('');
+                    $('#longProvince').val('');
                 }
             });
         });
     </script>
+
 
     {{-- AJAX Generate Name of Province --}}
     <script>
