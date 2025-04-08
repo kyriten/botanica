@@ -45,7 +45,7 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    @error('province_id')
+                                    @error('name')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>

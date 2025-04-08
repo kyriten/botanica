@@ -3,11 +3,11 @@
     <main class="main" id="main">
 
         <div class="pagetitle">
-            <h1>Add New Point</h1>
+            <h1>Tambah Pin Baru</h1>
             <nav>
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('map.create') }}">Add New Point</a></li>
-                    <li class="breadcrumb-item active">Add Point</li>
+                    <li class="breadcrumb-item"><a href="{{ route('map.create') }}">Tambah Pin Baru</a></li>
+                    <li class="breadcrumb-item active">Tambah Pin</li>
                 </ol>
             </nav>
         </div><!-- End Page Title -->
@@ -28,12 +28,12 @@
                             <div class="card-body">
 
                                 {{-- Image --}}
-                                <h5 class="card-title fs-4 mb-0 pb-2">Upload Gambar
+                                <h5 class="card-title fs-4 mb-0 pb-2">Unggah Gambar
                                     <br>
                                     <p class="text-secondary mt-2 mb-3 textf-justify" style="font-size: 14px">Hanya gambar
                                         yang dapat
-                                        diupload. <br> Mohon
-                                        upload
+                                        diunggah. <br> Mohon
+                                        unggah
                                         dengan
                                         ekstensi .png, .jpg, .jpeg</p>
                                 </h5>
@@ -66,100 +66,136 @@
                     <div class="col-lg-8 w-full">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title fs-4">Entry New Point</h5>
+                                <h5 class="card-title fs-4">Tambah Pin</h5>
 
-                                <!-- Nama Rempah -->
+                                <!-- Nama Tumbuhan -->
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
+                                    <label for="namaTumbuhan" class="col-sm-2 col-form-label text-dark align-items-center"
                                         style="font-size: 14px">Nama
-                                        Rempah</label>
+                                        Tumbuhan <span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Wajib diisi">*</span></label>
                                     <div class="col-sm-10 mb-3">
-                                        <select class="form-select" aria-label="Default select example" name="post_id"
-                                            id="rempah">
-                                            <option>Pilih Nama Rempah</option>
+                                        <select name="post_id" id="namaTumbuhan"
+                                            class="form-select select2 @error('post_id') is-invalid @enderror"
+                                            data-placeholder="-- Pilih Nama Tumbuhan --" required>
+                                            <option value="">-- Pilih Nama Tumbuhan --</option>
                                             @foreach ($post as $key)
-                                                <option value="{{ $key->id }}">
-                                                    {{ $key->nama_rempah }}
+                                                <option value="{{ $key->id }}"
+                                                    {{ old('post_id') == $key->id ? 'selected' : '' }}>
+                                                    {{ $key->local }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        @error('nama_rempah')
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
+                                    @error('local')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
-                                <!-- Menyimpan Nama Rempah -->
-                                <div class="row mb-3" hidden>
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Nama Rempah</label>
+                                <!-- Kelurahan/Desa -->
+                                <div class="row mb-3">
+                                    <label for="villageID" class="col-sm-2 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Kelurahan/Desa <span class="text-danger"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Wajib diisi">*</span></label>
                                     <div class="col-sm-10 mb-3">
-                                        <input class="form-control" type="text" name="nama_rempah" id="nama_rempah"
-                                            readonly>
+                                        <select name="village_id" id="villageID"
+                                            class="form-select select2 @error('village_id') is-invalid @enderror"
+                                            data-placeholder="-- Pilih Kelurahan/Desa --" required>
+                                            <option value="">-- Pilih Kelurahan/Desa --</option>
+                                            @foreach ($villages as $village)
+                                                <option value="{{ $village->id }}"
+                                                    {{ old('pvillage_id') == $village->id ? 'selected' : '' }}>
+                                                    {{ $village->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
-                                <!-- Menyimpan Nama Latin -->
-                                <div class="row mb-3" hidden>
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Nama Latin</label>
+                                <!-- Kecamatan -->
+                                <div class="row mb-3">
+                                    <label for="districtID" class="col-sm-2 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Kecamatan <span class="text-danger"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Wajib diisi">*</span></label>
                                     <div class="col-sm-10 mb-3">
-                                        <input class="form-control" type="text" name="nama_latin" id="nama_latin"
-                                            readonly>
+                                        <select name="district_id" id="districtID"
+                                            class="form-select select2 @error('district_id') is-invalid @enderror"
+                                            data-placeholder="-- Pilih Kecamatan --" required>
+                                            <option value="">-- Pilih Kecamatan --</option>
+                                            @foreach ($districts as $district)
+                                                <option value="{{ $district->id }}"
+                                                    {{ old('district_id') == $district->id ? 'selected' : '' }}>
+                                                    {{ $district->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
-                                <!-- Menyimpan Id Kategori -->
-                                <div class="row mb-3" hidden>
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Kategori</label>
+                                <!-- Kota/Kabupaten -->
+                                <div class="row mb-3">
+                                    <label for="cityID" class="col-sm-2 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Kota/Kabupaten <span class="text-danger"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Wajib diisi">*</span></label>
                                     <div class="col-sm-10 mb-3">
-                                        <input class="form-control" type="text" name="category_id" id="category_id"
-                                            readonly>
+                                        <select name="city_id" id="cityID"
+                                            class="form-select select2 @error('city_id') is-invalid @enderror"
+                                            data-placeholder="-- Pilih Kota/Kabupaten --" required>
+                                            <option value="">-- Pilih Kota/Kabupaten --</option>
+                                            @foreach ($cities as $city)
+                                                <option value="{{ $city->id }}"
+                                                    {{ old('city_id') == $city->id ? 'selected' : '' }}>
+                                                    {{ $city->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                </div>
-
-                                <!-- Menyimpan Nama Kategori -->
-                                <div class="row mb-3" hidden>
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Nama Kategori</label>
-                                    <div class="col-sm-10 mb-3">
-                                        <input class="form-control" type="text" name="category_name" id="category_name"
-                                            readonly>
-                                    </div>
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <!-- Provinsi -->
                                 <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Provinsi</label>
+                                    <label for="provinceID" class="col-sm-2 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Provinsi <span class="text-danger"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="Wajib diisi">*</span></label>
                                     <div class="col-sm-10 mb-3">
-                                        <select class="form-select" aria-label="Default select example" name="state_id"
-                                            id="provinsi">
-                                            <option>Pilih Provinsi</option>
-                                            @foreach ($state as $key)
-                                                <option value="{{ $key->id }}">
-                                                    {{ $key->name }}
+                                        <select name="province_id" id="provinceID"
+                                            class="form-select select2 @error('province_id') is-invalid @enderror"
+                                            data-placeholder="-- Pilih Provinsi --" required>
+                                            <option value="">-- Pilih Provinsi --</option>
+                                            @foreach ($provinces as $province)
+                                                <option value="{{ $province->id }}"
+                                                    {{ old('province_id') == $province->id ? 'selected' : '' }}>
+                                                    {{ $province->name }}
                                                 </option>
                                             @endforeach
                                         </select>
-                                        @error('name')
-                                            <div class="alert alert-danger mt-2">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
-                                </div>
-
-                                <!-- Menyimpan Nama Provinsi -->
-                                <div class="row mb-3" hidden>
-                                    <label class="col-sm-2 col-form-label text-dark align-items-center"
-                                        style="font-size: 14px">Nama Provinsi</label>
-                                    <div class="col-sm-10 mb-3">
-                                        <input class="form-control" type="text" name="name" id="nama_provinsi">
-                                    </div>
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
 
                                 <!-- Latitude -->

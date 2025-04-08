@@ -37,13 +37,13 @@ class MapController extends Controller
 
     public function create()
     {
-        $province = Province::all();
-        $city = City::all();
-        $district = District::all();
-        $village = Village::all();
+        $provinces = Province::all();
+        $cities = City::all();
+        $districts = District::all();
+        $villages = Village::all();
         $post = Post::all();
         $marker = Map::all();
-        return view("admin.map.map", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "marker" => $marker]);
+        return view("admin.map.create", ["post" => $post, "provinces" => $provinces, "cities" => $cities, "districts" => $districts, "villages" => $villages, "marker" => $marker]);
     }
 
     public function store(Request $request)
