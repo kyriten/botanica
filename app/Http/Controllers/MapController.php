@@ -32,7 +32,10 @@ class MapController extends Controller
         $post = Post::all();
         $point = Map::all();
         $garden = Garden::all();
-        return view("admin.map.index", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "map" => $map, "point" => $point, "garden" => $garden]);
+
+        // $polygon = json_decode($garden->polygon, true);
+
+        return view("admin.peta.index", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "map" => $map, "point" => $point, "garden" => $garden]);
     }
 
     public function create()
@@ -43,7 +46,7 @@ class MapController extends Controller
         $villages = Village::all();
         $post = Post::all();
         $marker = Map::all();
-        return view("admin.map.create", ["post" => $post, "provinces" => $provinces, "cities" => $cities, "districts" => $districts, "villages" => $villages, "marker" => $marker]);
+        return view("admin.peta.create", ["post" => $post, "provinces" => $provinces, "cities" => $cities, "districts" => $districts, "villages" => $villages, "marker" => $marker]);
     }
 
     public function store(Request $request)
@@ -108,7 +111,7 @@ class MapController extends Controller
         $district = District::all();
         $village = Village::all();
         $post = Post::all();
-        return view("admin.map.edit", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "map" => $map]);
+        return view("admin.peta.edit", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "map" => $map]);
     }
 
     public function update(Request $request, $id)
