@@ -6,7 +6,7 @@
 }
 
 a:hover {
-    color: #FEFAE0;
+    color: #fefae0;
     text-decoration: none;
 }
 
@@ -36,7 +36,7 @@ a:hover {
     font-size: 24px;
     margin-bottom: 0;
     font-weight: 600;
-    color: #626F47;
+    color: #626f47;
 }
 
 /*--------------------------------------------------------------
@@ -49,7 +49,7 @@ a:hover {
     right: 15px;
     bottom: 15px;
     z-index: 99999;
-    background: #626F47;
+    background: #626f47;
     width: 40px;
     height: 40px;
     border-radius: 4px;
@@ -63,7 +63,7 @@ a:hover {
 }
 
 .back-to-top:hover {
-    background: #A4B465;
+    background: #a4b465;
     color: #fff;
 }
 
@@ -208,11 +208,11 @@ a:hover {
     padding: 20px 0 15px 0;
     font-size: 18px;
     font-weight: 500;
-    color: #626F47;
+    color: #626f47;
 }
 
 .card-title span {
-    color: #A4B465;
+    color: #a4b465;
     font-size: 14px;
     font-weight: 400;
 }
@@ -253,7 +253,7 @@ a:hover {
 }
 
 .accordion-button:not(.collapsed) {
-    color: #626F47;
+    color: #626f47;
     background-color: #f6f9ff;
 }
 
@@ -265,7 +265,7 @@ a:hover {
 
 .accordion-flush .accordion-button:not(.collapsed) {
     box-shadow: none;
-    color: #626F47;
+    color: #626f47;
 }
 
 .accordion-flush .accordion-body {
@@ -312,12 +312,12 @@ a:hover {
 
 .nav-tabs-bordered .nav-link:hover,
 .nav-tabs-bordered .nav-link:focus {
-    color: #626F47;
+    color: #626f47;
 }
 
 .nav-tabs-bordered .nav-link.active {
     background-color: #fff;
-    color: #626F47;
+    color: #626f47;
     border-bottom: 2px solid #f19f41;
 }
 
@@ -342,7 +342,7 @@ a:hover {
 .logo span {
     font-size: 26px;
     font-weight: 700;
-    color: #626F47;
+    color: #626f47;
 }
 
 .header {
@@ -360,7 +360,7 @@ a:hover {
     font-size: 32px;
     padding-left: 10px;
     cursor: pointer;
-    color: #626F47;
+    color: #626f47;
 }
 
 .header .search-bar {
@@ -397,8 +397,8 @@ a:hover {
 .header .search-form input {
     border: 0;
     font-size: 14px;
-    color: #626F47;
-    border: 1px solid #626F47;
+    color: #626f47;
+    border: 1px solid #626f47;
     padding: 7px 38px 7px 8px;
     border-radius: 3px;
     transition: 0.3s;
@@ -437,13 +437,13 @@ a:hover {
 
 .header-nav .nav-icon {
     font-size: 22px;
-    color: #626F47;
+    color: #626f47;
     margin-right: 25px;
     position: relative;
 }
 
 .header-nav .nav-profile {
-    color: #626F47;
+    color: #626f47;
 }
 
 .header-nav .nav-profile img {
@@ -645,7 +645,7 @@ a:hover {
 .sidebar-nav .nav-heading {
     font-size: 11px;
     text-transform: uppercase;
-    color: #A4B465;
+    color: #a4b465;
     font-weight: 600;
     margin: 10px 0 5px 15px;
 }
@@ -664,25 +664,25 @@ a:hover {
 .sidebar-nav .nav-link i {
     font-size: 16px;
     margin-right: 10px;
-    color: #626F47;
+    color: #626f47;
 }
 
 .sidebar-nav .nav-link.collapsed {
-    color: #626F47;
+    color: #626f47;
     background: #fff;
 }
 
 .sidebar-nav .nav-link.collapsed i {
-    color: #626F47;
+    color: #626f47;
 }
 
 .sidebar-nav .nav-link:hover {
-    color: #626F47;
-    background: #D5DBBD;
+    color: #626f47;
+    background: #d5dbbd;
 }
 
 .sidebar-nav .nav-link:hover i {
-    color: #626F47;
+    color: #626f47;
 }
 
 .sidebar-nav .nav-link .bi-chevron-down {
@@ -705,7 +705,7 @@ a:hover {
     align-items: center;
     font-size: 14px;
     font-weight: 600;
-    color: #A4B465;
+    color: #a4b465;
     transition: 0.3;
     padding: 10px 0 10px 40px;
     transition: 0.3s;
@@ -720,7 +720,7 @@ a:hover {
 
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
-    color: #626F47;
+    color: #626f47;
 }
 
 .sidebar-nav .nav-content a.active i {
@@ -959,7 +959,7 @@ a:hover {
 .profile .profile-card h2 {
     font-size: 24px;
     font-weight: 700;
-    color: #A4B465;
+    color: #a4b465;
     margin: 10px 0 0 0;
 }
 
@@ -1145,7 +1145,7 @@ a:hover {
 .error-404 h2 {
     font-size: 24px;
     font-weight: 700;
-    color: #A4B465;
+    color: #a4b465;
     margin-bottom: 30px;
 }
 
@@ -1172,7 +1172,7 @@ a:hover {
     padding: 20px 0;
     font-size: 14px;
     transition: all 0.3s;
-    border-top: 1px solid #626F47;
+    border-top: 1px solid #626f47;
 }
 
 .footer .copyright {
@@ -1184,5 +1184,5 @@ a:hover {
     padding-top: 5px;
     text-align: center;
     font-size: 13px;
-    color: #626F47;
+    color: #626f47;
 }
