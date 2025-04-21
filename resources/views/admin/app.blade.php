@@ -98,16 +98,44 @@
         }
 
         .note-flag {
-            background-color: #fff3cd;
-            /* Light yellow */
-            color: #856404;
-            /* Dark yellow text */
+            background-color: #e6ebe0;
+            /* Sage green light */
+            color: #4b6043;
+            /* Sage green dark text */
             padding: 0.25rem 0.5rem;
-            border-left: 4px solid #ffc107;
-            /* Yellow border */
+            border-left: 4px solid #94a98a;
+            /* Medium sage green border */
             border-radius: 0.25rem;
             display: inline-block;
             font-size: 0.875rem;
+        }
+
+        /* Skeleton Loading */
+        .skeleton {
+            background-color: #e2e5e7;
+            background-image: linear-gradient(90deg, #e2e5e7, #f8f8f8, #e2e5e7);
+            background-size: 200% 100%;
+            background-position: -50% 0;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes shimmer {
+            100% {
+                background-position: 100% 0;
+            }
+        }
+
+        /* Animasi Fade In */
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
         }
     </style>
 
