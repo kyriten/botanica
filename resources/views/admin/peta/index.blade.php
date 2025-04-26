@@ -5,8 +5,8 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-4">
                 <h5 class="modal-title mb-3">Pilih Kebun Raya</h5>
-                <select id="gardenSelect" class="form-control mb-3">
-                    <option value="">-- Pilih Kebun Raya --</option>
+                <select id="gardenSelect" name="garden_id" class="form-control mb-3">
+                        <option value="">-- Pilih Kebun Raya --</option>
                     @foreach ($garden as $garden)
                         <option value="{{ $garden->id }}">{{ $garden->name }}</option>
                     @endforeach
@@ -44,7 +44,7 @@
 
         <div class="pagetitle" id="titleArea" style="display:none;">
             <div class="row fade-in">
-                <div class="col-lg-6">
+                <div class="col-lg-6 align-items-center">
                     <h1 id="pageTitle"></h1>
                     <nav>
                         <ol class="breadcrumb">
@@ -80,9 +80,29 @@
                     </div>
                 @endif
 
+                <!-- Modal -->
+                <div class="modal fade" id="selectGardenModal" tabindex="-1" aria-labelledby="selectGardenModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content p-4">
+                            <h5 class="modal-title mb-3" id="selectGardenModalLabel">Pilih Kebun Raya</h5>
+                            <select id="gardenSelectNew" name="garden_id" class="form-control mb-3">
+                                <option value="">-- Pilih Kebun Raya --</option>
+                            @foreach ($gardenData as $g)
+                                <option value="{{ $g->id }}">{{ $g->name }}</option>
+                            @endforeach
+                            </select>
+                            <button id="confirmGardenNew" class="btn btn-primary w-100">Konfirmasi</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
+                            <div class="col-4 d-flex justify-content-start align-items-stretch my-2 me-2">
+                                <button class="btn btn-primary btn-sm w-50" data-bs-toggle="modal" data-bs-target="#selectGardenModal">Pilih Kebun Raya</button>
+                            </div>
+
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -146,7 +166,17 @@
     </main><!-- End #main -->
 
     <script>
-        var gardenArea = {!! json_encode($garden) !!};
+        var gardenData = [];
+
+        fetch('/api/gardens')
+            .then(response => response.json())
+            .then(result => {
+                gardenData = result.data;
+            })
+            .catch(error => {
+                console.error('Error fetching gardens:', error);
+                alert('Gagal mengambil data kebun');
+            })
 
         document.getElementById('confirmGarden').addEventListener('click', function() {
             var gardenSelect = document.getElementById('gardenSelect');
@@ -163,21 +193,27 @@
 
                 console.log('Garden dipilih:', selectedGardenName);
 
-                var map = L.map('map').setView([-6.7395, 107.0045], 15);
+                var gardenId = Array.isArray(gardenData) ?
+                    gardenData.find(g => g.id == selectedGardenId) :
+                    gardenData;
+
+                var gardenCoordinate = gardenId.coordinate;
+
+                console.log('Koordinat kebun raya: ',gardenCoordinate)
+
+                var map = L.map('map').setView(gardenCoordinate, 15);
 
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '© OpenStreetMap contributors'
                 }).addTo(map);
 
-                var gardenId = Array.isArray(gardenArea) ?
-                    gardenArea.find(g => g.id == selectedGardenId) :
-                    gardenArea;
+                if (gardenId) {
+                    var polygonData = gardenId.polygon;
 
-
-                if (gardenId && gardenId.polygon) {
-                    var polygonCoordinates = JSON.parse(gardenId.polygon);
-                    console.log('Polygon Coordinates:', polygonCoordinates);
-
+                    console.log('Polygon Data:', polygonData);
+                    console.log('Garden Id Data:', selectedGardenId);
+                    console.log('Garden Data:', gardenData);
+                    var polygonCoordinates = polygonData;
                     var polygon = L.polygon(polygonCoordinates, {
                         color: 'green',
                         fillColor: '#4CAF50',
@@ -186,7 +222,7 @@
 
                     polygon.bindPopup("<b>Area Kebun Raya " + selectedGardenName + "</b>");
                 } else {
-                    alert('Polygon tidak ditemukan untuk kebun ini.');
+                    alert('Koordinat polygon tidak ditemukan untuk kebun ini.');
                 }
 
                 var data = {!! json_encode($point) !!};
@@ -215,5 +251,53 @@
                 alert('Silakan pilih Kebun Raya dulu.');
             }
         });
-    </script>
+
+        document.getElementById('confirmGardenNew').addEventListener('click', function() {
+            var gardenSelect = document.getElementById('gardenSelectNew');
+            var selectedGardenId = gardenSelect.options[gardenSelect.selectedIndex].value;
+            var selectedGardenName = gardenSelect.options[gardenSelect.selectedIndex].text;
+
+            if (selectedGardenName) {
+                document.getElementById('selectGardenModal').style.display = 'none';
+                document.getElementById('skeletonArea').style.display = 'none';
+                document.getElementById('titleArea').style.display = 'block';
+                document.getElementById('contentArea').style.display = 'block';
+                document.getElementById('previewGardenArea').textContent = "Peta Pratinjau " + selectedGardenName;
+                document.getElementById('pageTitle').textContent = "Legenda  " + selectedGardenName;
+
+                console.log('Garden dipilih:', selectedGardenName);
+
+                var gardenId = Array.isArray(gardenData) ?
+                    gardenData.find(g => g.id == selectedGardenId) :
+                    gardenData;
+
+                var gardenCoordinate = gardenId.coordinate;
+
+                console.log('Koordinat kebun raya: ',gardenCoordinate)
+
+                var map = L.map('map').setView(gardenCoordinate, 15);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+
+                if (gardenId) {
+                    var polygonData = gardenId.polygon;
+
+                    console.log('Polygon Data:', polygonData);
+                    console.log('Garden Id Data:', selectedGardenId);
+                    console.log('Garden Data:', gardenData);
+                    var polygonCoordinates = polygonData;
+                    var polygon = L.polygon(polygonCoordinates, {
+                        color: 'green',
+                        fillColor: '#4CAF50',
+                        fillOpacity: 0.5
+                    }).addTo(map);
+
+                    polygon.bindPopup("<b>Area Kebun Raya " + selectedGardenName + "</b>");
+                } else {
+                    alert('Koordinat polygon tidak ditemukan untuk kebun ini.');
+                }
+        });
+        </script>
 @endsection

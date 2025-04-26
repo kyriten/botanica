@@ -16,8 +16,9 @@ class CreateGardensTable extends Migration
         Schema::create('gardens', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique;
-            $table->json('polygon')->nullable();
+            $table->json('coordinate')->nullable();
             $table->string('slug')->unique;
+            $table->json('polygon')->nullable();
             $table->timestamps();
         });
     }

@@ -31,11 +31,13 @@ class MapController extends Controller
         $village = Village::all();
         $post = Post::all();
         $point = Map::all();
-        $garden = Garden::all();
+        $garden = Garden::all()->map(function($item) {
+            $item->polygon = json_decode($item->polygon, true);
+            return $item;
+        });
 
-        // $polygon = json_decode($garden->polygon, true);
-
-        return view("admin.peta.index", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "map" => $map, "point" => $point, "garden" => $garden]);
+        $gardenData = Garden::all();
+        return view("admin.peta.index", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "map" => $map, "point" => $point, "garden" => $garden, "gardenData" => $gardenData]);
     }
 
     public function create()
@@ -196,4 +198,15 @@ class MapController extends Controller
     //     $post = Post::find($id);
     //     return response()->json($post);
     // }
+
+    public function getGardens()
+    {
+        $gardens = Garden::all()->map(function($item) {
+            $item->polygon = json_decode($item->polygon, true);
+            $item->coordinate = json_decode($item->coordinate, true);
+            return $item;
+        });
+
+        return response()->json(['status' => 'success', 'data' => $gardens]);
+    }
 }
