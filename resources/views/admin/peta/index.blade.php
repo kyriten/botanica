@@ -7,8 +7,8 @@
                 <h5 class="modal-title mb-3">Pilih Kebun Raya</h5>
                 <select id="gardenSelect" name="garden_id" class="form-control mb-3">
                         <option value="">-- Pilih Kebun Raya --</option>
-                    @foreach ($garden as $garden)
-                        <option value="{{ $garden->id }}">{{ $garden->name }}</option>
+                    @foreach ($garden as $g)
+                        <option value="{{ $g->id }}">{{ $g->name }}</option>
                     @endforeach
                 </select>
                 <button id="confirmGarden" class="btn btn-primary w-100">Konfirmasi</button>
@@ -16,6 +16,61 @@
         </div>
     </div>
 
+    <!-- Modal untuk Input Data Spot Kebun Raya -->
+    <div id="inputSpotModal" class="modal" tabindex="-1" style="display:none; background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <h5 class="modal-title mb-3">Tambah Spot Baru</h5>
+
+                <form action="{{ route('map.store') }}" method="post">
+
+                    <!-- Nama Tanaman -->
+                    <div class="form-outline" data-mdb-input-init>
+                        <input type="text" id="namaLokasi" class="form-control" />
+                        <label class="form-label" for="namaLokasi">Nama Tanaman</label>
+                    </div>
+
+                    <!-- Gambar Tanaman -->
+                    <div class="form-outline" data-mdb-input-init>
+                        <input type="text" id="namaLokasi" class="form-control" />
+                        <label class="form-label" for="namaLokasi">Nama Tanaman</label>
+                    </div>
+
+                    <!-- Lat -->
+                    <label for="latitude" class="col-sm-2 col-form-label text-dark align-items-center">Latitude</label>
+                    <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" readonly>
+
+                    <!-- Long -->
+                    <label for="longitude" class="col-sm-2 col-form-label text-dark align-items-center">Longitude</label>
+                    <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" readonly>
+
+                    <div class="col-lg-12 my-3">
+                        <h5 id="pickGardenSpot">Tandai Lokasi</h5>
+                        <div id="mapSpot" style="height: 400px; width: 100%;"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary">Simpan Lokasi</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk Impor Data Spot Kebun Raya -->
+    <div id="importListSpotModal" class="modal" tabindex="-1" style="display:none; background: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-4">
+                <h5 class="modal-title mb-3">Impor Daftar Spot</h5>
+
+                <input type="file" class="form-control mb-2" id="customFile" />
+                <label class="form-label" for="customFile">Unggah file excel disini</label>
+
+                <button class="btn btn-primary">Unggah</button>
+            </div>
+        </div>
+    </div>
 
     <main class="main" id="main">
         <div id="skeletonArea">
@@ -46,6 +101,7 @@
             <div class="row fade-in">
                 <div class="col-lg-6 align-items-center">
                     <h1 id="pageTitle"></h1>
+
                     <nav>
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('map.index') }}">Peta</a></li>
@@ -53,21 +109,6 @@
                         </ol>
                     </nav>
                 </div>
-
-                <div class="col-lg-6 d-flex justify-content-end align-items-center">
-                    <div class="search-bar">
-                        <form action="{{ route('map.index') }}" method="GET" class="search-form">
-                            <div class="input-group rounded">
-                                <input type="text" name="search" class="form-control" placeholder="Search"
-                                    value="{{ request('search') }}">
-                                <span class="input-group-text border-0" id="search-addon">
-                                    <i class="fas fa-search"></i>
-                                </span>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
             </div>
         </div><!-- End Page Title -->
 
@@ -80,27 +121,29 @@
                     </div>
                 @endif
 
-                <!-- Modal -->
-                <div class="modal fade" id="selectGardenModal" tabindex="-1" aria-labelledby="selectGardenModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content p-4">
-                            <h5 class="modal-title mb-3" id="selectGardenModalLabel">Pilih Kebun Raya</h5>
-                            <select id="gardenSelectNew" name="garden_id" class="form-control mb-3">
-                                <option value="">-- Pilih Kebun Raya --</option>
-                            @foreach ($gardenData as $g)
-                                <option value="{{ $g->id }}">{{ $g->name }}</option>
-                            @endforeach
-                            </select>
-                            <button id="confirmGardenNew" class="btn btn-primary w-100">Konfirmasi</button>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="col-4 d-flex justify-content-start align-items-stretch my-2 me-2">
-                                <button class="btn btn-primary btn-sm w-50" data-bs-toggle="modal" data-bs-target="#selectGardenModal">Pilih Kebun Raya</button>
+                            <div class="row">
+                                <div class="col-lg-8 d-flex justify-content-start align-items-stretch my-3">
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#inputSpotModal"><i class="bi bi-plus-lg me-1"></i> Tambah Spot</button>
+
+                                    <button class="btn btn-secondary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#importListSpotModal"><i class="bi bi-cloud-upload-fill me-1"></i> Impor Daftar Spot</button>
+                                </div>
+
+                                <div class="col-lg-4 d-flex justify-content-end align-items-stretch my-3">
+                                    <div class="search-bar">
+                                        <form action="{{ route('map.index') }}" method="GET" class="search-form">
+                                            <div class="input-group rounded">
+                                                <input type="text" name="search" class="form-control" placeholder="Search"
+                                                    value="{{ request('search') }}">
+                                                <span class="input-group-text border-0" id="search-addon">
+                                                    <i class="fas fa-search"></i>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="table-responsive">
@@ -111,6 +154,8 @@
                                             <th scope="col">Nama Tumbuhan</th>
                                             <th scope="col">Kebun Raya</th>
                                             <th scope="col">Persebaran</th>
+                                            <th scope="col">Latitude</th>
+                                            <th scope="col">Longitude</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -167,6 +212,7 @@
 
     <script>
         var gardenData = [];
+        let mapInstance = null;
 
         fetch('/api/gardens')
             .then(response => response.json())
@@ -180,124 +226,123 @@
 
         document.getElementById('confirmGarden').addEventListener('click', function() {
             var gardenSelect = document.getElementById('gardenSelect');
-            var selectedGardenId = gardenSelect.options[gardenSelect.selectedIndex].value;
+            var selectedGardenId = gardenSelect.value;
             var selectedGardenName = gardenSelect.options[gardenSelect.selectedIndex].text;
 
-            if (selectedGardenName) {
-                document.getElementById('selectGardenModal').style.display = 'none';
-                document.getElementById('skeletonArea').style.display = 'none';
-                document.getElementById('titleArea').style.display = 'block';
-                document.getElementById('contentArea').style.display = 'block';
-                document.getElementById('previewGardenArea').textContent = "Peta Pratinjau " + selectedGardenName;
-                document.getElementById('pageTitle').textContent = "Legenda  " + selectedGardenName;
-
-                console.log('Garden dipilih:', selectedGardenName);
-
-                var gardenId = Array.isArray(gardenData) ?
-                    gardenData.find(g => g.id == selectedGardenId) :
-                    gardenData;
-
-                var gardenCoordinate = gardenId.coordinate;
-
-                console.log('Koordinat kebun raya: ',gardenCoordinate)
-
-                var map = L.map('map').setView(gardenCoordinate, 15);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors'
-                }).addTo(map);
-
-                if (gardenId) {
-                    var polygonData = gardenId.polygon;
-
-                    console.log('Polygon Data:', polygonData);
-                    console.log('Garden Id Data:', selectedGardenId);
-                    console.log('Garden Data:', gardenData);
-                    var polygonCoordinates = polygonData;
-                    var polygon = L.polygon(polygonCoordinates, {
-                        color: 'green',
-                        fillColor: '#4CAF50',
-                        fillOpacity: 0.5
-                    }).addTo(map);
-
-                    polygon.bindPopup("<b>Area Kebun Raya " + selectedGardenName + "</b>");
-                } else {
-                    alert('Koordinat polygon tidak ditemukan untuk kebun ini.');
-                }
-
-                var data = {!! json_encode($point) !!};
-
-                data.forEach(function(item) {
-                    var fotoRempah = '';
-                    if (item.image) {
-                        fotoRempah = '<img src="' + item.image + '" alt="' + item.nama_rempah +
-                            '" class="img-fluid" style="max-width: 188px; height: auto; margin-bottom: 10px" />';
-                    } else {
-                        fotoRempah =
-                            '<img src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg" alt="Foto Rempah" class="img-fluid" style="max-width: 188px; height: auto; margin-bottom: 10px" />';
-                    }
-
-                    var marker = L.marker([item.latitude, item.longitude]).addTo(map);
-                    marker.bindPopup(
-                        fotoRempah + "<br>" +
-                        "<b> Nama Rempah: </b>" + item.nama_rempah + "<br>" +
-                        "<b> Nama Latin: </b>" + item.nama_latin + "<br>" +
-                        "<b> Kategori: </b>" + item.category_name + "<br>" +
-                        "<b> Latitude: </b>" + item.latitude + "<br>" +
-                        "<b> Longitude: </b>" + item.longitude + "<br>");
-                });
-
-            } else {
+            if (!selectedGardenId) {
                 alert('Silakan pilih Kebun Raya dulu.');
+                return;
             }
-        });
 
-        document.getElementById('confirmGardenNew').addEventListener('click', function() {
-            var gardenSelect = document.getElementById('gardenSelectNew');
-            var selectedGardenId = gardenSelect.options[gardenSelect.selectedIndex].value;
-            var selectedGardenName = gardenSelect.options[gardenSelect.selectedIndex].text;
+            const selectedGarden = gardenData.find(g => g.id == selectedGardenId);
 
-            if (selectedGardenName) {
-                document.getElementById('selectGardenModal').style.display = 'none';
-                document.getElementById('skeletonArea').style.display = 'none';
-                document.getElementById('titleArea').style.display = 'block';
-                document.getElementById('contentArea').style.display = 'block';
-                document.getElementById('previewGardenArea').textContent = "Peta Pratinjau " + selectedGardenName;
-                document.getElementById('pageTitle').textContent = "Legenda  " + selectedGardenName;
+            if (!selectedGarden) {
+                alert('Data kebun tidak ditemukan.');
+                return;
+            }
 
-                console.log('Garden dipilih:', selectedGardenName);
+            const pageTitle = document.getElementById('pageTitle');
 
-                var gardenId = Array.isArray(gardenData) ?
-                    gardenData.find(g => g.id == selectedGardenId) :
-                    gardenData;
+            // Kosongkan dulu isinya
+            pageTitle.innerHTML = '';
 
-                var gardenCoordinate = gardenId.coordinate;
+            // Buat span untuk teks
+            const titleText = document.createElement('span');
+            titleText.textContent = "Daftar Spot " + selectedGardenName;
 
-                console.log('Koordinat kebun raya: ',gardenCoordinate)
+            // Buat button
+            const button = document.createElement('button');
+            button.className = 'btn btn-secondary btn-sm mx-2';
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#selectGardenModal');
 
-                var map = L.map('map').setView(gardenCoordinate, 15);
+            // Buat ikon dalam button
+            const icon = document.createElement('i');
+            icon.className = 'bi bi-arrow-left-right';
+            button.appendChild(icon);
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors'
-                }).addTo(map);
+            document.getElementById('selectGardenModal').style.display = 'none';
+            document.getElementById('skeletonArea').style.display = 'none';
+            document.getElementById('titleArea').style.display = 'block';
+            document.getElementById('contentArea').style.display = 'block';
+            document.getElementById('previewGardenArea').textContent = "Peta Pratinjau " + selectedGardenName;
 
-                if (gardenId) {
-                    var polygonData = gardenId.polygon;
+            // Masukkan span dan button ke dalam h1
+            pageTitle.appendChild(titleText);
+            pageTitle.appendChild(button);
 
-                    console.log('Polygon Data:', polygonData);
-                    console.log('Garden Id Data:', selectedGardenId);
-                    console.log('Garden Data:', gardenData);
-                    var polygonCoordinates = polygonData;
-                    var polygon = L.polygon(polygonCoordinates, {
-                        color: 'green',
-                        fillColor: '#4CAF50',
-                        fillOpacity: 0.5
-                    }).addTo(map);
+            if (mapInstance !== null) {
+                mapInstance.remove();
+            }
 
-                    polygon.bindPopup("<b>Area Kebun Raya " + selectedGardenName + "</b>");
-                } else {
-                    alert('Koordinat polygon tidak ditemukan untuk kebun ini.');
+            mapInstance = L.map('map').setView(selectedGarden.coordinate, 15);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(mapInstance);
+
+            if (selectedGarden.polygon) {
+                L.polygon(selectedGarden.polygon, {
+                    color: 'green',
+                    fillColor: '#4CAF50',
+                    fillOpacity: 0.5
+                }).addTo(mapInstance).bindPopup("<b>Area Kebun Raya " + selectedGardenName + "</b>");
+            }
+
+            document.getElementById('selectGardenModal').style.display = 'none';
+
+            document.body.classList.remove('modal-open');
+            let backdrops = document.getElementsByClassName('modal-backdrop');
+            while (backdrops.length > 0) {
+                backdrops[0].parentNode.removeChild(backdrops[0]);
+            }
+
+            var mapSpot = L.map('mapSpot').setView(selectedGarden.coordinate, 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(mapSpot);
+
+            if (selectedGarden.polygon) {
+                L.polygon(selectedGarden.polygon, {
+                    color: 'green',
+                    fillColor: '#4CAF50',
+                    fillOpacity: 0.5
+                }).addTo(mapSpot);
+            }
+
+            document.getElementById('inputSpotModal').addEventListener('shown.bs.modal', function () {
+                mapSpot.invalidateSize();
+            });
+
+            var markerSpot;
+
+            mapSpot.on('click', function(e) {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                console.log('Lokasi dipilih:', lat, lng);
+
+                // Kalau sudah ada marker sebelumnya, hapus dulu
+                if (markerSpot) {
+                    mapSpot.removeLayer(markerSpot);
                 }
+
+                // Tambahkan marker baru
+                markerSpot = L.marker([lat, lng], {draggable:true}).addTo(mapSpot);
+
+                // Isi input
+                document.getElementById('latitude').value = lat;
+                document.getElementById('longitude').value = lng;
+
+                // Kalau marker digeser (drag), update latlng juga
+                markerSpot.on('dragend', function(event) {
+                    var position = event.target.getLatLng();
+                    document.getElementById('latitude').value = position.lat;
+                    document.getElementById('longitude').value = position.lng;
+                });
+            });
         });
-        </script>
+
+    </script>
 @endsection

@@ -31,19 +31,19 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed {{ Request::routeIs('map.index') || Request::routeIs('map.create') ? 'collapse active' : 'collapsed' }}" data-bs-target="#map-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-map"></i><span>Peta</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-map"></i><span>Spot Tanaman</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="map-nav" class="nav-content collapse {{ Request::routeIs('map.index') || Request::routeIs('map.create') ? 'show' : '' }}" data-bs-parent="#sidebar-nav">
                 <li>
                     <a class="{{ Request::routeIs('map.index') ? 'active' : 'collapsed' }}"
                     href="{{ route('map.index') }}">
-                        <i class="bi bi-circle"></i><span>Lihat Data Pin</span>
+                        <i class="bi bi-circle"></i><span>Data Spot</span>
                     </a>
                 </li>
                 <li>
                     <a class="{{ Request::routeIs('map.create') ? 'active' : 'collapsed' }}"
                     href="{{ route('map.create') }}">
-                        <i class="bi bi-circle"></i><span>Tambah Pin</span>
+                        <i class="bi bi-circle"></i><span>Tambah Spot</span>
                     </a>
                 </li>
             </ul>
