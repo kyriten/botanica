@@ -6,7 +6,7 @@
             <div class="modal-content p-4">
                 <h5 class="modal-title mb-3">Pilih Kebun Raya</h5>
                 <select id="gardenSelect" name="garden_id" class="form-control mb-3">
-                        <option value="">-- Pilih Kebun Raya --</option>
+                    <option value="">-- Pilih Kebun Raya --</option>
                     @foreach ($garden as $g)
                         <option value="{{ $g->id }}">{{ $g->name }}</option>
                     @endforeach
@@ -18,35 +18,288 @@
 
     <!-- Modal untuk Input Data Spot Kebun Raya -->
     <div id="inputSpotModal" class="modal" tabindex="-1" style="display:none; background: rgba(0,0,0,0.5);">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content p-4">
                 <h5 class="modal-title mb-3">Tambah Spot Baru</h5>
 
                 <form action="{{ route('map.store') }}" method="post">
 
-                    <!-- Nama Tanaman -->
-                    <div class="form-outline" data-mdb-input-init>
-                        <input type="text" id="namaLokasi" class="form-control" />
-                        <label class="form-label" for="namaLokasi">Nama Tanaman</label>
+                    {{-- Upload Image --}}
+                    <div class="col-lg-12">
+                        {{-- Image --}}
+                        <h5 class="card-title fs-4 mb-0 pb-2">Unggah Gambar
+                            <br>
+                            <p class="text-secondary mt-2 mb-3 textf-justify" style="font-size: 14px">Hanya gambar
+                                yang dapat
+                                diunggah. <br> Mohon
+                                unggah
+                                dengan
+                                ekstensi .png, .jpg, .jpeg</p>
+                        </h5>
+
+                        <div class="row">
+                            <!-- Gambar Tumbuhan -->
+                            <div class="col-sm-4">
+                                <div class="position-relative mb-4 text-center">
+                                    <!-- Label di atas gambar -->
+                                    <div
+                                        class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                        Tumbuhan
+                                    </div>
+
+                                    <!-- Gambar -->
+                                    <img id="imgPreviewPlant"
+                                        src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                        alt="image placeholder" style="width: 200px;" />
+                                </div>
+
+                                <!-- Error message -->
+                                <div class="mb-2 text-center text-danger">
+                                    @error('plant_image')
+                                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Tombol Upload -->
+                                <div class="d-flex justify-content-center">
+                                    <div class="btn btn-primary btn-rounded mb-3">
+                                        <label class="form-label text-white mb-0" for="customFilePlant">Pilih gambar
+                                            tumbuhan</label>
+                                        <input class="form-control d-none @error('plant_image') is-invalid @enderror"
+                                            id="customFilePlant" name="plant_image" type="file"
+                                            accept="image/png, image/jpeg, image/jpg"
+                                            onchange="showPreview(event, 'imgPreviewPlant');">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gambar Daun -->
+                            <div class="col-sm-4">
+                                <div class="position-relative mb-4 text-center">
+                                    <!-- Label di atas gambar -->
+                                    <div
+                                        class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                        Daun
+                                    </div>
+
+                                    <!-- Gambar -->
+                                    <img id="imgPreviewLeaf"
+                                        src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                        alt="image placeholder" style="width: 200px;" />
+                                </div>
+
+                                <!-- Error message -->
+                                <div class="mb-2 text-center text-danger">
+                                    @error('leaf_image')
+                                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Tombol Upload -->
+                                <div class="d-flex justify-content-center">
+                                    <div class="btn btn-primary btn-rounded mb-3">
+                                        <label class="form-label text-white mb-0" for="customFileLeaf">Pilih gambar
+                                            daun</label>
+                                        <input class="form-control d-none @error('leaf_image') is-invalid @enderror"
+                                            id="customFileLeaf" name="leaf_image" type="file"
+                                            accept="image/png, image/jpeg, image/jpg"
+                                            onchange="showPreview(event, 'imgPreviewLeaf');">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Gambar Batang -->
+                            <div class="col-sm-4">
+                                <div class="position-relative mb-4 text-center">
+                                    <!-- Label di atas gambar -->
+                                    <div
+                                        class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                        Batang
+                                    </div>
+
+                                    <!-- Gambar -->
+                                    <img id="imgPreviewStem"
+                                        src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                        alt="image placeholder" style="width: 200px;" />
+                                </div>
+
+                                <!-- Error message -->
+                                <div class="mb-2 text-center text-danger">
+                                    @error('stem_image')
+                                        <span class="text-red-600 text-sm">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <!-- Tombol Upload -->
+                                <div class="d-flex justify-content-center">
+                                    <div class="btn btn-primary btn-rounded mb-3">
+                                        <label class="form-label text-white mb-0" for="customFileStem">Pilih gambar
+                                            batang</label>
+                                        <input class="form-control d-none @error('stem_image') is-invalid @enderror"
+                                            id="customFileStem" name="stem_image" type="file"
+                                            accept="image/png, image/jpeg, image/jpg"
+                                            onchange="showPreview(event, 'imgPreviewStem');">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- End Image --}}
                     </div>
 
-                    <!-- Gambar Tanaman -->
-                    <div class="form-outline" data-mdb-input-init>
-                        <input type="text" id="namaLokasi" class="form-control" />
-                        <label class="form-label" for="namaLokasi">Nama Tanaman</label>
+                    <hr>
+
+                    <div class="col-md-12">
+                        <span class="text-sm note-flag fw-bold">Tumbuhan</span>
+
+                        <div class="row mb-1">
+                            <label for="cityID" class="col-sm-4 col-form-label text-dark align-items-center"
+                                style="font-size: 14px">Nama Tanaman<span class="text-danger" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Wajib diisi">*</span></label>
+
+                            <div class="col-sm-12">
+                                <!-- Nama Tanaman -->
+                                <div class="form-outline" data-mdb-input-init>
+                                    <input type="text" id="namaLokasi" class="form-control" />
+                                    <label class="form-label" for="namaLokasi">Nama Tanaman</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <label for="cityID" class="col-sm-4 col-form-label text-dark align-items-center"
+                                style="font-size: 14px">Deskripsi<span class="text-danger" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Wajib diisi">*</span></label>
+
+                            <div class="col-sm-12 mb-4">
+                                <!-- Deskripsi Tanaman -->
+                                <div class="form-outline" data-mdb-input-init>
+                                    <input type="text" id="namaLokasi" class="form-control" />
+                                    <label class="form-label" for="namaLokasi">Deskripsi Tanaman</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Lat -->
-                    <label for="latitude" class="col-sm-2 col-form-label text-dark align-items-center">Latitude</label>
-                    <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" readonly>
+                    <!-- Persebaran Tanaman Collapse -->
+                    <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#persebaranTanamanCollapse" aria-expanded="false" aria-controls="persebaranTanamanCollapse">
+                        Tambah Persebaran Tanaman
+                    </button>
 
-                    <!-- Long -->
-                    <label for="longitude" class="col-sm-2 col-form-label text-dark align-items-center">Longitude</label>
-                    <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" readonly>
+                    <div class="collapse" id="persebaranTanamanCollapse">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="text-sm note-flag fw-bold">Persebaran - Kota/Kabupaten</span>
 
-                    <div class="col-lg-12 my-3">
-                        <h5 id="pickGardenSpot">Tandai Lokasi</h5>
-                        <div id="mapSpot" style="height: 400px; width: 100%;"></div>
+                                <!-- Kota/Kabupaten -->
+                                <div class="row mb-1">
+                                    <label for="cityID" class="col-sm-4 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Nama </label>
+                                    <div class="col-sm-12">
+                                        <select name="city_id" id="cityID"
+                                            class="form-select select2 @error('city_id') is-invalid @enderror"
+                                            data-placeholder="-- Pilih Kota/Kabupaten --" required>
+                                            <option value="">-- Pilih Kota/Kabupaten --</option>
+                                            @foreach ($city as $c)
+                                                <option value="{{ $c->id }}"
+                                                    {{ old('city_id') == $c->id ? 'selected' : '' }}>
+                                                    {{ $c->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+
+                                <!-- Latitude -->
+                                <div class="row mb-1">
+                                    <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Latitude</label>
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text" name="latitude" id="latCity"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Longitude -->
+                                <div class="row mb-1">
+                                    <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Longitude</label>
+                                    <div class="col-sm-12 mb-4">
+                                        <input class="form-control" type="text" name="longitude" id="longCity"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <span class="text-sm note-flag fw-bold">Provinsi</span>
+                                <!-- Provinsi -->
+                                <div class="row mb-1">
+                                    <label for="provinceID" class="col-sm-4 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Nama</label>
+                                    <div class="col-sm-12" data-mdb-input-init>
+                                        <input class="form-control" id="provinceID" type="text" value=""
+                                            aria-label="readonly" readonly />
+                                    </div>
+                                </div>
+
+                                <!-- Latitude -->
+                                <div class="row mb-1">
+                                    <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Latitude</label>
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text" name="latitude" id="latProvince"
+                                            readonly>
+                                    </div>
+                                </div>
+
+                                <!-- Longitude -->
+                                <div class="row mb-4">
+                                    <label class="col-sm-4 col-form-label text-dark align-items-center"
+                                        style="font-size: 14px">Longitude</label>
+                                    <div class="col-sm-12 mb-1">
+                                        <input class="form-control" type="text" name="longitude" id="longProvince"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="col-md-12">
+                        <span class="text-sm note-flag fw-bold">Tandai Spot Tanaman</span>
+
+                        <div class="row mb-1">
+                            <!-- Lat -->
+                            <label for="latitude"
+                                class="col-sm-2 col-form-label text-dark align-items-center">Latitude</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="latitude" name="latitude"
+                                    placeholder="Latitude" readonly>
+                            </div>
+                        </div>
+
+                        <div class="row mb-1">
+                            <!-- Long -->
+                            <label for="longitude"
+                                class="col-sm-2 col-form-label text-dark align-items-center">Longitude</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="longitude" name="longitude"
+                                    placeholder="Longitude" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12 my-3">
+                            <h5 id="pickGardenSpot">Tandai Lokasi</h5>
+                            <div id="mapSpot" style="height: 400px; width: 100%;"></div>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-end">
@@ -126,17 +379,21 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-lg-8 d-flex justify-content-start align-items-stretch my-3">
-                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#inputSpotModal"><i class="bi bi-plus-lg me-1"></i> Tambah Spot</button>
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#inputSpotModal"><i class="bi bi-plus-lg me-1"></i> Tambah
+                                        Spot</button>
 
-                                    <button class="btn btn-secondary btn-sm mx-2" data-bs-toggle="modal" data-bs-target="#importListSpotModal"><i class="bi bi-cloud-upload-fill me-1"></i> Impor Daftar Spot</button>
+                                    <button class="btn btn-secondary btn-sm mx-2" data-bs-toggle="modal"
+                                        data-bs-target="#importListSpotModal"><i class="bi bi-cloud-upload-fill me-1"></i>
+                                        Impor Daftar Spot</button>
                                 </div>
 
                                 <div class="col-lg-4 d-flex justify-content-end align-items-stretch my-3">
                                     <div class="search-bar">
                                         <form action="{{ route('map.index') }}" method="GET" class="search-form">
                                             <div class="input-group rounded">
-                                                <input type="text" name="search" class="form-control" placeholder="Search"
-                                                    value="{{ request('search') }}">
+                                                <input type="text" name="search" class="form-control"
+                                                    placeholder="Search" value="{{ request('search') }}">
                                                 <span class="input-group-text border-0" id="search-addon">
                                                     <i class="fas fa-search"></i>
                                                 </span>
@@ -171,8 +428,8 @@
                                                         <a class="btn btn-warning" href="/map/{{ $item->id }}/edit">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
-                                                        <form action="{{ route('map.destroy', $item->id) }}" method="post"
-                                                            class="d-inline">
+                                                        <form action="{{ route('map.destroy', $item->id) }}"
+                                                            method="post" class="d-inline">
                                                             @method('delete')
                                                             @csrf
                                                             <button class="btn btn-danger"
@@ -311,7 +568,7 @@
                 }).addTo(mapSpot);
             }
 
-            document.getElementById('inputSpotModal').addEventListener('shown.bs.modal', function () {
+            document.getElementById('inputSpotModal').addEventListener('shown.bs.modal', function() {
                 mapSpot.invalidateSize();
             });
 
@@ -329,7 +586,9 @@
                 }
 
                 // Tambahkan marker baru
-                markerSpot = L.marker([lat, lng], {draggable:true}).addTo(mapSpot);
+                markerSpot = L.marker([lat, lng], {
+                    draggable: true
+                }).addTo(mapSpot);
 
                 // Isi input
                 document.getElementById('latitude').value = lat;
@@ -343,6 +602,5 @@
                 });
             });
         });
-
     </script>
 @endsection
