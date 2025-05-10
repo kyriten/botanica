@@ -10,6 +10,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PlantPostController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\VillageController;
 use App\Models\District;
 
@@ -30,14 +31,14 @@ use App\Models\District;
 
 // Route::get('/', [PlantPostController::class, 'index'])->name('plant.welcome');
 
-//Authentication Routes
-///Login
+// Login
 Route::get('/welcome/admin', [LoginController::class, 'index'])->name('login')->middleware('guest');
 Route::post('/welcome/admin/auth', [LoginController::class, 'authenticate'])->name('auth.login');
 
-///logout
+// Logout
 Route::post('/logout', [LoginController::class, 'logout']);
 
+// Authenticated Route
 Route::middleware(['auth'])->group(function () {
     Route::resources([
         'admin' => AdminController::class,
@@ -50,8 +51,17 @@ Route::middleware(['auth'])->group(function () {
     ]);
 });
 
+Route::put('/map/update/{id}', [MapController::class, 'update'])->name('map.update');
+
+
+// Public Route
+Route::get('/', [PublicController::class, 'search'])->name('public.search');
+Route::get('/tanaman/{id}', [PublicController::class, 'show'])->name('plant.show');
+Route::get('/autocomplete', [PublicController::class, 'autocomplete'])->name('plant.autocomplete');
+
+// API
+Route::get('/map/{id}/data', [MapController::class, 'getData']);
 Route::get('/get-province/{cityId}', [DistrictController::class, 'getProvince'])->name('get.province');
 Route::get('/get-city/{cityId}', [VillageController::class, 'getCity'])->name('get.city');
 Route::get('/get-city-details/{id}', [MapController::class, 'getCityDetails']);
 Route::get('/get-province-details/{id}', [MapController::class, 'getProvinceDetails']);
-

@@ -20,3 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/gardens', [MapController::class, 'getGardens']);
+
+Route::get('/gardens/{garden_id}', [MapController::class, 'getByGarden']);

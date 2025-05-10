@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <title>Dashboard - {{ config('app.name') }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -146,6 +147,8 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    @stack('styles')
 </head>
 
 <body>
@@ -154,6 +157,7 @@
     @include('admin.partials.sidebar')
     @yield('dashboard')
     @yield('post')
+    {{-- @yield('edit') --}}
     @yield('dbProvinsi')
     @yield('dbCity')
     @yield('dbDistrict')
@@ -164,9 +168,10 @@
             class="bi bi-arrow-up-short"></i></a>
 
     @include('admin.post.feature.image')
+
     <!-- Vendor JS Files -->
-    <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('vendor/chart.js/chart.umd.js') }}"></script>
     <script src="{{ asset('vendor/echarts/echarts.min.js') }}"></script>
     <script src="{{ asset('vendor/quill/quill.min.js') }}"></script>
@@ -175,12 +180,10 @@
     <script src="{{ asset('vendor/php-email-form/validate.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
     <!-- Template Main JS File -->
     <script src="{{ asset('js/main.js') }}"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
-
 
     {{-- AJAX Generate Slug Posts --}}
     <script>
@@ -287,137 +290,7 @@
         });
     </script>
 
-    {{-- AJAX Generate Category --}}
-    <script>
-        $(document).ready(function() {
-            $('#category').on('change', function() {
-                var categoryId = $(this).val();
-                if (categoryId) {
-                    $.ajax({
-                        url: '/get-category-details/' + categoryId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data) {
-                                $('#category_name').val(data.name);
-                            } else {
-                                $('#category_name').val('');
-                            }
-                        }
-                    });
-                } else {
-                    $('#category_name').val('');
-                }
-            });
-        });
-    </script>
-
-    {{-- AJAX Generate Nama Rempah --}}
-    <script>
-        $(document).ready(function() {
-            $('#rempah').on('change', function() {
-                var namarempahId = $(this).val();
-                if (namarempahId) {
-                    $.ajax({
-                        url: '/get-rempah-details/' + namarempahId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data) {
-                                $('#nama_rempah').val(data.nama_rempah);
-                                $('#nama_latin').val(data.nama_latin);
-                                $('#category_id').val(data.category_id);
-                                $('#category_name').val(data.category_name);
-                            } else {
-                                $('#nama_rempah').val('');
-                                $('#nama_latin').val('');
-                                $('#category_id').val('');
-                                $('#category_name').val('');
-                            }
-                        }
-                    });
-                } else {
-                    $('#nama_rempah').val('');
-                    $('#nama_latin').val('');
-                    $('#category_id').val('');
-                    $('#category_name').val('');
-                }
-            });
-        });
-    </script>
-
-    {{-- Select2 via CDN --}}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            $('.select2').each(function() {
-                let placeholder = $(this).data('placeholder') || 'Silakan pilih';
-                $(this).select2({
-                    placeholder: placeholder,
-                    allowClear: true,
-                    width: '100%',
-                    minimumResultsForSearch: 0
-                });
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Ketika pilih Kota
-            $('#cityID').on('change', function() {
-                var cityId = $(this).val();
-
-                if (cityId) {
-                    $.ajax({
-                        url: '/get-province/' + cityId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data.province) {
-                                $('#provinceID').val(data.province);
-                            } else {
-                                $('#provinceID').val('Provinsi tidak ditemukan');
-                            }
-                        },
-                        error: function() {
-                            $('#provinceID').val('Terjadi kesalahan');
-                        }
-                    });
-                } else {
-                    $('#provinceID').val('');
-                }
-            });
-
-            // Ketika pilih Kecamatan
-            $('#districtID').on('change', function() {
-                var districtId = $(this).val();
-
-                if (districtId) {
-                    $.ajax({
-                        url: '/get-city/' + districtId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            if (data.city) {
-                                $('#cityID').val(data.city);
-                            } else {
-                                $('#cityID').val('Kota tidak ditemukan');
-                            }
-                        },
-                        error: function() {
-                            $('#cityID').val('Terjadi kesalahan');
-                        }
-                    });
-                } else {
-                    $('#cityID').val('');
-                }
-            });
-        });
-    </script>
+    @stack('scripts')
 </body>
 
 </html>

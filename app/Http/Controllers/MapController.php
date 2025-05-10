@@ -9,35 +9,55 @@ use App\Models\Garden;
 use App\Models\Village;
 use App\Models\District;
 use App\Models\Province;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class MapController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->has('search')) {
-            $search = $request->search;
+        $map = Map::query();
 
-            $map = Map::where('name', 'LIKE', '%' . $search . '%')
-                ->orWhere('nama_rempah', 'LIKE', '%' . $search . '%')
-                ->paginate(10);
-        } else {
-            $map = Map::paginate(10);
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $map->where(function ($q) use ($search) {
+                $q->where('local', 'LIKE', '%' . $search . '%')
+                    ->orWhere('latin', 'LIKE', '%' . $search . '%');
+            });
         }
+
+        $map = $map->paginate(10);
+
+        if ($request->ajax()) {
+            return view('admin.peta.partials.table', compact('map'))->render();
+        }
+
         $province = Province::all();
         $city = City::all();
         $district = District::all();
         $village = Village::all();
         $post = Post::all();
         $point = Map::all();
-        $garden = Garden::all()->map(function($item) {
+        $garden = Garden::all()->map(function ($item) {
             $item->polygon = json_decode($item->polygon, true);
             return $item;
         });
 
         $gardenData = Garden::all();
-        return view("admin.peta.index", ["post" => $post, "province" => $province, "city" => $city, "district" => $district, "village" => $village, "map" => $map, "point" => $point, "garden" => $garden, "gardenData" => $gardenData]);
+
+        return view("admin.peta.index", compact(
+            'post',
+            'province',
+            'city',
+            'district',
+            'village',
+            'map',
+            'point',
+            'garden',
+            'gardenData'
+        ));
     }
 
     public function create()
@@ -54,50 +74,67 @@ class MapController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            "image" => "image | file | max:2048",
-            "post_id" => "required",
-            "garden_id" => "required",
-            "province_id" => "required",
-            "city_id" => "required",
-            "district_id" => "required",
-            "village_id" => "required",
-            "kingdom" => "required",
-            "subkingdom" => "string",
-            "superdivision" => "string",
-            "division" => "string",
-            "class" => "string",
-            "subclass" => "string",
-            "ordo" => "string",
-            "famili" => "string",
-            "genus" => "string",
-            "species" => "string",
-            "latin" => "string",
-            "local" => "string",
-            "type_of_plant" => "string",
-            "garden_name" => "required",
-            "province_name" => "required",
-            "province_lat" => "required",
-            "province_long" => "required",
-            "city_name" => "required",
-            "city_lat" => "required",
-            "city_long" => "required",
-            "district_name" => "required",
-            "district_lat" => "required",
-            "district_long" => "required",
-            "village_name" => "required",
-            "village_lat" => "required",
-            "village_long" => "required",
+            'garden_id'       => 'required|exists:gardens,id',
+            'province_id'     => 'nullable|integer|exists:provinces,id',
+            'city_id'         => 'nullable|integer|exists:cities,id',
+            'garden_name'     => 'nullable|string|max:255',
+            'province_name'   => 'nullable|string|max:255',
+            'city_name'       => 'nullable|string|max:255',
+            'plant_lat'       => 'required|numeric',
+            'plant_long'      => 'required|numeric',
+            'local'           => 'nullable|string|max:255',
+            'latin'           => 'nullable|string|max:255',
+            'slug'            => 'nullable|string|max:255|unique:maps,slug',
+            'kingdom'         => 'nullable|string|max:255',
+            'sub_kingdom'     => 'nullable|string|max:255',
+            'super_division'  => 'nullable|string|max:255',
+            'division'        => 'nullable|string|max:255',
+            'class'           => 'nullable|string|max:255',
+            'sub_class'       => 'nullable|string|max:255',
+            'ordo'            => 'nullable|string|max:255',
+            'famili'          => 'nullable|string|max:255',
+            'genus'           => 'nullable|string|max:255',
+            'species'         => 'nullable|string|max:255',
+            'description'     => 'nullable|string|max:255',
+            'plant_image'     => 'nullable|image|file|max:2048',
+            'leaf_image'      => 'nullable|image|file|max:2048',
+            'stem_image'      => 'nullable|image|file|max:2048',
         ]);
 
-        if ($request->file('image')) {
-            $validatedData['image'] = $request->file('image')->store('map-images');
+        $garden = Garden::find($validatedData['garden_id']);
+        if ($garden) {
+            $validatedData['garden_name'] = $garden->name;
         }
 
-        $validatedData['user_id'] = auth()->user()->id;
+        // Cari nama kota dan provinsi berdasarkan city_id
+        $city = City::with('province')->find($validatedData['city_id']);
 
-        Map::create($validatedData);
+        if ($city) {
+            $validatedData['city_name'] = $city->name;
+            $validatedData['province_name'] = $city->province->name ?? null;
+            $validatedData['province_id'] = $city->province->id ?? null;
+        }
 
-        return redirect()->back()->with('success', 'Data berhasil disimpan.');
+        // Upload gambar jika ada
+        if ($request->hasFile('plant_image')) {
+            $validatedData['plant_image'] = $request->file('plant_image')->store('map-images', 'public');
+        }
+        if ($request->hasFile('leaf_image')) {
+            $validatedData['leaf_image'] = $request->file('leaf_image')->store('map-images', 'public');
+        }
+        if ($request->hasFile('stem_image')) {
+            $validatedData['stem_image'] = $request->file('stem_image')->store('map-images', 'public');
+        }
+
+        // Tambahkan user_id
+        $validatedData['user_id'] = auth()->id();
+
+        // Simpan ke DB
+        $map = Map::create($validatedData);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Data berhasil disimpan.', 'map' => $map]);
+        }
     }
 
     public function show()
@@ -118,57 +155,105 @@ class MapController extends Controller
 
     public function update(Request $request, $id)
     {
+        // Mencari map berdasarkan ID
         $map = Map::where('id', $id)->firstOrFail();
-        $rules = [
-            "post_id" => "required",
-            "garden_id" => "required",
-            "province_id" => "required",
-            "city_id" => "required",
-            "district_id" => "required",
-            "village_id" => "required",
-            "kingdom" => "required",
-            "subkingdom" => "string",
-            "superdivision" => "string",
-            "division" => "string",
-            "class" => "string",
-            "subclass" => "string",
-            "ordo" => "string",
-            "famili" => "string",
-            "genus" => "string",
-            "species" => "string",
-            "latin" => "string",
-            "local" => "string",
-            "type_of_plant" => "string",
-            "garden_name" => "required",
-            "province_name" => "required",
-            "province_lat" => "required",
-            "province_long" => "required",
-            "city_name" => "required",
-            "city_lat" => "required",
-            "city_long" => "required",
-            "district_name" => "required",
-            "district_lat" => "required",
-            "district_long" => "required",
-            "village_name" => "required",
-            "village_lat" => "required",
-            "village_long" => "required",
-        ];
-
-        $validatedData = $request->validate($rules);
-
-        // Update Image
-        if ($request->file('image')) {
-            if ($request->file('oldImage')) {
-                Storage::delete($request->oldImage);
+        try {
+            // Mengambil garden_name berdasarkan garden_id
+            $garden = Garden::find($request->garden_id);
+            if ($garden) {
+                $garden_name = $garden->name;
+            } else {
+                $garden_name = 'Unknown Garden';
             }
-            $validatedData['image'] = $request->file('image')->store('map-images');
+
+            // Cari nama kota dan provinsi berdasarkan city_id
+            $city = City::with('province')->find($request['city_id']);
+
+            if ($city) {
+                $request['city_name'] = $city->name;
+                $request['province_name'] = $city->province->name ?? null;
+                $request['province_id'] = $city->province->id ?? null;
+            }
+
+            // Aturan validasi input
+            $rules = [
+                'garden_id'       => 'required|exists:gardens,id',
+                'province_id'     => 'nullable|integer|exists:provinces,id',
+                'city_id'         => 'nullable|integer|exists:cities,id',
+                'garden_name'     => 'nullable|string|max:255',
+                'province_name'   => 'nullable|string|max:255',
+                'city_name'       => 'nullable|string|max:255',
+                'plant_lat'       => 'required|numeric',
+                'plant_long'      => 'required|numeric',
+                'local'           => 'nullable|string|max:255',
+                'latin'           => 'nullable|string|max:255',
+                'slug'            => 'nullable|string|max:255',
+                'kingdom'         => 'nullable|string|max:255',
+                'sub_kingdom'     => 'nullable|string|max:255',
+                'super_division'  => 'nullable|string|max:255',
+                'division'        => 'nullable|string|max:255',
+                'class'           => 'nullable|string|max:255',
+                'sub_class'       => 'nullable|string|max:255',
+                'ordo'            => 'nullable|string|max:255',
+                'famili'          => 'nullable|string|max:255',
+                'genus'           => 'nullable|string|max:255',
+                'species'         => 'nullable|string|max:255',
+                'description'     => 'nullable|string|max:255',
+                'plant_image'     => 'nullable|image|file|max:2048',
+                'leaf_image'      => 'nullable|image|file|max:2048',
+                'stem_image'      => 'nullable|image|file|max:2048',
+            ];
+
+            // Validasi input
+            $validatedData = $request->validate($rules);
+
+            // Update gambar jika ada
+            if ($request->hasFile('plant_image')) {
+                if ($map->plant_image && Storage::exists($map->plant_image)) {
+                    Storage::delete($map->plant_image); // Menghapus gambar lama jika ada
+                }
+                $validatedData['plant_image'] = $request->file('plant_image')->store('map-images');
+            }
+
+            if ($request->hasFile('leaf_image')) {
+                if ($map->leaf_image && Storage::exists($map->leaf_image)) {
+                    Storage::delete($map->leaf_image); // Menghapus gambar lama jika ada
+                }
+                $validatedData['leaf_image'] = $request->file('leaf_image')->store('map-images');
+            }
+
+            if ($request->hasFile('stem_image')) {
+                if ($map->stem_image && Storage::exists($map->stem_image)) {
+                    Storage::delete($map->stem_image); // Menghapus gambar lama jika ada
+                }
+                $validatedData['stem_image'] = $request->file('stem_image')->store('map-images');
+            }
+
+            // Memastikan slug dibuat jika tidak ada
+            if (empty($validatedData['slug'])) {
+                $validatedData['slug'] = Str::slug($validatedData['latin'] ?? 'default-slug') . '-' . $map->id;
+            }
+
+            // Menambahkan garden_name ke dalam data yang akan diupdate
+            $validatedData['garden_name'] = $garden_name;
+
+            // Update data
+            $map->update($validatedData);
+
+            // Mengembalikan response JSON jika permintaan adalah AJAX
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil diperbarui.',
+                'map' => $map
+            ]);
+        } catch (\Exception $e) {
+            // Tangani error dan log detailnya
+            Log::error($e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memproses permintaan.'
+            ]);
         }
-
-        $validatedData['user_id'] = auth()->user()->id;
-
-        $map = Map::updateOrCreate(['id' => $map->id], $validatedData);
-
-        return redirect()->route('map.index')->with(['success' => 'Success! Data has been updated.']);
     }
 
     public function destroy($id)
@@ -178,7 +263,7 @@ class MapController extends Controller
             Storage::delete($point->image);
         }
         $point->delete();
-        return redirect()->back()->with('success', 'Success! Your post has been deleted.');
+        return redirect()->back()->with('success', 'Berhasil! Data kamu telah dihapus.');
     }
 
     public function getCityDetails($id)
@@ -193,20 +278,54 @@ class MapController extends Controller
         return response()->json($province);
     }
 
-    // public function getRempahDetails($id)
-    // {
-    //     $post = Post::find($id);
-    //     return response()->json($post);
-    // }
+
+    public function getByGarden($gardenId)
+    {
+        $maps = Map::where('garden_id', $gardenId)->get([
+            'province_name',
+            'city_name',
+            'plant_lat',
+            'plant_long',
+            'local',
+            'latin',
+            'kingdom',
+            'sub_kingdom',
+            'super_division',
+            'division',
+            'class',
+            'sub_class',
+            'ordo',
+            'famili',
+            'genus',
+            'species',
+            'description',
+            'plant_image',
+            'leaf_image',
+            'stem_image',
+        ]);
+
+        return response()->json(['data' => $maps]);
+    }
 
     public function getGardens()
     {
-        $gardens = Garden::all()->map(function($item) {
+        $gardens = Garden::all()->map(function ($item) {
             $item->polygon = json_decode($item->polygon, true);
             $item->coordinate = json_decode($item->coordinate, true);
             return $item;
         });
 
         return response()->json(['status' => 'success', 'data' => $gardens]);
+    }
+
+    public function getData($id)
+    {
+        $spot = Map::find($id);
+
+        if (!$spot) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
+        }
+
+        return response()->json($spot);
     }
 }

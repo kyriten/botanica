@@ -15,13 +15,14 @@ class CreateMapsTable extends Migration
     {
         Schema::create('maps', function (Blueprint $table) {
             $table->id();
-            $table->string('image')->nullable();
-            $table->string('post_id');
             $table->string('garden_id');
-            $table->string('province_id');
-            $table->string('city_id');
-            $table->string('district_id');
-            $table->string('village_id');
+            $table->string('province_id')->nullable();
+            $table->string('city_id')->nullable();
+            $table->string('garden_name');
+            $table->string('province_name')->nullable();
+            $table->string('city_name')->nullable();
+            $table->string('plant_lat');
+            $table->string('plant_long');
             $table->string('local');
             $table->string('latin');
             $table->string('slug');

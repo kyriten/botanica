@@ -1,16 +1,10 @@
 @extends('admin.app')
-@section('post')
+@section('edit')
     <main class="main" id="main">
 
         <div class="pagetitle">
-            <h1>Edit Point </h1>
-            <p>{{ $map->nama_rempah }} di {{ $map->name }}</p>
-            <nav>
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('map.index') }}">View Map</a></li>
-                    <li class="breadcrumb-item active">Edit Point</li>
-                </ol>
-            </nav>
+            <h1>Edit Tanaman </h1>
+            <p>{{ $map->local }} <br> <i>{{ $map->latin }}</i> </p>
         </div><!-- End Page Title -->
 
         <section class="section">
