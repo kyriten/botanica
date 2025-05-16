@@ -9,7 +9,7 @@
                     <option value="{{ $g->id }}">{{ $g->name }}</option>
                 @endforeach
             </select>
-            <button id="confirmGarden" class="btn btn-primary w-100">Konfirmasi</button>
+            <button id="confirmGarden" class="btn btn-botanica w-100">Konfirmasi</button>
         </div>
     </div>
 </div>

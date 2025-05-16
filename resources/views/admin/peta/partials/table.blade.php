@@ -1,7 +1,10 @@
 <div class="table-responsive">
-    <table class="table">
+    <table class="table" id="spot-table">
         <thead>
             <tr>
+                <th>
+                    <input type="checkbox" id="selectAllCheckbox" />
+                </th>
                 <th scope="col">#</th>
                 <th scope="col">Nama Tumbuhan</th>
                 <th scope="col">Kebun Raya</th>
@@ -14,6 +17,9 @@
         <tbody>
             @forelse ($map as $item)
                 <tr id="spot-row-{{ $item->id }}">
+                    <td>
+                        <input type="checkbox" class="spot-checkbox" data-id="{{ $item->id }}">
+                    </td>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->local }}</td>
                     <td>{{ $item->garden_name }}</td>
@@ -53,6 +59,7 @@
         </tbody>
         <!-- Bagian untuk menampilkan tautan paginate -->
     </table>
+
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-end">
             <li class="page-item">{{ $map->links() }}</li>

@@ -63,7 +63,7 @@
 
                                         <!-- Tombol Upload -->
                                         <div class="d-flex justify-content-center">
-                                            <div class="btn btn-primary btn-rounded mb-3">
+                                            <div class="btn btn-botanica btn-rounded mb-3">
                                                 <label class="form-label text-white mb-0" for="customFilePlant">Pilih gambar
                                                     tumbuhan</label>
                                                 <input
@@ -99,7 +99,7 @@
 
                                         <!-- Tombol Upload -->
                                         <div class="d-flex justify-content-center">
-                                            <div class="btn btn-primary btn-rounded mb-3">
+                                            <div class="btn btn-botanica btn-rounded mb-3">
                                                 <label class="form-label text-white mb-0" for="customFileLeaf">Pilih gambar
                                                     daun</label>
                                                 <input class="form-control d-none @error('leaf_image') is-invalid @enderror"
@@ -134,7 +134,7 @@
 
                                         <!-- Tombol Upload -->
                                         <div class="d-flex justify-content-center">
-                                            <div class="btn btn-primary btn-rounded mb-3">
+                                            <div class="btn btn-botanica btn-rounded mb-3">
                                                 <label class="form-label text-white mb-0" for="customFileStem">Pilih gambar
                                                     batang</label>
                                                 <input class="form-control d-none @error('stem_image') is-invalid @enderror"
@@ -276,7 +276,7 @@
                                 <div class="text-end">
                                     <button class="btn btn-dark fw-bold text-light" id="reset"
                                         type="reset">{{ __('RESET') }}</button>
-                                    <button class="btn btn-primary fw-bold text-light" id="submit"
+                                    <button class="btn btn-botanica fw-bold text-light" id="submit"
                                         type="submit">{{ __('SUBMIT') }}</button>
                                 </div>
                                 <!-- End General Form Elements -->

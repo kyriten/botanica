@@ -44,13 +44,13 @@
 
                             <!-- Tombol Upload -->
                             <div class="d-flex justify-content-center">
-                                <div class="btn btn-primary btn-rounded mb-3">
-                                    <label class="form-label text-white mb-0" for="customFilePlant">Pilih
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFilePlantEdit">Pilih
                                         gambar</label>
                                     <input class="form-control d-none @error('plant_image') is-invalid @enderror"
-                                        id="customFilePlant" name="plant_image" type="file"
+                                        id="customFilePlantEdit" name="plant_image" type="file"
                                         accept="image/png, image/jpeg, image/jpg"
-                                        onchange="showPreview(event, 'imgPreviewPlant');">
+                                        onchange="showPreview(event, 'imgPreviewPlantEdit');">
                                 </div>
                             </div>
                         </div>
@@ -79,13 +79,13 @@
 
                             <!-- Tombol Upload -->
                             <div class="d-flex justify-content-center">
-                                <div class="btn btn-primary btn-rounded mb-3">
-                                    <label class="form-label text-white mb-0" for="customFileLeaf">Pilih
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileLeafEdit">Pilih
                                         gambar</label>
                                     <input class="form-control d-none @error('leaf_image') is-invalid @enderror"
-                                        id="customFileLeaf" name="leaf_image" type="file"
+                                        id="customFileLeafEdit" name="leaf_image" type="file"
                                         accept="image/png, image/jpeg, image/jpg"
-                                        onchange="showPreview(event, 'imgPreviewLeaf');">
+                                        onchange="showPreview(event, 'imgPreviewLeafEdit');">
                                 </div>
                             </div>
                         </div>
@@ -114,13 +114,13 @@
 
                             <!-- Tombol Upload -->
                             <div class="d-flex justify-content-center">
-                                <div class="btn btn-primary btn-rounded mb-3">
-                                    <label class="form-label text-white mb-0" for="customFileStem">Pilih
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileStemEdit   ">Pilih
                                         gambar</label>
                                     <input class="form-control d-none @error('stem_image') is-invalid @enderror"
-                                        id="customFileStem" name="stem_image" type="file"
+                                        id="customFileStemEdit  " name="stem_image" type="file"
                                         accept="image/png, image/jpeg, image/jpg"
-                                        onchange="showPreview(event, 'imgPreviewStem');">
+                                        onchange="showPreview(event, 'imgPreviewStemEdit');">
                                 </div>
                             </div>
                         </div>
@@ -428,7 +428,7 @@
                         Kembali
                     </button>
 
-                    <button type="submit" class="btn btn-primary">Simpan Lokasi</button>
+                    <button type="submit" class="btn btn-botanica">Simpan Lokasi</button>
                 </div>
             </form>
         </div>

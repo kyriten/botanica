@@ -9,7 +9,7 @@
 
             <h5 class="modal-title mb-3">Tambah Spot Baru</h5>
 
-            <form id="map-form" action="{{ route('map.store') }}" method="post" enctype="multipart/form-data">
+            <form id="map-form" data-url="{{ route('map.store') }}" data-token="{{ csrf_token() }}" method="post" enctype="multipart/form-data" >
 
                 @csrf
                 <input type="hidden" name="garden_id" id="selectedGardenId">
@@ -44,7 +44,7 @@
 
                             <!-- Tombol Upload -->
                             <div class="d-flex justify-content-center">
-                                <div class="btn btn-primary btn-rounded mb-3">
+                                <div class="btn btn-botanica btn-rounded mb-3">
                                     <label class="form-label text-white mb-0" for="customFilePlant">Pilih gambar</label>
                                     <input class="form-control d-none @error('plant_image') is-invalid @enderror"
                                         id="customFilePlant" name="plant_image" type="file"
@@ -78,7 +78,7 @@
 
                             <!-- Tombol Upload -->
                             <div class="d-flex justify-content-center">
-                                <div class="btn btn-primary btn-rounded mb-3">
+                                <div class="btn btn-botanica btn-rounded mb-3">
                                     <label class="form-label text-white mb-0" for="customFileLeaf">Pilih gambar</label>
                                     <input class="form-control d-none @error('leaf_image') is-invalid @enderror"
                                         id="customFileLeaf" name="leaf_image" type="file"
@@ -112,7 +112,7 @@
 
                             <!-- Tombol Upload -->
                             <div class="d-flex justify-content-center">
-                                <div class="btn btn-primary btn-rounded mb-3">
+                                <div class="btn btn-botanica btn-rounded mb-3">
                                     <label class="form-label text-white mb-0" for="customFileStem">Pilih gambar</label>
                                     <input class="form-control d-none @error('stem_image') is-invalid @enderror"
                                         id="customFileStem" name="stem_image" type="file"
@@ -346,7 +346,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         Kembali
                     </button>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-botanica">
                         Simpan Lokasi
                     </button>
                 </div>

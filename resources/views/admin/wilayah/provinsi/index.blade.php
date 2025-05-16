@@ -9,7 +9,7 @@
         </div><!-- End Page Title -->
         <div class="row">
             <div class="col-lg-4 d-flex justify-content-start align-items-center mb-3">
-                <a class="btn btn-primary fw-bold text-light"
+                <a class="btn btn-botanica fw-bold text-light"
                     href="{{ route('province.create') }}">{{ __('Provinsi Baru') }}</a>
             </div>
             <div class="col-lg-8 d-flex justify-content-end align-items-center mb-3">

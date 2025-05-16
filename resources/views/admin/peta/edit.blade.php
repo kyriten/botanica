@@ -8,7 +8,7 @@
         </div><!-- End Page Title -->
 
         <section class="section">
-            <form action="{{ route('map.update', $map->id) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('map.updateData', $map->id) }}" method="post" enctype="multipart/form-data">
                 @method('put')
                 @csrf
                 <div class="row">
@@ -45,7 +45,7 @@
                                         @enderror
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <div class="btn btn-primary btn-rounded">
+                                        <div class="btn btn-botanica btn-rounded">
                                             <label class="form-label text-white m-1" for="customFile1">Choose file</label>
                                             <input
                                                 class="imgPreview form-control d-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 @error('image') is-invalid @enderror"
@@ -195,7 +195,7 @@
                                 <div class="text-end">
                                     <button class="btn btn-secondary fw-bold text-primary" id="reset"
                                         type="reset">{{ __('RESET') }}</button>
-                                    <button class="btn btn-primary fw-bold text-light" id="submit"
+                                    <button class="btn btn-botanica fw-bold text-light" id="submit"
                                         type="submit">{{ __('SAVE') }}</button>
                                 </div>
                             </div>

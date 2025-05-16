@@ -119,7 +119,7 @@
                                 <div class="text-end">
                                     <button class="btn btn-dark fw-bold text-light" id="reset"
                                         type="reset">{{ __('KOSONGKAN FORMULIR') }}</button>
-                                    <button class="btn btn-primary fw-bold text-light" id="submit"
+                                    <button class="btn btn-botanica fw-bold text-light" id="submit"
                                         type="submit">{{ __('KIRIM') }}</button>
                                 </div>
                                 <!-- End General Form Elements -->

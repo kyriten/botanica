@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <title>Dashboard - {{ config('app.name') }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
@@ -38,6 +38,28 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <style>
+        /* Animasi tombol saat diklik */
+        #mobile-bottom-bar .small {
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease, color 0.2s ease;
+        }
+
+        /* Efek saat tombol ditekan (klik) */
+        #mobile-bottom-bar .small:active {
+            transform: scale(0.75);
+            /* Membuat tombol sedikit mengecil saat ditekan */
+        }
+
+        /* Jika tombol aktif, beri animasi scaling dan perubahan warna */
+        #mobile-bottom-bar .fw-bold {
+            transform: scale(1.05);
+            /* Membesarkan tombol saat aktif */
+        }
+
+        .bg-custom {
+            background-color: #626f47;
+            color: #ffffff;
+        }
+
         .table th:nth-child(1),
         .table td:nth-child(1) {
             width: 5%;
@@ -155,14 +177,15 @@
 
     @include('admin.partials.header')
     @include('admin.partials.sidebar')
+    @include('admin.partials.bottombar')
     @yield('dashboard')
     @yield('post')
-    {{-- @yield('edit') --}}
+    @yield('profile')
     @yield('dbProvinsi')
     @yield('dbCity')
     @yield('dbDistrict')
     @yield('dbVillage')
-    @include('admin.partials.footer')
+    {{-- @include('admin.partials.footer') --}}
 
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
             class="bi bi-arrow-up-short"></i></a>

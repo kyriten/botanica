@@ -1,16 +1,20 @@
 @extends('welcome.master')
 
 @section('formLogin')
-    <section class="vh-100">
+    <section class="custom-height">
         <div class="container-fluid h-custom">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-md-9 col-lg-6 col-xl-5">
-                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-                        class="img-fluid" alt="Sample image">
+                    <img src="{{ asset('images/Welcome to Botanica.webp') }}" class="img-fluid" alt="Sample image">
                 </div>
-                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                    <div class="divider d-flex align-items-center my-4">
-                        <h3 class="text-center fw-bold mx-3 mb-0">L O G I N</h3>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 p-3">
+                    <div class="divider d-flex align-items-center">
+                        <h3 class="text-center fw-bold mx-3 mb-0" id="login">M A S U K</h3>
+                    </div>
+
+                    <div class="col text-center">
+                        <p class="fw-semibold text-small mx-3 mt-2 mb-5">Kelola Spot
+                            Tanaman di Kebun Raya Bogor, Cibodas, Bedugul, Purwodadi</label>
                     </div>
                     @if (session()->has('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -52,19 +56,20 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <!-- Checkbox -->
                                 <div class="form-check mb-0">
-                                    <input class="form-check-input me-2" type="checkbox" value="" id="loginCheck"
-                                        checked />
-                                    <label class="form-check-label" for="loginCheck">
-                                        Ingetin saya udah masuk
-                                    </label>
+                                    <!--<input class="form-check-input me-2" type="checkbox" value="" id="loginCheck"-->
+                                    <!--    checked />-->
+                                    <!--<label class="form-check-label" for="loginCheck">-->
+                                    <!--    Ingetin saya udah masuk-->
+                                    <!--</label>-->
                                 </div>
-                                <a href="#!" class="text-primary">Duh! Aku, lupa kata sandinya</a>
+                                <!--<a href="#!" class="text-primary">Duh! Aku lupa kata sandinya</a>-->
                             </div>
 
-                            <div class="text-center text-lg-start mt-4 pt-2">
+                            <div class="text-center text-lg-start">
                                 <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                    class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;"
-                                    id="login-button">{{ __('LOGIN') }}</button>
+                                    class="btn btn-botanica btn-lg w-100"
+                                    style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                                    id="login-button">{{ __('MASUK') }}</button>
                             </div>
                         </form>
 
@@ -82,20 +87,17 @@
             </div>
         </div>
         <div
-            class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5 bg-primary">
+            class="bg-botanica d-flex flex-column flex-md-row text-center text-md-start justify-content-center justify-content-md-between py-4 px-4 px-xl-5 bg-primary">
             <!-- Copyright -->
-            <div class="text-white mb-3 mb-md-0">
+            <div class="text-white mb-3 mb-md-0 text-center">
                 Copyright © 2025. All rights reserved.
             </div>
             <!-- Copyright -->
 
             <!-- Right -->
-            <div>
-                <a href="#!" class="text-white me-4">
-                    <i class="fa-solid fa-globe"></i> www.taksonomi-app.abiila.com
-                </a>
-            </div>
-            <!-- Right -->
+            <a href="#!" class="text-white">
+                <i class="fa-solid fa-globe"></i> www.botanica.abiila.com
+            </a>
         </div>
     </section>
 @endsection

@@ -6,17 +6,18 @@
             <img src="{{ asset('images/logo.png') }}" alt="logo">
             <span class="d-none d-lg-block fs-4">{{ config('app.name') }}</span>
         </a>
-        <i class="bi bi-list toggle-sidebar-btn"></i>
+        <i class="bi bi-list toggle-sidebar-btn d-none d-md-block"></i>
     </div><!-- End Logo -->
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
 
-            <li class="nav-item d-block d-lg-none">
+            {{-- <li class="nav-item d-block d-lg-none">
                 <a class="nav-link nav-icon search-bar-toggle " href="#">
                     <i class="bi bi-search"></i>
                 </a>
-            </li><!-- End Search Icon-->
+            </li> --}}
+            <!-- End Search Icon-->
 
             <li class="nav-item dropdown pe-3">
 
@@ -33,30 +34,11 @@
                         <hr class="dropdown-divider">
                     </li>
 
-                    {{-- <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-person"></i>
-                            <span>My Profile</span>
-                        </a>
-                    </li> --}}
                     <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
-                            <i class="bi bi-gear"></i>
-                            <span>Account Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>Need Help?</span>
+                        <a class="dropdown-item d-flex align-items-center"
+                           href="{{ route('admin.profile.show', ['username' => '@' . Auth::user()->username]) }}">
+                            <i class="bi bi-person me-2"></i>
+                            Profil
                         </a>
                     </li>
                     <li>

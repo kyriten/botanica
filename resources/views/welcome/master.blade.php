@@ -9,7 +9,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" />
+    {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.css" rel="stylesheet" /> --}}
+    <link href="{{ asset('css/mdb.min.css') }}" rel="stylesheet">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
@@ -17,6 +19,7 @@
         rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/login.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/font.css') }}" rel="stylesheet">
 
     <link href="{{ asset('images/favicon.ico') }}" rel="icon">
 </head>
@@ -30,18 +33,23 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
-
+    {{-- <script src="{{ asset('js/mdb.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/mdb.es.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/mdb.umd.min.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/mdb.es.min.js.map') }}"></script>
+    <script src="{{ asset('js/mdb.umd.min.js.map') }}"></script> --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('login-form');
             const loaderOverlay = document.getElementById('loader-overlay');
             const loginButton = document.getElementById('login-button');
             const containerWrapper = document.querySelector('.container-wrapper');
 
-            form.addEventListener('submit', function (event) {
+            form.addEventListener('submit', function(event) {
                 // Prevent double submit
                 loginButton.disabled = true;
-                loginButton.innerHTML = 'Mohon tunggu... <span class="spinner-border spinner-border-sm ms-2"></span>';
+                loginButton.innerHTML =
+                    'Mohon tunggu... <span class="spinner-border spinner-border-sm ms-2"></span>';
 
                 // Tampilkan loader overlay
                 loaderOverlay.classList.remove('d-none');
