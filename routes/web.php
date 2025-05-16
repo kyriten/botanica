@@ -1,18 +1,19 @@
 <?php
 
+use App\Models\District;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\VillageController;
+use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PlantPostController;
-use App\Http\Controllers\PublicController;
-use App\Http\Controllers\VillageController;
-use App\Models\District;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,9 +50,19 @@ Route::middleware(['auth'])->group(function () {
         'village' => VillageController::class,
         'map' => MapController::class
     ]);
+
+    Route::post('/delete-spots', [MapController::class, 'deleteSpots']);
+    Route::put('/map/update/{id}', [MapController::class, 'update'])->name('map.updateData');
+    Route::post('/import-from-excel/data/spot/tanaman', [MapController::class, 'import'])->name('map.import');
+    Route::get('/export-to-excel/data/spot/tanaman', [MapController::class, 'export'])->name('map.export');
+    Route::post('/set-garden-session', [MapController::class, 'setGardenSession']);
+    Route::get('/profil/{username}', [AdminController::class, 'profileShow'])->name('admin.profile.show');
 });
 
-Route::put('/map/update/{id}', [MapController::class, 'update'])->name('map.update');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('login');
+})->name('logout');
 
 
 // Public Route
