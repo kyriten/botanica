@@ -1,5 +1,110 @@
 var gardenData = [];
 let mapInstance = null;
+var mapSpot = null;
+let mapMarkers = [];
+let selectedGardenId = null;
+
+// Bersihkan semua marker dari peta
+function clearMarkers() {
+    mapMarkers.forEach((marker) => mapInstance.removeLayer(marker));
+    mapMarkers = [];
+}
+
+// Render marker berdasarkan data spot
+function renderMarkers(spots) {
+    clearMarkers();
+
+    spots.forEach((spot) => {
+        if (spot.plant_lat && spot.plant_long) {
+            const marker = L.marker([spot.plant_lat, spot.plant_long])
+                .addTo(mapInstance)
+                .bindPopup(generatePopupHTML(spot));
+
+            mapMarkers.push(marker);
+        }
+    });
+}
+
+// HTML Popup untuk marker
+function generatePopupHTML(spot) {
+    return `
+    <div style="font-family: Arial, sans-serif;">
+        <div style="text-align: center; margin-bottom: 5px;">
+            <strong>${spot.local || "-"}</strong><br>
+            <em>${spot.latin || "-"}</em>
+        </div>
+
+        <div style="display: flex; gap: 5px; justify-content: center; margin-bottom: 5px; overflow-x: auto; max-width: 100%;">
+            ${
+                spot.plant_image
+                    ? `<img src="/storage/${spot.plant_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
+                    : ""
+            }
+            ${
+                spot.leaf_image
+                    ? `<img src="/storage/${spot.leaf_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
+                    : ""
+            }
+            ${
+                spot.stem_image
+                    ? `<img src="/storage/${spot.stem_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
+                    : ""
+            }
+        </div>
+
+        <ul class="nav nav-tabs" style="font-size: 12px; margin-bottom: 6px; display: flex; gap: 10px; flex-wrap: nowrap;">
+            <li class="nav-item" style="flex-shrink: 0;">
+                <a class="nav-link active" data-bs-toggle="tab" href="#summary-${
+                    spot.plant_lat
+                }-${spot.plant_long}">Ringkasan</a>
+            </li>
+            <li class="nav-item" style="flex-shrink: 0;">
+                <a class="nav-link" data-bs-toggle="tab" href="#desc-${
+                    spot.plant_lat
+                }-${spot.plant_long}">Deskripsi</a>
+            </li>
+        </ul>
+
+        <div class="tab-content" style="font-size: 12px; color: #333; overflow: auto; max-height: 250px;">
+            <div class="tab-pane fade show active" id="summary-${
+                spot.plant_lat
+            }-${spot.plant_long}">
+                <p><strong>Persebaran:</strong> ${
+                    spot.city_name && spot.province_name
+                        ? `${spot.city_name}, ${spot.province_name}`
+                        : "-"
+                }</p>
+                <p><strong>Klasifikasi:</strong></p>
+                <ul style="padding-left: 18px; margin-bottom: 0;">
+                    <li>Kingdom: ${spot.kingdom || "-"}</li>
+                    <li>Divisi: ${spot.division || "-"}</li>
+                    <li>Kelas: ${spot.class || "-"}</li>
+                    <li>Ordo: ${spot.ordo || "-"}</li>
+                    <li>Famili: ${spot.famili || "-"}</li>
+                    <li>Genus: ${spot.genus || "-"}</li>
+                    <li>Spesies: ${spot.species || "-"}</li>
+                </ul>
+            </div>
+            <div class="tab-pane fade" id="desc-${spot.plant_lat}-${
+        spot.plant_long
+    }">
+                <p>${spot.description || "Tidak ada deskripsi."}</p>
+            </div>
+        </div>
+    </div>`;
+}
+
+// Ambil spot dari API berdasarkan garden ID
+function loadSpots(gardenId) {
+    fetch(`/api/gardens/${gardenId}`)
+        .then((response) => response.json())
+        .then((result) => {
+            renderMarkers(result.data);
+        })
+        .catch((error) => {
+            console.error("Gagal memuat spot dari database:", error);
+        });
+}
 
 fetch("/api/gardens")
     .then((response) => response.json())
@@ -22,296 +127,229 @@ document.getElementById("confirmGarden").addEventListener("click", function () {
         return;
     }
 
-    const selectedGarden = gardenData.find((g) => g.id == selectedGardenId);
-
-    if (!selectedGarden) {
-        alert("Data kebun tidak ditemukan.");
-        return;
-    }
-
-    const pageTitle = document.getElementById("pageTitle");
-
-    // Kosongkan dulu isinya
-    pageTitle.innerHTML = "";
-
-    // Buat span untuk teks
-    const titleText = document.createElement("span");
-    titleText.textContent = "Daftar Spot " + selectedGardenName;
-
-    // Buat button
-    const button = document.createElement("button");
-    button.className = "btn btn-secondary btn-sm mx-2";
-    button.setAttribute("data-bs-toggle", "modal");
-    button.setAttribute("data-bs-target", "#selectGardenModal");
-
-    // Buat ikon dalam button
-    const icon = document.createElement("i");
-    icon.className = "bi bi-arrow-left-right";
-    button.appendChild(icon);
-
-    document.getElementById("selectGardenModal").style.display = "none";
-    document.getElementById("skeletonArea").style.display = "none";
-    document.getElementById("titleArea").style.display = "block";
-    document.getElementById("contentArea").style.display = "block";
-    document.getElementById("previewGardenArea").textContent =
-        "Peta Pratinjau " + selectedGardenName;
-    document.getElementById("selectedGardenId").value = selectedGardenId;
-
-    // Masukkan span dan button ke dalam h1
-    pageTitle.appendChild(titleText);
-    pageTitle.appendChild(button);
-
-    if (mapInstance !== null) {
-        mapInstance.remove();
-    }
-
-    mapInstance = L.map("map").setView(selectedGarden.coordinate, 15);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-    }).addTo(mapInstance);
-
-    // Ambil semua spot (marker) berdasarkan garden_id
-    fetch(`/api/gardens/${selectedGardenId}`)
+    fetch("/set-garden-session", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content"),
+        },
+        body: JSON.stringify({
+            garden_id: selectedGardenId,
+            garden_name: selectedGardenName,
+        }),
+    })
         .then((response) => response.json())
-        .then((result) => {
-            result.data.forEach((spot) => {
-                if (spot.plant_lat && spot.plant_long) {
-                    L.marker([spot.plant_lat, spot.plant_long]).addTo(
-                        mapInstance
-                    ).bindPopup(`
-                                    <div style="font-family: Arial, sans-serif;">
-                                        <div style="text-align: center; margin-bottom: 5px;">
-                                            <strong>${
-                                                spot.local || "-"
-                                            }</strong><br>
-                                            <em>${spot.latin || "-"}</em>
-                                        </div>
+        .then((data) => {
+            const selectedGarden = gardenData.find(
+                (g) => g.id == selectedGardenId
+            );
 
-                                        <div style="display: flex; gap: 5px; justify-content: center; margin-bottom: 5px; overflow-x: auto; max-width: 100%;">
-                                            ${
-                                                spot.plant_image
-                                                    ? `<img src="/storage/${spot.plant_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
-                                                    : ""
-                                            }
-                                            ${
-                                                spot.leaf_image
-                                                    ? `<img src="/storage/${spot.leaf_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
-                                                    : ""
-                                            }
-                                            ${
-                                                spot.stem_image
-                                                    ? `<img src="/storage/${spot.stem_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
-                                                    : ""
-                                            }
-                                        </div>
+            if (!selectedGarden) {
+                alert("Data kebun tidak ditemukan.");
+                return;
+            }
 
-                                        <!-- Tabs -->
-                                        <ul class="nav nav-tabs" style="font-size: 12px; margin-bottom: 6px; display: flex; gap: 10px; flex-wrap: nowrap;">
-                                            <li class="nav-item" style="flex-shrink: 0;">
-                                                <a class="nav-link active" data-bs-toggle="tab" href="#summary-${
-                                                    spot.plant_lat
-                                                }-${
-                        spot.plant_long
-                    }">Ringkasan</a>
-                                            </li>
-                                            <li class="nav-item" style="flex-shrink: 0;">
-                                                <a class="nav-link" data-bs-toggle="tab" href="#desc-${
-                                                    spot.plant_lat
-                                                }-${
-                        spot.plant_long
-                    }">Deskripsi</a>
-                                            </li>
-                                        </ul>
+            const pageTitle = document.getElementById("pageTitle");
 
-                                        <!-- Tab content -->
-                                        <div class="tab-content" style="font-size: 12px; color: #333; overflow: auto; max-height: 250px;">
-                                            <div class="tab-pane fade show active" id="summary-${
-                                                spot.plant_lat
-                                            }-${spot.plant_long}">
-                                                <p><strong>Persebaran:</strong> ${
-                                                    spot.city_name &&
-                                                    spot.province_name
-                                                        ? `${spot.city_name}, ${spot.province_name}`
-                                                        : "-"
-                                                }</p>
-                                                <p><strong>Klasifikasi:</strong></p>
-                                                <ul style="padding-left: 18px; margin-bottom: 0;">
-                                                    <li>Kingdom: ${
-                                                        spot.kingdom || "-"
-                                                    }</li>
-                                                    <li>Divisi: ${
-                                                        spot.division || "-"
-                                                    }</li>
-                                                    <li>Kelas: ${
-                                                        spot.class || "-"
-                                                    }</li>
-                                                    <li>Ordo: ${
-                                                        spot.ordo || "-"
-                                                    }</li>
-                                                    <li>Famili: ${
-                                                        spot.famili || "-"
-                                                    }</li>
-                                                    <li>Genus: ${
-                                                        spot.genus || "-"
-                                                    }</li>
-                                                    <li>Spesies: ${
-                                                        spot.species || "-"
-                                                    }</li>
-                                                </ul>
-                                            </div>
+            // Kosongkan dulu isinya
+            pageTitle.innerHTML = "";
 
-                                            <div class="tab-pane fade" id="desc-${
-                                                spot.plant_lat
-                                            }-${spot.plant_long}">
-                                                <p>${
-                                                    spot.description ||
-                                                    "Tidak ada deskripsi."
-                                                }</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                    `);
+            // Buat span untuk teks
+            const titleText = document.createElement("span");
+            titleText.textContent = "Daftar Spot " + selectedGardenName;
+
+            // Buat button
+            const button = document.createElement("button");
+            button.className = "btn btn-secondary btn-sm mx-2";
+            button.setAttribute("data-bs-toggle", "modal");
+            button.setAttribute("data-bs-target", "#selectGardenModal");
+
+            // Buat ikon dalam button
+            const icon = document.createElement("i");
+            icon.className = "bi bi-arrow-left-right";
+            button.appendChild(icon);
+
+            document.getElementById("selectGardenModal").style.display = "none";
+            document.getElementById("skeletonArea").style.display = "none";
+            document.getElementById("titleArea").style.display = "block";
+            document.getElementById("contentArea").style.display = "block";
+            document.getElementById("previewGardenArea").textContent =
+                "Peta Pratinjau " + selectedGardenName;
+            document.getElementById("selectedGardenId").value =
+                selectedGardenId;
+
+            // Masukkan span dan button ke dalam h1
+            pageTitle.appendChild(titleText);
+            pageTitle.appendChild(button);
+
+            if (mapInstance !== null) {
+                mapInstance.remove();
+            }
+
+            mapInstance = L.map("map").setView(selectedGarden.coordinate, 15);
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "© OpenStreetMap contributors",
+            }).addTo(mapInstance);
+
+            // Ambil semua spot (marker) berdasarkan garden_id
+            fetch(`/api/gardens/${selectedGardenId}`)
+                .then((response) => response.json())
+                .then((result) => {
+                    renderMarkers(result.data);
+                })
+                .catch((error) => {
+                    console.error("Gagal memuat spot dari database:", error);
+                });
+
+            if (selectedGarden.polygon) {
+                L.polygon(selectedGarden.polygon, {
+                    color: "green",
+                    fillColor: "#4CAF50",
+                    fillOpacity: 0.5,
+                })
+                    .addTo(mapInstance)
+                    .bindPopup(
+                        "<b>Area Kebun Raya " + selectedGardenName + "</b>"
+                    );
+            }
+
+            document.getElementById("selectGardenModal").style.display = "none";
+
+            document.body.classList.remove("modal-open");
+            let backdrops = document.getElementsByClassName("modal-backdrop");
+            while (backdrops.length > 0) {
+                backdrops[0].parentNode.removeChild(backdrops[0]);
+            }
+
+            if (mapSpot) {
+                mapSpot.remove();
+                mapSpot = null;
+            }
+
+            mapSpot = L.map("mapSpot").setView(selectedGarden.coordinate, 14);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "© OpenStreetMap contributors",
+            }).addTo(mapSpot);
+
+            if (selectedGarden.polygon) {
+                L.polygon(selectedGarden.polygon, {
+                    color: "green",
+                    fillColor: "#4CAF50",
+                    fillOpacity: 0.5,
+                }).addTo(mapSpot);
+            }
+
+            var mapEditSpot = L.map("mapEditSpot").setView(
+                selectedGarden.coordinate,
+                16
+            );
+
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "© OpenStreetMap contributors",
+            }).addTo(mapEditSpot);
+
+            if (selectedGarden.polygon) {
+                L.polygon(selectedGarden.polygon, {
+                    color: "green",
+                    fillColor: "#4CAF50",
+                    fillOpacity: 0.5,
+                }).addTo(mapEditSpot);
+            }
+
+            document
+                .getElementById("inputSpotModal")
+                .addEventListener("shown.bs.modal", function () {
+                    mapSpot.invalidateSize();
+                });
+            document
+                .getElementById("editSpotModal")
+                .addEventListener("shown.bs.modal", function () {
+                    mapEditSpot.invalidateSize();
+
+                    // Ambil koordinat lama dari input
+                    const oldLat = parseFloat(
+                        document.getElementById("editPlantLat").value
+                    );
+                    const oldLng = parseFloat(
+                        document.getElementById("editPlantLong").value
+                    );
+
+                    // Jika koordinat valid, tambahkan marker
+                    if (!isNaN(oldLat) && !isNaN(oldLng)) {
+                        if (markerSpot) {
+                            mapEditSpot.removeLayer(markerSpot);
+                        }
+
+                        markerSpot = L.marker([oldLat, oldLng], {
+                            draggable: true,
+                        }).addTo(mapEditSpot);
+
+                        markerSpot.on("dragend", function (event) {
+                            const position = event.target.getLatLng();
+                            document.getElementById("latitude").value =
+                                position.lat;
+                            document.getElementById("longitude").value =
+                                position.lng;
+                        });
+                    }
+                });
+
+            var markerSpot;
+
+            mapSpot.on("click", function (e) {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                // Kalau sudah ada marker sebelumnya, hapus dulu
+                if (markerSpot) {
+                    mapSpot.removeLayer(markerSpot);
                 }
+
+                // Tambahkan marker baru
+                markerSpot = L.marker([lat, lng], {
+                    draggable: true,
+                }).addTo(mapSpot);
+
+                // Isi input
+                document.getElementById("latTanaman").value = lat;
+                document.getElementById("longTanaman").value = lng;
+
+                // Kalau marker digeser (drag), update latlng juga
+                markerSpot.on("dragend", function (event) {
+                    var position = event.target.getLatLng();
+                    document.getElementById("latitude").value = position.lat;
+                    document.getElementById("longitude").value = position.lng;
+                });
             });
-        })
-        .catch((error) => {
-            console.error("Gagal memuat spot dari database:", error);
-        });
 
-    if (selectedGarden.polygon) {
-        L.polygon(selectedGarden.polygon, {
-            color: "green",
-            fillColor: "#4CAF50",
-            fillOpacity: 0.5,
-        })
-            .addTo(mapInstance)
-            .bindPopup("<b>Area Kebun Raya " + selectedGardenName + "</b>");
-    }
+            mapEditSpot.on("click", function (e) {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
 
-    document.getElementById("selectGardenModal").style.display = "none";
-
-    document.body.classList.remove("modal-open");
-    let backdrops = document.getElementsByClassName("modal-backdrop");
-    while (backdrops.length > 0) {
-        backdrops[0].parentNode.removeChild(backdrops[0]);
-    }
-
-    var mapSpot = L.map("mapSpot").setView(selectedGarden.coordinate, 16);
-    var mapEditSpot = L.map("mapEditSpot").setView(
-        selectedGarden.coordinate,
-        16
-    );
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-    }).addTo(mapSpot);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap contributors",
-    }).addTo(mapEditSpot);
-
-    if (selectedGarden.polygon) {
-        L.polygon(selectedGarden.polygon, {
-            color: "green",
-            fillColor: "#4CAF50",
-            fillOpacity: 0.5,
-        }).addTo(mapSpot);
-    }
-
-    if (selectedGarden.polygon) {
-        L.polygon(selectedGarden.polygon, {
-            color: "green",
-            fillColor: "#4CAF50",
-            fillOpacity: 0.5,
-        }).addTo(mapEditSpot);
-    }
-
-    document
-        .getElementById("inputSpotModal")
-        .addEventListener("shown.bs.modal", function () {
-            mapSpot.invalidateSize();
-        });
-    document
-        .getElementById("editSpotModal")
-        .addEventListener("shown.bs.modal", function () {
-            mapEditSpot.invalidateSize();
-
-            // Ambil koordinat lama dari input
-            const oldLat = parseFloat(
-                document.getElementById("editPlantLat").value
-            );
-            const oldLng = parseFloat(
-                document.getElementById("editPlantLong").value
-            );
-
-            // Jika koordinat valid, tambahkan marker
-            if (!isNaN(oldLat) && !isNaN(oldLng)) {
                 if (markerSpot) {
                     mapEditSpot.removeLayer(markerSpot);
                 }
 
-                markerSpot = L.marker([oldLat, oldLng], {
+                markerSpot = L.marker([lat, lng], {
                     draggable: true,
                 }).addTo(mapEditSpot);
 
+                document.getElementById("editPlantLat").value = lat;
+                document.getElementById("editPlantLong").value = lng;
+
                 markerSpot.on("dragend", function (event) {
-                    const position = event.target.getLatLng();
+                    var position = event.target.getLatLng();
                     document.getElementById("latitude").value = position.lat;
                     document.getElementById("longitude").value = position.lng;
                 });
-            }
+            });
+        })
+        .catch((error) => {
+            console.error("Gagal menyimpan data kebun:", error);
         });
-
-    var markerSpot;
-
-    mapSpot.on("click", function (e) {
-        var lat = e.latlng.lat;
-        var lng = e.latlng.lng;
-
-        // Kalau sudah ada marker sebelumnya, hapus dulu
-        if (markerSpot) {
-            mapSpot.removeLayer(markerSpot);
-        }
-
-        // Tambahkan marker baru
-        markerSpot = L.marker([lat, lng], {
-            draggable: true,
-        }).addTo(mapSpot);
-
-        // Isi input
-        document.getElementById("latTanaman").value = lat;
-        document.getElementById("longTanaman").value = lng;
-
-        // Kalau marker digeser (drag), update latlng juga
-        markerSpot.on("dragend", function (event) {
-            var position = event.target.getLatLng();
-            document.getElementById("latitude").value = position.lat;
-            document.getElementById("longitude").value = position.lng;
-        });
-    });
-
-    mapEditSpot.on("click", function (e) {
-        var lat = e.latlng.lat;
-        var lng = e.latlng.lng;
-
-        if (markerSpot) {
-            mapEditSpot.removeLayer(markerSpot);
-        }
-
-        markerSpot = L.marker([lat, lng], {
-            draggable: true,
-        }).addTo(mapEditSpot);
-
-        document.getElementById("editPlantLat").value = lat;
-        document.getElementById("editPlantLong").value = lng;
-
-        markerSpot.on("dragend", function (event) {
-            var position = event.target.getLatLng();
-            document.getElementById("latitude").value = position.lat;
-            document.getElementById("longitude").value = position.lng;
-        });
-    });
 });
 
 function showImageModal(src) {
@@ -722,6 +760,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Tambahkan kembali listener edit
                     attachEditListeners();
+
+                    loadSpots(data.map.garden_id);
                 }
 
                 // Tampilkan alert sukses
@@ -745,4 +785,266 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
             });
     });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const importForm = document.getElementById("importSpotForm");
+    const alertContainer = document.getElementById("alert-container");
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content");
+
+    if (importForm) {
+        importForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(importForm);
+
+            try {
+                const response = await fetch(
+                    "/import-from-excel/data/spot/tanaman",
+                    {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": csrfToken,
+                            Accept: "application/json",
+                        },
+                        body: formData,
+                    }
+                );
+
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (parseError) {
+                    console.error("Bukan JSON:", text);
+                    throw new Error(
+                        "Respons server bukan format JSON yang valid."
+                    );
+                }
+
+                if (!response.ok) {
+                    throw new Error(data.message || "Gagal mengimpor data.");
+                }
+
+                // Tampilkan alert sukses
+                alertContainer.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        Berhasil impor data!
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+
+                importForm.reset();
+
+                // Tutup modal
+                const modalEl = document.getElementById("importListSpotModal");
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) modalInstance.hide();
+
+                // Refresh peta dan spot
+                if (typeof loadSpots === "function") {
+                    const selectedGardenId =
+                        document.getElementById("selectedGardenId")?.value;
+                    if (selectedGardenId) loadSpots(selectedGardenId);
+                }
+
+                // Tambah ke tabel jika data.maps tersedia
+                if (Array.isArray(data.maps)) {
+                    const tableBody =
+                        document.querySelector("#spot-table tbody");
+                    if (!tableBody) {
+                        console.error("tbody tidak ditemukan!");
+                        return;
+                    }
+
+                    // Hapus row "No records available" jika ada
+                    const noDataRow = tableBody.querySelector("tr td[colspan]");
+                    if (noDataRow) {
+                        noDataRow.parentElement.remove(); // hapus baris kosong
+                    }
+
+                    data.maps.forEach((spot, index) => {
+                        const newRow = document.createElement("tr");
+                        newRow.innerHTML = `
+                            <td><input type="checkbox" class="spot-checkbox" data-id="${
+                                spot.id
+                            }"></td>
+                            <td>${tableBody.rows.length + 1}</td>
+                            <td>${spot.local}</td>
+                            <td>${spot.garden_name}</td>
+                            <td>
+                                ${
+                                    spot.city_name || spot.province_name
+                                        ? `${spot.city_name ?? "-"}, ${
+                                              spot.province_name ?? "-"
+                                          }`
+                                        : "-"
+                                }
+                            </td>
+                            <td>${spot.plant_lat ?? ""}</td>
+                            <td>${spot.plant_long ?? ""}</td>
+                            <td>
+                                <div class="d-flex gap-3">
+                                    <a href="#" class="btn btn-warning btn-edit-spot" data-id="${
+                                        spot.id
+                                    }" data-bs-toggle="modal" data-bs-target="#editSpotModal">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form action="/map/${
+                                        spot.id
+                                    }" method="post" class="d-inline">
+                                        <input type="hidden" name="_method" value="delete">
+                                        <input type="hidden" name="_token" value="${csrfToken}">
+                                        <button class="btn btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        `;
+                        tableBody.appendChild(newRow);
+                    });
+                }
+            } catch (error) {
+                console.error(error);
+                alertContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Gagal mengimpor file: ${error.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            }
+        });
+    }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectAllCheckbox = document.getElementById("selectAllCheckbox"); // Checkbox untuk "Select All"
+    const deleteAllBtn = document.getElementById("deleteAllBtn"); // Tombol untuk "Delete All"
+    const tableBody = document.querySelector("#spot-table tbody"); // Bagian tubuh tabel
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        .getAttribute("content"); // Token CSRF
+    const alertContainer = document.getElementById("alert-container"); // Container untuk alert
+
+    // Function to update the status of the "Delete All" button
+    function updateDeleteAllBtnState() {
+        const checkboxes = document.querySelectorAll(".spot-checkbox:checked");
+        deleteAllBtn.disabled = checkboxes.length === 0;
+    }
+
+    // Event listener untuk checkbox "Select All"
+    selectAllCheckbox.addEventListener("change", function () {
+        const checkboxes = document.querySelectorAll(".spot-checkbox");
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = selectAllCheckbox.checked;
+        });
+        updateDeleteAllBtnState(); // Update button state when "Select All" is clicked
+    });
+
+    // Event listener untuk setiap checkbox baris
+    tableBody.addEventListener("change", function (e) {
+        if (e.target.classList.contains("spot-checkbox")) {
+            updateDeleteAllBtnState(); // Update button state when a checkbox is clicked
+        }
+    });
+
+    // Event listener untuk tombol "Delete All"
+    deleteAllBtn.addEventListener("click", function () {
+        const checkboxes = document.querySelectorAll(".spot-checkbox:checked");
+        const spotIds = Array.from(checkboxes).map(
+            (checkbox) => checkbox.dataset.id
+        );
+
+        if (spotIds.length === 0) {
+            // Menampilkan alert jika tidak ada spot yang dipilih
+            alertContainer.innerHTML = `
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Pilih satu atau lebih spot untuk dihapus.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            return;
+        }
+
+        // Konfirmasi penghapusan
+        if (
+            confirm(
+                "Apakah kamu yakin ingin menghapus semua spot yang dipilih?"
+            )
+        ) {
+            fetch("/delete-spots", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ ids: spotIds }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        // Menghapus baris yang dipilih dari tabel
+                        checkboxes.forEach((checkbox) => {
+                            if (checkbox.checked) {
+                                const row = checkbox.closest("tr");
+                                row.remove();
+                            }
+                        });
+
+                        // Menampilkan alert sukses
+                        alertContainer.innerHTML = `
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Spot yang dipilih berhasil dihapus.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    } else {
+                        // Menampilkan alert error jika penghapusan gagal
+                        alertContainer.innerHTML = `
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            Gagal menghapus spot.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    `;
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    // Menampilkan alert error jika terjadi kesalahan
+                    alertContainer.innerHTML = `
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Terjadi kesalahan saat menghapus data: ${error.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                });
+        }
+    });
+
+    // Initial check to disable the "Delete All" button if no checkboxes are selected
+    updateDeleteAllBtnState();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const collapseEl = document.getElementById("actionButtonsCollapse");
+    const toggleButton = document.querySelector('[data-bs-target="#actionButtonsCollapse"]');
+
+    // Pastikan elemen collapse tersedia
+    if (collapseEl && toggleButton) {
+        const collapseInstance = new bootstrap.Collapse(collapseEl, { toggle: false });
+
+        // Temukan semua tombol/a di dalam collapse
+        const actionButtons = collapseEl.querySelectorAll("button, a");
+
+        actionButtons.forEach(btn => {
+            btn.addEventListener("click", function () {
+                if (window.innerWidth < 768) {
+                    collapseInstance.hide(); // Tutup jika di mobile
+                }
+            });
+        });
+    }
 });

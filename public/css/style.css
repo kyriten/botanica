@@ -10,6 +10,33 @@ a:hover {
     text-decoration: none;
 }
 
+/* --- FIX FORM OUTLINE MDB --- */
+
+
+/* Warna placeholder dan caret */
+.form-control::placeholder {
+    color: rgba(122, 140, 86, 0.8);
+}
+input:focus, textarea:focus {
+    caret-color: #626f47;
+}
+
+/* Warna fokus semua field */
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #626f47 !important;
+    box-shadow: 0 0 0 0.25rem rgba(98, 111, 71, 0.25) !important;
+    outline: none;
+}
+
+/* Checkbox & radio */
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+    background-color: #626f47;
+    border-color: #626f47;
+}
+
 /*--------------------------------------------------------------
   # Main
   --------------------------------------------------------------*/
@@ -17,6 +44,18 @@ a:hover {
     margin-top: 60px;
     padding: 20px 30px;
     transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+    .custom-height {
+        height: auto !important; /* Untuk mode mobile, mengatur tinggi mengikuti konten */
+    }
+}
+
+@media (min-width: 769px) {
+    .custom-height {
+        height: 100vh !important; /* Untuk mode desktop, menetapkan tinggi 100vh */
+    }
 }
 
 @media (max-width: 1199px) {
@@ -240,6 +279,39 @@ a:hover {
 .btn-close:focus {
     outline: 0;
     box-shadow: none;
+}
+
+.bg-botanica {
+    background-color: #4e5b31 !important;
+}
+
+.btn-botanica {
+    margin-top: 10px !important;
+    background-color: #626f47 !important;
+    border-color: #626f47 !important;
+    color: #fff !important;
+    padding: 8px 34px !important;
+    border-radius: 0.375rem !important;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+    box-shadow: 0 4px 10px rgba(98, 111, 71, 0.15) !important;
+}
+
+/* Hover dan Fokus - warna terang, tidak bouncing */
+.btn-botanica:hover,
+.btn-botanica:focus {
+    background-color: #626f47 !important;
+    color: #ffffff !important;
+    border-color: #626f47 !important;
+    box-shadow: 0 6px 16px rgba(98, 111, 71, 0.25) !important;
+    outline: none !important;
+}
+
+/* Active (ditekan) - gelap sedikit, tetap elegan */
+.btn-botanica:active {
+    background-color: #4e5b31 !important; /* Lebih gelap dari #626f47 */
+    border-color: #4e5b31 !important;
+    color: #fff !important;
+    box-shadow: 0 2px 6px rgba(98, 111, 71, 0.2) !important;
 }
 
 /* Accordion */

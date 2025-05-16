@@ -1,0 +1,10 @@
+@font-face {
+    font-family: "Welcome Home";
+    src: url("/fonts/Welcome-Home.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.welcome-font {
+    font-family: "Welcome Home", cursive;
+}
