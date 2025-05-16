@@ -9,9 +9,12 @@ use App\Models\Garden;
 use App\Models\Village;
 use App\Models\District;
 use App\Models\Province;
+use App\Exports\MapsExport;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Imports\SpotTanamanImport;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 
 class MapController extends Controller
@@ -19,6 +22,10 @@ class MapController extends Controller
     public function index(Request $request)
     {
         $map = Map::query();
+
+        if ($request->filled('garden_id')) {
+            $map->where('garden_id', $request->garden_id);
+        }
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -34,6 +41,7 @@ class MapController extends Controller
             return view('admin.peta.partials.table', compact('map'))->render();
         }
 
+        // Ini untuk tampilan awal non-AJAX
         $province = Province::all();
         $city = City::all();
         $district = District::all();
@@ -212,21 +220,21 @@ class MapController extends Controller
                 if ($map->plant_image && Storage::exists($map->plant_image)) {
                     Storage::delete($map->plant_image); // Menghapus gambar lama jika ada
                 }
-                $validatedData['plant_image'] = $request->file('plant_image')->store('map-images');
+                $validatedData['plant_image'] = $request->file('plant_image')->store('map-images', 'public');
             }
 
             if ($request->hasFile('leaf_image')) {
                 if ($map->leaf_image && Storage::exists($map->leaf_image)) {
                     Storage::delete($map->leaf_image); // Menghapus gambar lama jika ada
                 }
-                $validatedData['leaf_image'] = $request->file('leaf_image')->store('map-images');
+                $validatedData['leaf_image'] = $request->file('leaf_image')->store('map-images', 'public');
             }
 
             if ($request->hasFile('stem_image')) {
                 if ($map->stem_image && Storage::exists($map->stem_image)) {
                     Storage::delete($map->stem_image); // Menghapus gambar lama jika ada
                 }
-                $validatedData['stem_image'] = $request->file('stem_image')->store('map-images');
+                $validatedData['stem_image'] = $request->file('stem_image')->store('map-images', 'public');
             }
 
             // Memastikan slug dibuat jika tidak ada
@@ -327,5 +335,94 @@ class MapController extends Controller
         }
 
         return response()->json($spot);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'csv_file' => 'required|mimes:xlsx,xls,csv'
+        ]);
+
+        try {
+            Excel::import(new SpotTanamanImport, $request->file('csv_file'));
+
+            $maps = Map::latest()->take(1)->get();
+
+            // Jika request via AJAX, kirim JSON
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Import berhasil!',
+                    'maps' => $maps
+                ]);
+            }
+
+            // Fallback jika bukan AJAX
+            return back()->with('success', 'Import berhasil!');
+        } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Import gagal: ' . $e->getMessage()
+                ], 500);
+            }
+
+            return back()->with('error', 'Import gagal: ' . $e->getMessage());
+        }
+    }
+
+    public function export()
+    {
+        $gardenId = session('selected_garden_id');
+
+        if (!$gardenId) {
+            return redirect()->back()->withErrors('Kebun belum dipilih!');
+        }
+
+        $maps = Map::where('garden_id', $gardenId)
+            ->get([
+                'local',
+                'latin',
+                'slug',
+                'kingdom',
+                'sub_kingdom',
+                'super_division',
+                'division',
+                'class',
+                'sub_class',
+                'ordo',
+                'famili',
+                'genus',
+                'species',
+                'description',
+                'plant_lat',
+                'plant_long',
+                'garden_name'
+            ]);
+
+        $gardenName = session('selected_garden_name');
+        $timestamp = now()->format('Ymd');
+        $filename = "{$timestamp}_{$gardenName}_data_spot_tanaman.xlsx";
+
+        return Excel::download(new MapsExport($maps, $gardenName), $filename);
+    }
+
+    public function setGardenSession(Request $request)
+    {
+        // Simpan ID dan nama kebun yang dipilih dalam session
+        session(['selected_garden_id' => $request->input('garden_id')]);
+        session(['selected_garden_name' => $request->input('garden_name')]);
+
+        return response()->json(['message' => 'Kebun telah disimpan di session']);
+    }
+
+    public function deleteSpots(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        // Hapus semua spot yang terpilih
+        Map::whereIn('id', $ids)->delete();
+
+        return response()->json(['success' => true]);
     }
 }

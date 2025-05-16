@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Garden;
 use App\Models\Post;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class AdminController extends Controller
@@ -141,4 +139,10 @@ class AdminController extends Controller
             "xAxisCategories"
         ));
     }
+
+    public function profileShow($username)
+{
+    $user = User::where('username', ltrim($username, '@'))->firstOrFail();
+    return view('admin.profile.index', compact('user'));
+}
 }
