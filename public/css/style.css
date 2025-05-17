@@ -12,12 +12,12 @@ a:hover {
 
 /* --- FIX FORM OUTLINE MDB --- */
 
-
 /* Warna placeholder dan caret */
 .form-control::placeholder {
     color: rgba(122, 140, 86, 0.8);
 }
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     caret-color: #626f47;
 }
 
@@ -312,6 +312,20 @@ input[type="radio"]:checked {
     border-color: #4e5b31 !important;
     color: #fff !important;
     box-shadow: 0 2px 6px rgba(98, 111, 71, 0.2) !important;
+}
+
+.btn-outline-botanica {
+    color: #626f47;
+    /* border-color: #626f47; */
+}
+.btn-outline-botanica:hover {
+    color: #626f47;
+    background-color: #f6f9ff;
+    border-color: #626f47;
+}
+
+.text-botanica {
+    color: #626f47 !important;
 }
 
 /* Accordion */

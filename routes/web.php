@@ -66,9 +66,13 @@ Route::post('/logout', function () {
 
 
 // Public Route
-Route::get('/', [PublicController::class, 'search'])->name('public.search');
+// Route::get('/', [PublicController::class, 'landing'])->name('public.landing');
+Route::get('/search', [PublicController::class, 'search'])->name('public.search');
 Route::get('/tanaman/{id}', [PublicController::class, 'show'])->name('plant.show');
 Route::get('/autocomplete', [PublicController::class, 'autocomplete'])->name('plant.autocomplete');
+
+Route::get('/', [PublicController::class, 'index'])->name('public.index');
+
 
 // API
 Route::get('/map/{id}/data', [MapController::class, 'getData']);

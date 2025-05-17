@@ -23,6 +23,10 @@
 
     <!-- Google Fonts (Opsional, mirip Google look) -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/search-landing.css') }}">
 
     <style>
         body {
@@ -35,15 +39,16 @@
         }
     </style>
 
-    @stack('styles')
+
     @stack('stylesPlant')
 </head>
 
 <body>
     @yield('content')
 
-    @stack('scripts')
     @stack('scriptsPlant')
+
+    <script src="{{ asset('js/search-landing.js') }}"></script>
 
     <!-- Vendor JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"

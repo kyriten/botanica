@@ -7,17 +7,22 @@ use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
+    public function index()
+    {
+        return view('public.index');
+    }
+
     public function search(Request $request)
     {
         $query = $request->input('search');
         $plants = collect();
         $hasSearch = false;
 
-        if ($query !== null) {
+        if (!empty($query)) {
             $hasSearch = true;
-            $plants = Map::where('local', 'like', "%$query%")
-                        ->orWhere('latin', 'like', "%$query%")
-                        ->get();
+            $plants = Map::where('local', 'like', "%{$query}%")
+                ->orWhere('latin', 'like', "%{$query}%")
+                ->get();
         }
 
         if ($request->ajax()) {
@@ -27,10 +32,13 @@ class PublicController extends Controller
             ])->render();
         }
 
-        return view('public.index', [
+        $total = $plants->count();
+
+        return view('public.search-results', [
             'plants' => $plants,
             'query' => $query,
-            'hasSearch' => $hasSearch
+            'hasSearch' => $hasSearch,
+            'total' => $total  
         ]);
     }
 
@@ -52,5 +60,4 @@ class PublicController extends Controller
 
         return response()->json($plants);
     }
-
 }

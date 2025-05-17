@@ -1,0 +1,115 @@
+#search-input::placeholder {
+    color: #626f47;
+    opacity: 1;
+}
+
+#search-input:focus {
+    border-color: #dfe1e5;
+}
+
+#autocomplete-list li {
+    cursor: pointer;
+    padding: 10px 16px;
+}
+
+#autocomplete-list li:hover {
+    background-color: #f1f3f4;
+}
+
+/* Normal state: border biasa */
+#search-input-group {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    /* biar tetap bentuk pill */
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+/* Fokus state seluruh grup */
+#search-input-group:focus-within {
+    border: 1px solid #a2c284;
+    /* warna fokus, bisa disesuaikan */
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+    background-color: white;
+}
+
+/* Optional: full viewport height for centering */
+.vh-100 {
+    height: 100vh;
+}
+
+/* transisi untuk smooth position change */
+#plant-search-form {
+    transition: margin 0.3s ease-in-out;
+}
+
+/* Nav style mirip Google Search */
+.google-nav {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 14px;
+}
+.google-nav button {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    color: #5f6368;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-bottom-color 0.2s;
+}
+.google-nav button:hover {
+    color: #626f47;
+}
+.google-nav button.active {
+    color: #626f47;
+    border-bottom-color: #626f47;
+    font-weight: 700;
+}
+
+/* List hasil pencarian mirip Google */
+.result-item {
+    margin-bottom: 25px;
+}
+.result-item h3 a {
+    color: #1a0dab;
+    font-size: 18px;
+    text-decoration: none;
+}
+.result-item h3 a:hover {
+    text-decoration: underline;
+}
+.result-item .description {
+    color: #4d5156;
+    font-size: 14px;
+    margin-top: 4px;
+}
+.result-item .url {
+    font-size: 13px;
+    color: #006621;
+    margin-top: 2px;
+    user-select: all;
+}
+
+/* Grid untuk gambar mirip Google Images */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+.image-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+.image-card img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgb(0 0 0 / 0.2);
+}
