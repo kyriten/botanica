@@ -1,25 +1,35 @@
 @extends('public.app')
 
 @section('title')
-    Hasil untuk "{{ request('search') }}"
+    Hasil untuk {{ request('search') }}
 @endsection
 
 
 @section('content')
-    <div class="container py-5" style="max-width: 900px;">
-        <div class="text-center">
-            <h1 class="display-4 fw-bold text-botanica">{{ config('app.name') }}</h1>
-            <p class="lead text-muted">Temukan informasi tanaman berdasarkan nama lokal atau nama latin</p>
+    <div class="container py-4 py-md-3" style="max-width: 900px;">
+        <div class="search-header d-flex align-items-center justify-content-center">
+            <a href="/" class="text-decoration-none flex-shrink-0">
+                <!-- Logo untuk mobile -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" height="40" class="d-block d-sm-none">
 
-            @include('public.partials.search-form', ['action' => route('public.search')])
+                <!-- Judul untuk desktop -->
+                <h1 class="text-botanica d-none d-sm-block m-0">
+                    {{ config('app.name') }}
+                </h1>
+            </a>
+
+            <div class="search-bar flex-grow-1 w-100 w-sm-auto">
+                @include('public.partials.search-form', ['action' => route('public.search')])
+            </div>
         </div>
+
 
         {{-- Nav mirip Google Search --}}
         <div class="google-nav" role="tablist" aria-label="Search result tabs">
             <button class="active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" role="tab"
-                aria-selected="true" aria-controls="all">All</button>
+                aria-selected="true" aria-controls="all">Semua</button>
             <button id="image-tab" data-bs-toggle="tab" data-bs-target="#image" role="tab" aria-selected="false"
-                aria-controls="image">Images</button>
+                aria-controls="image">Gambar</button>
         </div>
 
         <div id="loading-spinner" class="text-center my-4 d-none">
@@ -30,11 +40,15 @@
 
         @if ($total > 0)
             <p class="text-muted text-start">
-                Ditemukan {{ $total }} hasil untuk <strong>"{{ $query }}"</strong>
+                Ditemukan {{ $total }} hasil untuk <strong>{{ $query }}</strong>
+            </p>
+        @elseif($total === 0)
+            <p class="text-muted text-center">
+                Tidak ada data
             </p>
         @else
             <p class="text-muted text-center">
-                Tidak ditemukan hasil untuk <strong>"{{ $query }}"</strong>
+                Tidak ditemukan hasil untuk <strong>{{ $query }}</strong>
             </p>
         @endif
 

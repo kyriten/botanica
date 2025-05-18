@@ -56,32 +56,25 @@
                                 <div class="col-12 col-md-8">
                                     <!-- Toggle Button untuk Mobile -->
                                     <div class="d-block d-md-none mb-2">
-                                        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#actionButtonsCollapse" aria-expanded="false" aria-controls="actionButtonsCollapse">
+                                        <button class="btn btn-outline-primary btn-sm" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#actionButtonsCollapse"
+                                            aria-expanded="false" aria-controls="actionButtonsCollapse">
                                             <i class="bi bi-list me-1"></i> Menu Aksi
                                         </button>
                                     </div>
 
-                                    <!-- Button Container -->
-                                    <div class="d-flex flex-wrap gap-2 collapse d-md-flex" id="actionButtonsCollapse">
-                                        <button class="btn btn-botanica btn-sm" data-bs-toggle="modal" data-bs-target="#inputSpotModal">
-                                            <i class="bi bi-plus-lg me-1"></i> Tambah Spot
-                                        </button>
+                                    <!-- Tombol (mobile - collapsible) -->
+                                    <div class="collapse d-md-none" id="actionButtonsCollapse">
+                                        <div class="d-flex flex-wrap gap-2 mt-2">
+                                            @include('admin.peta.partials.action-buttons')
+                                        </div>
+                                    </div>
 
-                                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#importListSpotModal">
-                                            <i class="bi bi-cloud-upload-fill me-1"></i> Impor Daftar Spot
-                                        </button>
-
-                                        <a href="{{ route('map.export') }}" class="btn btn-success btn-sm">
-                                            <i class="bi bi-cloud-download-fill me-1"></i> Ekspor Daftar Spot
-                                        </a>
-
-                                        <button id="deleteAllBtn" class="btn btn-danger btn-sm" disabled>
-                                            <i class="bi bi-trash me-1"></i> Delete All
-                                        </button>
+                                    <!-- Tombol (desktop - selalu tampil) -->
+                                    <div class="d-none d-md-flex flex-wrap gap-2">
+                                        @include('admin.peta.partials.action-buttons')
                                     </div>
                                 </div>
-
 
                                 <!-- Search Bar -->
                                 <div class="col-12 col-md-4">
@@ -96,6 +89,7 @@
                                     </form>
                                 </div>
                             </div>
+
 
                             <!-- Tabel Data -->
                             <div id="data-table-container" class="table-responsive">

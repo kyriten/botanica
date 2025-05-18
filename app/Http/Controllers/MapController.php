@@ -16,6 +16,8 @@ use App\Imports\SpotTanamanImport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+
 
 class MapController extends Controller
 {
@@ -103,7 +105,7 @@ class MapController extends Controller
             'famili'          => 'nullable|string|max:255',
             'genus'           => 'nullable|string|max:255',
             'species'         => 'nullable|string|max:255',
-            'description'     => 'nullable|string|max:255',
+            'description'     => 'nullable',
             'plant_image'     => 'nullable|image|file|max:2048',
             'leaf_image'      => 'nullable|image|file|max:2048',
             'stem_image'      => 'nullable|image|file|max:2048',
@@ -337,39 +339,51 @@ class MapController extends Controller
         return response()->json($spot);
     }
 
+
     public function import(Request $request)
     {
-        $request->validate([
-            'csv_file' => 'required|mimes:xlsx,xls,csv'
-        ]);
+        try {
+            $request->validate([
+                'csv_file' => 'required|mimes:xlsx,xls,csv'
+            ]);
+        } catch (ValidationException $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi gagal',
+                    'errors' => $e->errors(),
+                ], 422);
+            }
+
+            throw $e; // fallback
+        }
 
         try {
             Excel::import(new SpotTanamanImport, $request->file('csv_file'));
 
             $maps = Map::latest()->take(1)->get();
 
-            // Jika request via AJAX, kirim JSON
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Import berhasil!',
-                    'maps' => $maps
+                    'maps' => $maps,
                 ]);
             }
 
-            // Fallback jika bukan AJAX
             return back()->with('success', 'Import berhasil!');
         } catch (\Exception $e) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Import gagal: ' . $e->getMessage()
+                    'message' => 'Import gagal: ' . $e->getMessage(),
                 ], 500);
             }
 
-            return back()->with('error', 'Import gagal: ' . $e->getMessage());
+            return back()->with('error', 'Import gagal.');
         }
     }
+
 
     public function export()
     {

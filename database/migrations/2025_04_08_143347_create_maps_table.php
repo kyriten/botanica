@@ -36,7 +36,7 @@ class CreateMapsTable extends Migration
             $table->string('famili')->nullable();
             $table->string('genus')->nullable();
             $table->string('species')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('plant_image')->nullable();
             $table->string('leaf_image')->nullable();
             $table->string('stem_image')->nullable();

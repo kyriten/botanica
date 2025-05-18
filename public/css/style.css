@@ -111,6 +111,14 @@ input[type="radio"]:checked {
     opacity: 1;
 }
 
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 100px;
+        right: 20px;
+        z-index: 1050;
+    }
+}
+
 /*--------------------------------------------------------------
   # Override some default Bootstrap stylings
   --------------------------------------------------------------*/

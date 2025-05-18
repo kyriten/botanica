@@ -27,27 +27,32 @@
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/search-landing.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
 
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f5f5f5;
         }
 
         .search-container {
             margin-top: 10vh;
         }
     </style>
-
-
-    @stack('stylesPlant')
 </head>
 
 <body>
     @yield('content')
 
-    @stack('scriptsPlant')
+    <script>
+        window.routes = {
+            autocomplete: "{{ route('plant.autocomplete') }}",
+            search: "{{ route('public.search') }}"
+        };
+    </script>
 
+    @stack('scriptPlantShow')
+
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     <script src="{{ asset('js/search-landing.js') }}"></script>
 
     <!-- Vendor JS -->

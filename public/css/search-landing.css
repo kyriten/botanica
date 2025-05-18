@@ -1,6 +1,11 @@
 #search-input::placeholder {
     color: #626f47;
     opacity: 1;
+    font-size: 16px;
+}
+
+#search-input {
+    font-size: 16px;
 }
 
 #search-input:focus {
@@ -20,14 +25,12 @@
 #search-input-group {
     border: 1px solid transparent;
     border-radius: 999px;
-    /* biar tetap bentuk pill */
     transition: box-shadow 0.2s, border-color 0.2s;
 }
 
 /* Fokus state seluruh grup */
 #search-input-group:focus-within {
     border: 1px solid #a2c284;
-    /* warna fokus, bisa disesuaikan */
     box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
     background-color: white;
 }
@@ -45,7 +48,7 @@
 /* Nav style mirip Google Search */
 .google-nav {
     display: flex;
-    justify-content: center;
+    justify-content: start;
     border-bottom: 1px solid #e8e8e8;
     margin-bottom: 20px;
     font-weight: 500;
@@ -112,4 +115,80 @@
 .image-card img:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgb(0 0 0 / 0.2);
+}
+
+.list-group-item:hover {
+    background-color: #f1f3f4; /* Warna abu muda seperti Google Search */
+    transition: background-color 0.2s ease-in-out;
+}
+
+#autocomplete-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(32, 33, 36, 0.28);
+    background-color: #fff;
+    padding: 0;
+    z-index: 1000;
+}
+
+#autocomplete-list li {
+    list-style: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #202124;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+#autocomplete-list li:last-child {
+    border-bottom: none;
+}
+
+#autocomplete-list li:hover {
+    background-color: #f1f3f4;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-size: 60% 60%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 15%;
+}
+
+@media (max-width: 767.98px) {
+    #plantImageCarousel .carousel-inner img {
+        height: 250px !important;
+        object-fit: cover;
+    }
+    #plant-map {
+        height: 250px !important;
+    }
+    h2.card-title {
+        font-size: 1.5rem;
+    }
+    h5 {
+        font-size: 1rem;
+    }
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+.nav-link {
+    font-weight: normal;
+}
+
+.nav-link.active {
+    font-weight: 700;
 }

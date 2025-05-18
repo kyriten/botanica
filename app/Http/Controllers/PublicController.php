@@ -32,13 +32,18 @@ class PublicController extends Controller
             ])->render();
         }
 
+        if (!$request->has('search')) {
+            // Redirect atau tampilkan semua data
+            return redirect('/'); // atau tampilkan semua spot misalnya
+        }
+
         $total = $plants->count();
 
         return view('public.search-results', [
             'plants' => $plants,
             'query' => $query,
             'hasSearch' => $hasSearch,
-            'total' => $total  
+            'total' => $total
         ]);
     }
 

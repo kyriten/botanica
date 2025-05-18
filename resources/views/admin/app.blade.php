@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="utf-8">
@@ -160,6 +160,50 @@
                 opacity: 1;
             }
         }
+
+        /* Toggle search input - mobile responsive */
+        #searchInput {
+            display: none;
+        }
+
+        .toggle-search {
+            transition: max-width 0.4s ease;
+            max-width: 45px;
+            overflow: hidden;
+            flex-wrap: nowrap;
+        }
+
+
+        .toggle-search.expanded {
+            max-width: 100%;
+        }
+
+        .toggle-search.expanded #searchInput {
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .toggle-search {
+                max-width: 100% !important;
+            }
+
+            #searchInput {
+                display: block !important;
+            }
+        }
+
+        .input-group-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .input-group .form-control,
+        .input-group .input-group-text {
+            height: 38px;
+            font-size: 0.875rem;
+        }
     </style>
 
     {{-- IconScout --}}
@@ -207,18 +251,6 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
-
-    {{-- AJAX Generate Slug Posts --}}
-    <script>
-        const namarempah = document.querySelector('.namarempah');
-        const slug = document.querySelector('#slug');
-
-        namarempah.addEventListener('change', function() {
-            fetch('/posts/checkSlug?namarempah=' + namarempah.value)
-                .then(response => response.json())
-                .then(data => slug.value = data.slug);
-        });
-    </script>
 
     {{-- AJAX Generate Lat and Long of City and Province --}}
     <script>
@@ -310,6 +342,35 @@
                     $('#nama_provinsi').val('');
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggle = document.getElementById("searchToggle");
+            const container = document.getElementById("searchContainer");
+            const input = document.getElementById("searchInput");
+
+            toggle.addEventListener("click", function(e) {
+                e.preventDefault(); // hindari submit tak sengaja
+                container.classList.toggle("expanded");
+
+                // fokus ke input jika ditampilkan
+                setTimeout(() => {
+                    if (container.classList.contains("expanded")) {
+                        input.focus();
+                    }
+                }, 300);
+            });
+        });
+
+        document.addEventListener("click", function(event) {
+            const toggle = document.getElementById("searchToggle");
+            const container = document.getElementById("searchContainer");
+
+            if (!container.contains(event.target)) {
+                container.classList.remove("expanded");
+            }
         });
     </script>
 
