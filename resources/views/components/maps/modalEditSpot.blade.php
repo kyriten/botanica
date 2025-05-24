@@ -1,10 +1,10 @@
 <!-- Modal untuk Edit Data Spot Kebun Raya -->
 <div id="editSpotModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content p-4">
-            <!-- Tombol Close -->
-            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"
-                aria-label="Close"></button>
+            <button type="button"
+                class="btn-close bg-white border border-dark rounded-circle shadow position-absolute top-0 end-0 m-3 p-2"
+                data-bs-dismiss="modal" aria-label="Close"></button>
 
             <h5 class="modal-title mb-3" id="editModalLabel">Edit Spot</h5>
 
@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="overflow-x-auto">
-                    <div class="d-flex flex-nowrap gap-3 pb-3">
+                    <div class="d-flex justify-content-center flex-nowrap gap-3 pb-3">
                         <!-- Gambar Tumbuhan -->
                         <div class="flex-shrink-0" style="width: 300px;">
                             <div class="position-relative mb-4 text-center">
@@ -126,6 +126,114 @@
                         </div>
                     </div>
                 </div>
+                <div class="overflow-x-auto">
+                    <div class="d-flex justify-content-center flex-nowrap gap-3 pb-3">
+                        <!-- Gambar Bunga -->
+                        <div class="flex-shrink-0" style="width: 300px;">
+                            <div class="position-relative mb-4 text-center">
+                                <!-- Label di atas gambar -->
+                                <div
+                                    class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                    Bunga
+                                </div>
+
+                                <!-- Gambar -->
+                                <img id="imgPreviewFlowerEdit"
+                                    src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                    alt="image placeholder" style="width: 200px;" />
+                            </div>
+
+                            <!-- Error message -->
+                            <div class="mb-2 text-center text-danger">
+                                @error('flower_image')
+                                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Tombol Upload -->
+                            <div class="d-flex justify-content-center">
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileFlowerEdit">Pilih
+                                        gambar</label>
+                                    <input class="form-control d-none @error('flower_image') is-invalid @enderror"
+                                        id="customFileFlowerEdit" name="flower_image" type="file"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="showPreview(event, 'imgPreviewFlowerEdit');">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gambar Buah -->
+                        <div class="flex-shrink-0" style="width: 300px;">
+                            <div class="position-relative mb-4 text-center">
+                                <!-- Label di atas gambar -->
+                                <div
+                                    class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                    Buah
+                                </div>
+
+                                <!-- Gambar -->
+                                <img id="imgPreviewFruitEdit"
+                                    src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                    alt="image placeholder" style="width: 200px;" />
+                            </div>
+
+                            <!-- Error message -->
+                            <div class="mb-2 text-center text-danger">
+                                @error('fruit_image')
+                                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Tombol Upload -->
+                            <div class="d-flex justify-content-center">
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileFruitEdit">Pilih
+                                        gambar</label>
+                                    <input class="form-control d-none @error('fruit_image') is-invalid @enderror"
+                                        id="customFileFruitEdit" name="fruit_image" type="file"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="showPreview(event, 'imgPreviewFruitEdit');">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gambar Lain-lain -->
+                        <div class="flex-shrink-0" style="width: 300px;">
+                            <div class="position-relative mb-4 text-center">
+                                <!-- Label di atas gambar -->
+                                <div
+                                    class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                    Lain-lain
+                                </div>
+
+                                <!-- Gambar -->
+                                <img id="imgPreviewAnotherEdit"
+                                    src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                    alt="image placeholder" style="width: 200px;" />
+                            </div>
+
+                            <!-- Error message -->
+                            <div class="mb-2 text-center text-danger">
+                                @error('another_image')
+                                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Tombol Upload -->
+                            <div class="d-flex justify-content-center">
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileAnotherEdit   ">Pilih
+                                        gambar</label>
+                                    <input class="form-control d-none @error('another_image') is-invalid @enderror"
+                                        id="customFileAnotherEdit  " name="another_image" type="file"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="showPreview(event, 'imgPreviewAnotherEdit');">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr class="mt-3 mb-3">
 
@@ -174,6 +282,23 @@
                 </div>
 
                 <div class="collapse" id="collapseDetailEdit">
+                    <div class="row mb-3">
+                        <!-- Jenis Tanaman -->
+                        <div class="col-md-12">
+                            <label class="form-label text-dark" for="editCategory">Jenis Tanaman<span
+                                    class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Wajib diisi">*</span></label>
+                            <input type="text" id="editCategory"
+                                class="form-control @error('category') is-invalid @enderror" name="category"
+                                placeholder="Nama Lokal" />
+                            @error('category')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <!-- Nama Lokal Tanaman -->
                         <div class="col-md-6">

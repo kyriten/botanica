@@ -59,7 +59,7 @@ const fetchSuggestions = debounce(function () {
                 item.onclick = () => {
                     searchInput.value = plant.local;
                     autocompleteList.innerHTML = "";
-                    form.dispatchEvent(new Event("submit"));
+                    form.submit();
                 };
                 autocompleteList.appendChild(item);
             });

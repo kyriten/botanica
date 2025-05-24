@@ -33,11 +33,7 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
-    {{-- <script src="{{ asset('js/mdb.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/mdb.es.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/mdb.umd.min.js') }}"></script> --}}
-    {{-- <script src="{{ asset('js/mdb.es.min.js.map') }}"></script>
-    <script src="{{ asset('js/mdb.umd.min.js.map') }}"></script> --}}
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('login-form');

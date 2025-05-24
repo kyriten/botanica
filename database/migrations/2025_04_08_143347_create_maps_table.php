@@ -25,6 +25,7 @@ class CreateMapsTable extends Migration
             $table->string('plant_long')->nullable();
             $table->string('local');
             $table->string('latin');
+            $table->string('category')->nullable();
             $table->string('slug')->nullable();
             $table->string('kingdom')->nullable();
             $table->string('sub_kingdom')->nullable();
@@ -38,8 +39,11 @@ class CreateMapsTable extends Migration
             $table->string('species')->nullable();
             $table->longText('description')->nullable();
             $table->string('plant_image')->nullable();
-            $table->string('leaf_image')->nullable();
             $table->string('stem_image')->nullable();
+            $table->string('leaf_image')->nullable();
+            $table->string('flower_image')->nullable();
+            $table->string('fruit_image')->nullable();
+            $table->string('another_image')->nullable();
             // $table->string('source');
             // $table->string('link');
             $table->timestamps();

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Garden;
+use App\Models\Map;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Garden;
 use Illuminate\Support\Carbon;
 
 class AdminController extends Controller
@@ -12,35 +13,35 @@ class AdminController extends Controller
     public function index()
     {
         // Total All Data
-        $postCount = Post::count();
+        $mapCount = Map::count();
 
         // Total Data by Garden == 1
-        $category1Count = Post::where('garden_id', 1)->count();
-        $category = Garden::where('id', 1)->first();
-        $categoryFirstName = $category->name;
+        $bogorCount = Map::where('garden_id', 1)->count();
+        $garden = Garden::where('id', 1)->first();
+        $gardenFirstName = $garden->name;
 
         // Total Data by Garden == 2
-        $category2Count = Post::where('garden_id', 2)->count();
-        $category = Garden::where('id', 2)->first();
-        $categorySecondName = $category->name;
+        $cibodasCount = Post::where('garden_id', 2)->count();
+        $garden = Garden::where('id', 2)->first();
+        $gardenSecondName = $garden->name;
 
         // Total Data by Garden == 3
-        $category3Count = Post::where('garden_id', 3)->count();
-        $category = Garden::where('id', 3)->first();
-        $categoryThirdName = $category->name;
+        $purwodadiCount = Post::where('garden_id', 3)->count();
+        $garden = Garden::where('id', 3)->first();
+        $gardenThirdName = $garden->name;
 
         // Total Data by Garden == 4
-        $category4Count = Post::where('garden_id', 4)->count();
-        $category = Garden::where('id', 4)->first();
-        $categoryFourthName = $category->name;
+        $bedugulCount = Post::where('garden_id', 4)->count();
+        $garden = Garden::where('id', 4)->first();
+        $gardenFourthName = $garden->name;
 
         // Memanggil currentTime dan previousTime
         $currentTime = Carbon::now();
         $previousTime = $currentTime->subDay();
 
         // Menampilkan Jumlah Data Baru dalam Tabel Post Ditambahkan dalam 24 jam terakhir
-        $previousCount = Post::where('created_at', '>', $previousTime)->count();
-        $currentCount = Post::count();
+        $previousCount = Map::where('created_at', '>', $previousTime)->count();
+        $currentCount = Map::count();
 
         $addedCount = $currentCount - $previousCount;
 
@@ -56,57 +57,57 @@ class AdminController extends Controller
         $previousCountCatOne = Post::where('garden_id', 1)->where('created_at', '>', $previousTime)->count();
         $currentCountCatOne = Post::where('garden_id', 1)->count();
 
-        $category1Added = $currentCountCatOne - $previousCountCatOne;
+        $bogorAdded = $currentCountCatOne - $previousCountCatOne;
 
-        if ($category1Added > 0) {
-            $category1Message = "Data ditambahkan 24 jam lalu";
-        } elseif ($category1Added < 0) {
-            $category1Message = "Data dikurangi 24 jam lalu";
+        if ($bogorAdded > 0) {
+            $bogorMessage = "Data ditambahkan 24 jam lalu";
+        } elseif ($bogorAdded < 0) {
+            $bogorMessage = "Data dikurangi 24 jam lalu";
         } else {
-            $category1Message = "Tidak ada perubahan dalam 24 jam terakhir";
+            $bogorMessage = "Tidak ada perubahan dalam 24 jam terakhir";
         }
 
         // Menampilkan Jumlah Data Baru pada kategori 2 Ditambahkan dalam 24 jam terakhir
         $previousCountCatTwo = Post::where('garden_id', 2)->where('created_at', '>', $previousTime)->count();
         $currentCountCatTwo = Post::where('garden_id', 2)->count();
 
-        $category2Added = $currentCountCatTwo - $previousCountCatTwo;
+        $cibodasAdded = $currentCountCatTwo - $previousCountCatTwo;
 
-        if ($category2Added > 0) {
-            $category2Message = "Data ditambahkan 24 jam lalu";
-        } elseif ($category2Added < 0) {
-            $category2Message = "Data dikurangi 24 jam lalu";
+        if ($cibodasAdded > 0) {
+            $cibodasMessage = "Data ditambahkan 24 jam lalu";
+        } elseif ($cibodasAdded < 0) {
+            $cibodasMessage = "Data dikurangi 24 jam lalu";
         } else {
-            $category2Message = "Tidak ada perubahan dalam 24 jam terakhir";
+            $cibodasMessage = "Tidak ada perubahan dalam 24 jam terakhir";
         }
 
         // Menampilkan Jumlah Data Baru pada kategori 3 Ditambahkan dalam 24 jam terakhir
         $previousCountCatThree = Post::where('garden_id', 3)->where('created_at', '>', $previousTime)->count();
         $currentCountCatThree = Post::where('garden_id', 3)->count();
 
-        $category3Added = $currentCountCatThree - $previousCountCatThree;
+        $purwodadiAdded = $currentCountCatThree - $previousCountCatThree;
 
-        if ($category3Added > 0) {
-            $category3Message = "Data ditambahkan 24 jam lalu";
-        } elseif ($category3Added < 0) {
-            $category3Message = "Data dikurangi 24 jam lalu";
+        if ($purwodadiAdded > 0) {
+            $purwodadiMessage = "Data ditambahkan 24 jam lalu";
+        } elseif ($purwodadiAdded < 0) {
+            $purwodadiMessage = "Data dikurangi 24 jam lalu";
         } else {
-            $category3Message = "Tidak ada perubahan dalam 24 jam terakhir";
+            $purwodadiMessage = "Tidak ada perubahan dalam 24 jam terakhir";
         }
 
         // Menampilkan Jumlah Data Baru pada kategori 4 Ditambahkan dalam 24 jam terakhir
         $previousCountCatFour = Post::where('garden_id', 4)->where('created_at', '>', $previousTime)->count();
         $currentCountCatFour = Post::where('garden_id', 4)->count();
 
-        $category4Added = $currentCountCatFour - $previousCountCatFour;
+        $bedugulAdded = $currentCountCatFour - $previousCountCatFour;
 
-        $category4Message = ($category4Added > 0) ? "Data ditambahkan 24 jam yang lalu" : "Data dikurangi 24 jam yang lalu";
-        if ($category4Added > 0) {
-            $category4Message = "Data ditambahkan 24 jam lalu";
-        } elseif ($category4Added < 0) {
-            $category4Message = "Data dikurangi 24 jam lalu";
+        $bedugulMessage = ($bedugulAdded > 0) ? "Data ditambahkan 24 jam yang lalu" : "Data dikurangi 24 jam yang lalu";
+        if ($bedugulAdded > 0) {
+            $bedugulMessage = "Data ditambahkan 24 jam lalu";
+        } elseif ($bedugulAdded < 0) {
+            $bedugulMessage = "Data dikurangi 24 jam lalu";
         } else {
-            $category4Message = "Tidak ada perubahan dalam 24 jam terakhir";
+            $bedugulMessage = "Tidak ada perubahan dalam 24 jam terakhir";
         }
 
         $xAxisCategories = [];
@@ -117,32 +118,32 @@ class AdminController extends Controller
         $users = User::all();
         return view("admin.index", compact(
             "users",
-            "postCount",
-            "category1Count",
-            "categoryFirstName",
-            "category2Count",
-            "categorySecondName",
-            "category3Count",
-            "categoryThirdName",
-            "category4Count",
-            "categoryFourthName",
+            "mapCount",
+            "bogorCount",
+            "gardenFirstName",
+            "cibodasCount",
+            "gardenSecondName",
+            "purwodadiCount",
+            "gardenThirdName",
+            "bedugulCount",
+            "gardenFourthName",
             "addedCount",
             "message",
-            "category1Added",
-            "category1Message",
-            "category2Added",
-            "category2Message",
-            "category3Added",
-            "category3Message",
-            "category4Added",
-            "category4Message",
+            "bogorAdded",
+            "bogorMessage",
+            "cibodasAdded",
+            "cibodasMessage",
+            "purwodadiAdded",
+            "purwodadiMessage",
+            "bedugulAdded",
+            "bedugulMessage",
             "xAxisCategories"
         ));
     }
 
     public function profileShow($username)
-{
-    $user = User::where('username', ltrim($username, '@'))->firstOrFail();
-    return view('admin.profile.index', compact('user'));
-}
+    {
+        $user = User::where('username', ltrim($username, '@'))->firstOrFail();
+        return view('admin.profile.index', compact('user'));
+    }
 }

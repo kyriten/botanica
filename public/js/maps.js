@@ -177,6 +177,8 @@ document.getElementById("confirmGarden").addEventListener("click", function () {
             document.getElementById("contentArea").style.display = "block";
             document.getElementById("previewGardenArea").textContent =
                 "Peta Pratinjau " + selectedGardenName;
+            document.getElementById("titleModalInputSpot").textContent =
+                "Tambah Spot di " + selectedGardenName;
             document.getElementById("selectedGardenId").value =
                 selectedGardenId;
 
@@ -831,7 +833,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Tampilkan alert sukses
                 alertContainer.innerHTML = `
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        Berhasil impor data!
+                        Berhasil impor data! Silakan muat ulang tabel, lalu edit latitude dan longitude tanaman.
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 `;
@@ -865,47 +867,47 @@ document.addEventListener("DOMContentLoaded", function () {
                         noDataRow.parentElement.remove(); // hapus baris kosong
                     }
 
-                    data.maps.forEach((spot, index) => {
-                        const newRow = document.createElement("tr");
-                        newRow.innerHTML = `
-                            <td><input type="checkbox" class="spot-checkbox" data-id="${
-                                spot.id
-                            }"></td>
-                            <td>${tableBody.rows.length + 1}</td>
-                            <td>${spot.local}</td>
-                            <td>${spot.garden_name}</td>
-                            <td>
-                                ${
-                                    spot.city_name || spot.province_name
-                                        ? `${spot.city_name ?? "-"}, ${
-                                              spot.province_name ?? "-"
-                                          }`
-                                        : "-"
-                                }
-                            </td>
-                            <td>${spot.plant_lat ?? ""}</td>
-                            <td>${spot.plant_long ?? ""}</td>
-                            <td>
-                                <div class="d-flex gap-3">
-                                    <a href="#" class="btn btn-warning btn-edit-spot" data-id="${
-                                        spot.id
-                                    }" data-bs-toggle="modal" data-bs-target="#editSpotModal">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form action="/map/${
-                                        spot.id
-                                    }" method="post" class="d-inline">
-                                        <input type="hidden" name="_method" value="delete">
-                                        <input type="hidden" name="_token" value="${csrfToken}">
-                                        <button class="btn btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data?')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
-                        `;
-                        tableBody.appendChild(newRow);
-                    });
+                    // data.maps.forEach((spot, index) => {
+                    //     const newRow = document.createElement("tr");
+                    //     newRow.innerHTML = `
+                    //         <td><input type="checkbox" class="spot-checkbox" data-id="${
+                    //             spot.id
+                    //         }"></td>
+                    //         <td>${tableBody.rows.length + 1}</td>
+                    //         <td>${spot.local}</td>
+                    //         <td>${spot.garden_name}</td>
+                    //         <td>
+                    //             ${
+                    //                 spot.city_name || spot.province_name
+                    //                     ? `${spot.city_name ?? "-"}, ${
+                    //                           spot.province_name ?? "-"
+                    //                       }`
+                    //                     : "-"
+                    //             }
+                    //         </td>
+                    //         <td>${spot.plant_lat ?? ""}</td>
+                    //         <td>${spot.plant_long ?? ""}</td>
+                    //         <td>
+                    //             <div class="d-flex gap-3">
+                    //                 <a href="#" class="btn btn-warning btn-edit-spot" data-id="${
+                    //                     spot.id
+                    //                 }" data-bs-toggle="modal" data-bs-target="#editSpotModal">
+                    //                     <i class="bi bi-pencil"></i>
+                    //                 </a>
+                    //                 <form action="/map/${
+                    //                     spot.id
+                    //                 }" method="post" class="d-inline">
+                    //                     <input type="hidden" name="_method" value="delete">
+                    //                     <input type="hidden" name="_token" value="${csrfToken}">
+                    //                     <button class="btn btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data?')">
+                    //                         <i class="bi bi-trash"></i>
+                    //                     </button>
+                    //                 </form>
+                    //             </div>
+                    //         </td>
+                    //     `;
+                    //     tableBody.appendChild(newRow);
+                    // });
                 }
             } catch (error) {
                 console.error(error);
@@ -921,55 +923,46 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const selectAllCheckbox = document.getElementById("selectAllCheckbox"); // Checkbox untuk "Select All"
-    const deleteAllBtn = document.getElementById("deleteAllBtn"); // Tombol untuk "Delete All"
-    const tableBody = document.querySelector("#spot-table tbody"); // Bagian tubuh tabel
+    const selectAllCheckbox = document.getElementById("selectAllCheckbox"); // Checkbox "Select All"
+    const deleteAllBtnMobile = document.getElementById("deleteAllBtnMobile"); // Tombol mobile
+    const deleteAllBtnDesktop = document.getElementById("deleteAllBtnDesktop"); // Tombol desktop
+    const tableBody = document.querySelector("#spot-table tbody"); // Isi tabel
+    const alertContainer = document.getElementById("alert-container"); // Tempat alert
     const csrfToken = document
         .querySelector('meta[name="csrf-token"]')
-        .getAttribute("content"); // Token CSRF
-    const alertContainer = document.getElementById("alert-container"); // Container untuk alert
+        .getAttribute("content");
 
-    // Function to update the status of the "Delete All" button
-    function updateDeleteAllBtnState() {
-        const checkboxes = document.querySelectorAll(".spot-checkbox:checked");
-        deleteAllBtn.disabled = checkboxes.length === 0;
+    if (
+        !selectAllCheckbox ||
+        !deleteAllBtnMobile ||
+        !deleteAllBtnDesktop ||
+        !tableBody
+    ) {
+        console.log("Some elements are missing");
+        return;
     }
 
-    // Event listener untuk checkbox "Select All"
-    selectAllCheckbox.addEventListener("change", function () {
-        const checkboxes = document.querySelectorAll(".spot-checkbox");
-        checkboxes.forEach((checkbox) => {
-            checkbox.checked = selectAllCheckbox.checked;
-        });
-        updateDeleteAllBtnState(); // Update button state when "Select All" is clicked
-    });
+    function updateDeleteAllBtnState() {
+        const checkedCount = document.querySelectorAll(
+            ".spot-checkbox:checked"
+        ).length;
+        deleteAllBtnMobile.disabled = checkedCount === 0;
+        deleteAllBtnDesktop.disabled = checkedCount === 0;
+    }
 
-    // Event listener untuk setiap checkbox baris
-    tableBody.addEventListener("change", function (e) {
-        if (e.target.classList.contains("spot-checkbox")) {
-            updateDeleteAllBtnState(); // Update button state when a checkbox is clicked
-        }
-    });
-
-    // Event listener untuk tombol "Delete All"
-    deleteAllBtn.addEventListener("click", function () {
+    function handleDeleteAllClick() {
         const checkboxes = document.querySelectorAll(".spot-checkbox:checked");
-        const spotIds = Array.from(checkboxes).map(
-            (checkbox) => checkbox.dataset.id
-        );
+        const spotIds = Array.from(checkboxes).map((cb) => cb.dataset.id);
 
         if (spotIds.length === 0) {
-            // Menampilkan alert jika tidak ada spot yang dipilih
             alertContainer.innerHTML = `
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     Pilih satu atau lebih spot untuk dihapus.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            `;
+                </div>`;
             return;
         }
 
-        // Konfirmasi penghapusan
         if (
             confirm(
                 "Apakah kamu yakin ingin menghapus semua spot yang dipilih?"
@@ -986,60 +979,72 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
-                        // Menghapus baris yang dipilih dari tabel
                         checkboxes.forEach((checkbox) => {
-                            if (checkbox.checked) {
-                                const row = checkbox.closest("tr");
-                                row.remove();
-                            }
+                            const row = checkbox.closest("tr");
+                            row.remove();
                         });
-
-                        // Menampilkan alert sukses
                         alertContainer.innerHTML = `
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             Spot yang dipilih berhasil dihapus.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    `;
+                        </div>`;
                     } else {
-                        // Menampilkan alert error jika penghapusan gagal
                         alertContainer.innerHTML = `
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             Gagal menghapus spot.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    `;
+                        </div>`;
                     }
                 })
                 .catch((error) => {
                     console.error("Error:", error);
-                    // Menampilkan alert error jika terjadi kesalahan
                     alertContainer.innerHTML = `
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         Terjadi kesalahan saat menghapus data: ${error.message}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                `;
+                    </div>`;
                 });
+        }
+    }
+
+    // Event listener tombol
+    deleteAllBtnMobile.addEventListener("click", handleDeleteAllClick);
+    deleteAllBtnDesktop.addEventListener("click", handleDeleteAllClick);
+
+    // Checkbox "Select All"
+    selectAllCheckbox.addEventListener("change", function () {
+        const checkboxes = document.querySelectorAll(".spot-checkbox");
+        checkboxes.forEach((cb) => (cb.checked = selectAllCheckbox.checked));
+        updateDeleteAllBtnState();
+    });
+
+    // Checkbox per baris
+    tableBody.addEventListener("change", function (e) {
+        if (e.target.classList.contains("spot-checkbox")) {
+            updateDeleteAllBtnState();
         }
     });
 
-    // Initial check to disable the "Delete All" button if no checkboxes are selected
+    // Initial check
     updateDeleteAllBtnState();
 });
 
 document.addEventListener("DOMContentLoaded", function () {
     const collapseEl = document.getElementById("actionButtonsCollapse");
-    const toggleButton = document.querySelector('[data-bs-target="#actionButtonsCollapse"]');
+    const toggleButton = document.querySelector(
+        '[data-bs-target="#actionButtonsCollapse"]'
+    );
 
     // Pastikan elemen collapse tersedia
     if (collapseEl && toggleButton) {
-        const collapseInstance = new bootstrap.Collapse(collapseEl, { toggle: false });
+        const collapseInstance = new bootstrap.Collapse(collapseEl, {
+            toggle: false,
+        });
 
         // Temukan semua tombol/a di dalam collapse
         const actionButtons = collapseEl.querySelectorAll("button, a");
 
-        actionButtons.forEach(btn => {
+        actionButtons.forEach((btn) => {
             btn.addEventListener("click", function () {
                 if (window.innerWidth < 768) {
                     collapseInstance.hide(); // Tutup jika di mobile
@@ -1047,4 +1052,45 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+});
+
+document
+    .querySelectorAll("#latTanaman, #longTanaman")
+    .forEach(function (input) {
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/[^0-9.-]/g, "");
+        });
+    });
+
+document
+    .getElementById("refreshTableBtn")
+    .addEventListener("click", function () {
+        const url = this.getAttribute("data-url");
+        fetch(url)
+            .then((response) => response.text())
+            .then((html) => {
+                document.querySelector("#spot-table tbody").innerHTML = html;
+            });
+    });
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-description").forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const container = this.closest(".description-container");
+            const shortDesc = container.querySelector(".short-description");
+            const fullDesc = container.querySelector(".full-description");
+
+            if (fullDesc.classList.contains("d-none")) {
+                shortDesc.classList.add("d-none");
+                fullDesc.classList.remove("d-none");
+                this.textContent = "Sembunyikan";
+            } else {
+                fullDesc.classList.add("d-none");
+                shortDesc.classList.remove("d-none");
+                this.textContent = "Lihat Selengkapnya";
+            }
+        });
+    });
 });

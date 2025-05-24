@@ -10,6 +10,26 @@ a:hover {
     text-decoration: none;
 }
 
+/* Freeze kolom pertama (checkbox) */
+#spot-table th:first-child,
+#spot-table td:first-child {
+    position: sticky;
+    left: 0;
+    background-color: white; /* sesuaikan warna background */
+    z-index: 20; /* lebih besar agar di atas kolom lain */
+    box-shadow: 2px 0 5px -2px rgba(0, 0, 0, 0.2); /* efek bayangan sisi kanan */
+}
+
+/* Freeze kolom terakhir (aksi) */
+#spot-table th:last-child,
+#spot-table td:last-child {
+    position: sticky;
+    right: 0;
+    background-color: white;
+    z-index: 10;
+    box-shadow: -2px 0 5px -2px rgba(0, 0, 0, 0.2);
+}
+
 /* --- FIX FORM OUTLINE MDB --- */
 
 /* Warna placeholder dan caret */

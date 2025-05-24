@@ -1,7 +1,7 @@
 @extends('public.app')
 
 @section('content')
-    <div class="container d-flex flex-column justify-content-center align-items-center px-3" style="min-height: 100vh;">
+    <div class="container d-flex flex-column justify-content-center align-items-center px-3" style="min-height: 100dvh;">
         <div class="text-center mb-4 w-100" style="max-width: 600px;">
             <h1 class="fw-bold text-botanica fs-2 fs-md-3 fs-lg-4">
                 {{ config('app.name') }}

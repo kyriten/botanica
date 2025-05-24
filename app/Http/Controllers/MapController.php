@@ -92,6 +92,7 @@ class MapController extends Controller
             'city_name'       => 'nullable|string|max:255',
             'plant_lat'       => 'required|numeric',
             'plant_long'      => 'required|numeric',
+            'category'        => 'nullable|string|max:255',
             'local'           => 'nullable|string|max:255',
             'latin'           => 'nullable|string|max:255',
             'slug'            => 'nullable|string|max:255|unique:maps,slug',
@@ -107,8 +108,11 @@ class MapController extends Controller
             'species'         => 'nullable|string|max:255',
             'description'     => 'nullable',
             'plant_image'     => 'nullable|image|file|max:2048',
-            'leaf_image'      => 'nullable|image|file|max:2048',
             'stem_image'      => 'nullable|image|file|max:2048',
+            'leaf_image'      => 'nullable|image|file|max:2048',
+            'flower_image'    => 'nullable|image|file|max:2048',
+            'fruit_image'     => 'nullable|image|file|max:2048',
+            'another_image'   => 'nullable|image|file|max:2048',
         ]);
 
         $garden = Garden::find($validatedData['garden_id']);
@@ -127,13 +131,22 @@ class MapController extends Controller
 
         // Upload gambar jika ada
         if ($request->hasFile('plant_image')) {
-            $validatedData['plant_image'] = $request->file('plant_image')->store('map-images', 'public');
-        }
-        if ($request->hasFile('leaf_image')) {
-            $validatedData['leaf_image'] = $request->file('leaf_image')->store('map-images', 'public');
+            $validatedData['plant_image'] = $request->file('plant_image')->store('plant-images', 'public');
         }
         if ($request->hasFile('stem_image')) {
-            $validatedData['stem_image'] = $request->file('stem_image')->store('map-images', 'public');
+            $validatedData['stem_image'] = $request->file('stem_image')->store('stem-images', 'public');
+        }
+        if ($request->hasFile('leaf_image')) {
+            $validatedData['leaf_image'] = $request->file('leaf_image')->store('leaf-images', 'public');
+        }
+        if ($request->hasFile('flower_image')) {
+            $validatedData['flower_image'] = $request->file('flower_image')->store('flower-images', 'public');
+        }
+        if ($request->hasFile('fruit_image')) {
+            $validatedData['fruit_image'] = $request->file('fruit_image')->store('fruit-images', 'public');
+        }
+        if ($request->hasFile('another_image')) {
+            $validatedData['another_image'] = $request->file('another_image')->store('another-images', 'public');
         }
 
         // Tambahkan user_id
@@ -195,6 +208,7 @@ class MapController extends Controller
                 'city_name'       => 'nullable|string|max:255',
                 'plant_lat'       => 'required|numeric',
                 'plant_long'      => 'required|numeric',
+                'category'        => 'nullable|string|max:255',
                 'local'           => 'nullable|string|max:255',
                 'latin'           => 'nullable|string|max:255',
                 'slug'            => 'nullable|string|max:255',
@@ -212,6 +226,9 @@ class MapController extends Controller
                 'plant_image'     => 'nullable|image|file|max:2048',
                 'leaf_image'      => 'nullable|image|file|max:2048',
                 'stem_image'      => 'nullable|image|file|max:2048',
+                'flower_image'    => 'nullable|image|file|max:2048',
+                'fruit_image'     => 'nullable|image|file|max:2048',
+                'another_image'   => 'nullable|image|file|max:2048',
             ];
 
             // Validasi input
@@ -222,21 +239,42 @@ class MapController extends Controller
                 if ($map->plant_image && Storage::exists($map->plant_image)) {
                     Storage::delete($map->plant_image); // Menghapus gambar lama jika ada
                 }
-                $validatedData['plant_image'] = $request->file('plant_image')->store('map-images', 'public');
-            }
-
-            if ($request->hasFile('leaf_image')) {
-                if ($map->leaf_image && Storage::exists($map->leaf_image)) {
-                    Storage::delete($map->leaf_image); // Menghapus gambar lama jika ada
-                }
-                $validatedData['leaf_image'] = $request->file('leaf_image')->store('map-images', 'public');
+                $validatedData['plant_image'] = $request->file('plant_image')->store('plant-images', 'public');
             }
 
             if ($request->hasFile('stem_image')) {
                 if ($map->stem_image && Storage::exists($map->stem_image)) {
                     Storage::delete($map->stem_image); // Menghapus gambar lama jika ada
                 }
-                $validatedData['stem_image'] = $request->file('stem_image')->store('map-images', 'public');
+                $validatedData['stem_image'] = $request->file('stem_image')->store('stem-images', 'public');
+            }
+
+            if ($request->hasFile('leaf_image')) {
+                if ($map->leaf_image && Storage::exists($map->leaf_image)) {
+                    Storage::delete($map->leaf_image); // Menghapus gambar lama jika ada
+                }
+                $validatedData['leaf_image'] = $request->file('leaf_image')->store('leaf-images', 'public');
+            }
+
+            if ($request->hasFile('flower_image')) {
+                if ($map->flower_image && Storage::exists($map->flower_image)) {
+                    Storage::delete($map->flower_image); // Menghapus gambar lama jika ada
+                }
+                $validatedData['flower_image'] = $request->file('flower_image')->store('flower-images', 'public');
+            }
+
+            if ($request->hasFile('fruit_image')) {
+                if ($map->fruit_image && Storage::exists($map->fruit_image)) {
+                    Storage::delete($map->fruit_image); // Menghapus gambar lama jika ada
+                }
+                $validatedData['fruit_image'] = $request->file('fruit_image')->store('fruit-images', 'public');
+            }
+
+            if ($request->hasFile('another_image')) {
+                if ($map->another_image && Storage::exists($map->another_image)) {
+                    Storage::delete($map->another_image); // Menghapus gambar lama jika ada
+                }
+                $validatedData['another_image'] = $request->file('another_image')->store('another-images', 'public');
             }
 
             // Memastikan slug dibuat jika tidak ada
@@ -296,6 +334,7 @@ class MapController extends Controller
             'city_name',
             'plant_lat',
             'plant_long',
+            'category',
             'local',
             'latin',
             'kingdom',
@@ -310,8 +349,11 @@ class MapController extends Controller
             'species',
             'description',
             'plant_image',
-            'leaf_image',
             'stem_image',
+            'leaf_image',
+            'flower_image',
+            'fruit_image',
+            'another_image',
         ]);
 
         return response()->json(['data' => $maps]);
@@ -339,52 +381,50 @@ class MapController extends Controller
         return response()->json($spot);
     }
 
-
     public function import(Request $request)
     {
-        try {
-            $request->validate([
-                'csv_file' => 'required|mimes:xlsx,xls,csv'
-            ]);
-        } catch (ValidationException $e) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validasi gagal',
-                    'errors' => $e->errors(),
-                ], 422);
-            }
+        $request->validate([
+            'csv_file' => 'required|mimes:xlsx,xls,csv',
+        ]);
 
-            throw $e; // fallback
-        }
+        $import = new SpotTanamanImport();
 
         try {
-            Excel::import(new SpotTanamanImport, $request->file('csv_file'));
+            Excel::import($import, $request->file('csv_file'));
 
-            $maps = Map::latest()->take(1)->get();
+            $duplicates = $import->getDuplicates();
+            $missingGardens = $import->getMissingGardens();
 
-            if ($request->expectsJson()) {
+            if (!empty($duplicates)) {
                 return response()->json([
-                    'success' => true,
-                    'message' => 'Import berhasil!',
-                    'maps' => $maps,
-                ]);
+                    'status' => 'partial',
+                    'message' => 'Beberapa data spot tidak diimpor karena duplikat.',
+                    'missingGardens' => $missingGardens,
+                    'duplicates' => $duplicates
+                ], 200);
             }
 
-            return back()->with('success', 'Import berhasil!');
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data spot tanaman berhasil diimpor.'
+            ], 200);
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            $messages = [];
+            foreach ($failures as $failure) {
+                $messages[] = "Baris {$failure->row()}: " . implode(', ', $failure->errors());
+            }
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kesalahan validasi: ' . implode(', ', $messages)
+            ], 422);
         } catch (\Exception $e) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Import gagal: ' . $e->getMessage(),
-                ], 500);
-            }
-
-            return back()->with('error', 'Import gagal.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Kesalahan saat impor: ' . $e->getMessage()
+            ], 500);
         }
     }
-
-
     public function export()
     {
         $gardenId = session('selected_garden_id');
@@ -395,6 +435,7 @@ class MapController extends Controller
 
         $maps = Map::where('garden_id', $gardenId)
             ->get([
+                'category',
                 'local',
                 'latin',
                 'slug',
@@ -438,5 +479,11 @@ class MapController extends Controller
         Map::whereIn('id', $ids)->delete();
 
         return response()->json(['success' => true]);
+    }
+
+    public function refreshTable(Request $request)
+    {
+        $map = Map::query()->paginate(10); // atau sesuai query utama Anda
+        return view('admin.peta.partials.spot-table-body', compact('map'));
     }
 }

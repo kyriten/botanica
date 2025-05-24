@@ -72,7 +72,7 @@ Route::get('/tanaman/{id}', [PublicController::class, 'show'])->name('plant.show
 Route::get('/autocomplete', [PublicController::class, 'autocomplete'])->name('plant.autocomplete');
 
 Route::get('/', [PublicController::class, 'index'])->name('public.index');
-
+Route::get('/spot-table-refresh', [MapController::class, 'refreshTable'])->name('spot.table.refresh');
 
 // API
 Route::get('/map/{id}/data', [MapController::class, 'getData']);

@@ -48,6 +48,9 @@
             <div class="row fade-in">
                 <div id="alert-container"></div>
 
+                <div id="import-feedback" class="mt-2"></div>
+                <div id="import-duplicates"></div>
+
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
@@ -72,7 +75,7 @@
 
                                     <!-- Tombol (desktop - selalu tampil) -->
                                     <div class="d-none d-md-flex flex-wrap gap-2">
-                                        @include('admin.peta.partials.action-buttons')
+                                        @include('admin.peta.partials.action-buttons-desktop')
                                     </div>
                                 </div>
 
@@ -89,7 +92,6 @@
                                     </form>
                                 </div>
                             </div>
-
 
                             <!-- Tabel Data -->
                             <div id="data-table-container" class="table-responsive">

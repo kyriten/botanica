@@ -12,10 +12,10 @@
                     @csrf
 
                     <div class="mb-3">
-                        <input type="file" class="form-control" id="customFile" name="csv_file"
+                        <input type="file" class="form-control" id="csv-file" name="csv_file"
                             accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                             required>
-                        <label for="customFile" class="form-label">Catatan: Unggah file Excel atau CSV</label>
+                        <label for="csv-file" class="form-label text-sm">Catatan: Unggah file Excel atau CSV</label>
                     </div>
 
                     <div class="text-center">

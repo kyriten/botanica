@@ -1,15 +1,16 @@
 <!-- Modal untuk Input Data Spot Kebun Raya -->
 <div id="inputSpotModal" class="modal fade" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true"
     style="display:none; background: rgba(0,0,0,0.5);">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content p-4">
-            <!-- Tombol Close -->
-            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal"
-                aria-label="Close"></button>
+            <button type="button"
+                class="btn-close bg-white border border-dark rounded-circle shadow position-absolute top-0 end-0 m-3 p-2"
+                data-bs-dismiss="modal" aria-label="Close"></button>
 
-            <h5 class="modal-title mb-3">Tambah Spot Baru</h5>
+            <h5 class="modal-title mb-3" id="titleModalInputSpot">Tambah Spot Baru</h5>
 
-            <form id="map-form" data-url="{{ route('map.store') }}" data-token="{{ csrf_token() }}" method="post" enctype="multipart/form-data" >
+            <form id="map-form" data-url="{{ route('map.store') }}" data-token="{{ csrf_token() }}" method="post"
+                enctype="multipart/form-data">
 
                 @csrf
                 <input type="hidden" name="garden_id" id="selectedGardenId">
@@ -19,7 +20,7 @@
                 </div>
 
                 <div class="overflow-x-auto">
-                    <div class="d-flex flex-nowrap gap-3 pb-3">
+                    <div class="d-flex justify-content-center flex-nowrap gap-3 pb-3">
                         <!-- Gambar Tumbuhan -->
                         <div class="flex-shrink-0" style="width: 300px;">
                             <div class="position-relative mb-4 text-center">
@@ -123,6 +124,114 @@
                         </div>
                     </div>
                 </div>
+                <div class="overflow-x-auto">
+                    <div class="d-flex justify-content-center flex-nowrap gap-3 pb-3">
+                        <!-- Gambar Bunga -->
+                        <div class="flex-shrink-0" style="width: 300px;">
+                            <div class="position-relative mb-4 text-center">
+                                <!-- Label di atas gambar -->
+                                <div
+                                    class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                    Bunga
+                                </div>
+
+                                <!-- Gambar -->
+                                <img id="imgPreviewFlower"
+                                    src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                    alt="image placeholder" style="width: 200px;" />
+                            </div>
+
+                            <!-- Error message -->
+                            <div class="mb-2 text-center text-danger">
+                                @error('flower_image')
+                                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Tombol Upload -->
+                            <div class="d-flex justify-content-center">
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileFlower">Pilih
+                                        gambar</label>
+                                    <input class="form-control d-none @error('plant_image') is-invalid @enderror"
+                                        id="customFileFlower" name="flower_image" type="file"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="showPreview(event, 'imgPreviewFlower');">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gambar Buah -->
+                        <div class="flex-shrink-0" style="width: 300px;">
+                            <div class="position-relative mb-4 text-center">
+                                <!-- Label di atas gambar -->
+                                <div
+                                    class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                    Buah
+                                </div>
+
+                                <!-- Gambar -->
+                                <img id="imgPreviewFruit"
+                                    src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                    alt="image placeholder" style="width: 200px;" />
+                            </div>
+
+                            <!-- Error message -->
+                            <div class="mb-2 text-center text-danger">
+                                @error('fruit_image')
+                                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Tombol Upload -->
+                            <div class="d-flex justify-content-center">
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileFruit">Pilih
+                                        gambar</label>
+                                    <input class="form-control d-none @error('fruit_image') is-invalid @enderror"
+                                        id="customFileFruit" name="fruit_image" type="file"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="showPreview(event, 'imgPreviewFruit');">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gambar Lain-lain -->
+                        <div class="flex-shrink-0" style="width: 300px;">
+                            <div class="position-relative mb-4 text-center">
+                                <!-- Label di atas gambar -->
+                                <div
+                                    class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm">
+                                    Lain-lain
+                                </div>
+
+                                <!-- Gambar -->
+                                <img id="imgPreviewAnother"
+                                    src="http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg"
+                                    alt="image placeholder" style="width: 200px;" />
+                            </div>
+
+                            <!-- Error message -->
+                            <div class="mb-2 text-center text-danger">
+                                @error('another_image')
+                                    <span class="text-red-600 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Tombol Upload -->
+                            <div class="d-flex justify-content-center">
+                                <div class="btn btn-botanica btn-rounded mb-3">
+                                    <label class="form-label text-white mb-0" for="customFileAnother">Pilih
+                                        gambar</label>
+                                    <input class="form-control d-none @error('another_image') is-invalid @enderror"
+                                        id="customFileAnother" name="another_image" type="file"
+                                        accept="image/png, image/jpeg, image/jpg"
+                                        onchange="showPreview(event, 'imgPreviewAnother');">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr class="mt-3 mb-3">
 
@@ -171,6 +280,17 @@
                 </div>
 
                 <div class="collapse" id="collapseDetail">
+                    <div class="row mb-3">
+                        <!-- Jenis Tanaman -->
+                        <div class="col-md-12">
+                            <label class="form-label text-dark" for="jenisTanaman">Jenis Tanaman<span
+                                    class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Wajib diisi">*</span></label>
+                            <input type="text" id="jenisTanaman" class="form-control" name="category"
+                                placeholder="Jenis Tanaman" />
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <!-- Nama Lokal Tanaman -->
                         <div class="col-md-6">
@@ -321,7 +441,7 @@
                         <label for="latTanaman" class="form-label text-dark">Latitude<span class="text-danger"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Wajib diisi">*</span></label>
                         <input type="text" class="form-control" id="latTanaman" name="plant_lat"
-                            placeholder="Latitude" readonly />
+                            placeholder="Masukkan Latitude" pattern="^-?\d*\.?\d*$" inputmode="decimal" />
                     </div>
 
                     <!-- Longitude -->
@@ -329,15 +449,20 @@
                         <label for="longTanaman" class="form-label text-dark">Longitude<span class="text-danger"
                                 data-bs-toggle="tooltip" data-bs-placement="top" title="Wajib diisi">*</span></label>
                         <input type="text" class="form-control" id="longTanaman" name="plant_long"
-                            placeholder="Longitude" readonly />
+                            placeholder="Masukkan Longitude" pattern="^-?\d*\.?\d*$" inputmode="decimal" />
                     </div>
                 </div>
 
                 <!-- Map Picker -->
                 <div class="mb-4">
-                    <label for="latTanaman" class="form-label text-dark mb-2" id="pickGardenSpot">Tandai Lokasi<span
-                            class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="Wajib diisi">*</span></label>
+                    <label for="latTanaman" class="form-label text-dark mb-0" id="pickGardenSpot">
+                        Tandai Lokasi<span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="Wajib diisi">*</span>
+                    </label>
+                    <div class="form-text text-muted mb-2">
+                        Kamu juga bisa <i>pick</i> titik yang diinginkan dengan <strong>mengklik</strong> titik yang
+                        diinginkan langsung pada peta.
+                    </div>
 
                     <div id="mapSpot" style="height: 400px; width: 100%; border: 1px solid #ccc;"></div>
                 </div>
