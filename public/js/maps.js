@@ -1094,3 +1094,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+function showPreview(event, id) {
+    const input = event.target;
+    const preview = document.getElementById(id);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.img-clickable').forEach(function(img) {
+            img.addEventListener('click', function() {
+                var src = this.getAttribute('data-imgsrc');
+                document.getElementById('zoomedImage').setAttribute('src', src);
+            });
+        });
+    });

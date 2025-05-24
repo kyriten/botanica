@@ -45,7 +45,7 @@ const fetchSuggestions = debounce(function () {
                     "border-0"
                 );
                 item.innerHTML = `
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column text-start">
                         <span class="fw-medium">${highlightMatch(
                             plant.local,
                             query
@@ -214,3 +214,47 @@ document.addEventListener("DOMContentLoaded", function () {
         initMapsByViewport();
     });
 });
+
+function loadTabPage(url, tab) {
+    const spinner = document.getElementById("loading-spinner");
+
+    // Mapping tab ke container hasil pencarian
+    const containerIds = {
+        all: "search-results-all",
+        image: "search-results-image",
+    };
+
+    const containerId = containerIds[tab];
+    if (!containerId) {
+        console.error("Unknown tab:", tab);
+        return;
+    }
+
+    const resultsContainer = document.getElementById(containerId);
+
+    if (!resultsContainer) {
+        console.error("Container not found for tab:", tab);
+        return;
+    }
+
+    spinner.classList.remove("d-none");
+
+    const fetchUrl = url.includes("?")
+        ? `${url}&tab=${tab}`
+        : `${url}?tab=${tab}`;
+
+    fetch(fetchUrl, {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    })
+        .then((response) => response.text())
+        .then((html) => {
+            resultsContainer.innerHTML = html;
+            spinner.classList.add("d-none");
+        })
+        .catch((error) => {
+            console.error("Error fetching pagination:", error);
+            spinner.classList.add("d-none");
+        });
+}

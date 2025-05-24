@@ -12,8 +12,7 @@
                 <div class="col-md-6 order-md-1 px-4">
                     {{-- Detail tanaman --}}
                     <ul class="list-unstyled mt-3">
-                        <li><strong>Persebaran:</strong> {{ $plant->city_name ?? '-' }}, {{ $plant->province_name ?? '-' }}
-                        </li>
+                        <li><strong>Jenis Tanaman:</strong> {{ $plant->category ?? '-' }}</li>
                         <li><strong>Lokasi:</strong> {{ $plant->garden_name ?? '-' }}</li>
                         <li><strong>Kingdom:</strong> {{ $plant->kingdom }}</li>
                         <li><strong>Sub Kingdom:</strong> {{ $plant->sub_kingdom }}</li>
@@ -25,6 +24,9 @@
                         <li><strong>Famili:</strong> {{ $plant->famili }}</li>
                         <li><strong>Genus:</strong> {{ $plant->genus }}</li>
                         <li><strong>Spesies:</strong> {{ $plant->species }}</li>
+                        <li><strong>Persebaran:</strong> {{ $plant->city_name ?? '-' }},
+                            {{ $plant->province_name ?? '-' }}
+                        </li>
                         <li><strong>Deskripsi:</strong> {{ $plant->description }}</li>
                     </ul>
                 </div>
@@ -49,6 +51,24 @@
                                     [
                                         'src' => $plant->stem_image
                                             ? asset('storage/' . $plant->stem_image)
+                                            : asset('images/no-image.png'),
+                                        'label' => 'Batang',
+                                    ],
+                                    [
+                                        'src' => $plant->flower_image
+                                            ? asset('storage/' . $plant->flower_image)
+                                            : asset('images/no-image.png'),
+                                        'label' => 'Tanaman',
+                                    ],
+                                    [
+                                        'src' => $plant->fruit_image
+                                            ? asset('storage/' . $plant->fruit_image)
+                                            : asset('images/no-image.png'),
+                                        'label' => 'Daun',
+                                    ],
+                                    [
+                                        'src' => $plant->another_image
+                                            ? asset('storage/' . $plant->another_image)
                                             : asset('images/no-image.png'),
                                         'label' => 'Batang',
                                     ],
@@ -128,8 +148,7 @@
                         aria-labelledby="detail-tab">
                         {{-- Detail tanaman --}}
                         <ul class="list-unstyled">
-                            <li><strong>Persebaran:</strong> {{ $plant->city_name ?? '-' }},
-                                {{ $plant->province_name ?? '-' }}</li>
+                            <li><strong>Jenis Tanaman:</strong> {{ $plant->category ?? '-' }}</li>
                             <li><strong>Lokasi:</strong> {{ $plant->garden_name ?? '-' }}</li>
                             <li><strong>Kingdom:</strong> {{ $plant->kingdom }}</li>
                             <li><strong>Sub Kingdom:</strong> {{ $plant->sub_kingdom }}</li>
@@ -141,6 +160,8 @@
                             <li><strong>Famili:</strong> {{ $plant->famili }}</li>
                             <li><strong>Genus:</strong> {{ $plant->genus }}</li>
                             <li><strong>Spesies:</strong> {{ $plant->species }}</li>
+                            <li><strong>Persebaran:</strong> {{ $plant->city_name ?? '-' }},
+                                {{ $plant->province_name ?? '-' }}</li>
                             <li><strong>Deskripsi:</strong> {{ $plant->description }}</li>
                         </ul>
                     </div>

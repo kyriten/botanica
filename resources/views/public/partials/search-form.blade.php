@@ -1,4 +1,4 @@
-<form id="plant-search-form" class="d-flex justify-content-end ps-3 pe-1 pe-md-0 ps-md-0 py-3" method="GET"
+<form id="plant-search-form" class="d-flex justify-content-end pe-md-0 ps-md-0 py-3" method="GET"
     autocomplete="on" action="{{ route('public.search') }}">
     @csrf
     <div class="position-relative w-100" style="max-width: 600px;">

@@ -438,7 +438,7 @@ class MapController extends Controller
                 'category',
                 'local',
                 'latin',
-                'slug',
+                'famili',
                 'kingdom',
                 'sub_kingdom',
                 'super_division',
@@ -446,13 +446,18 @@ class MapController extends Controller
                 'class',
                 'sub_class',
                 'ordo',
-                'famili',
                 'genus',
                 'species',
                 'description',
+                'plant_image',
+                'stem_image',
+                'leaf_image',
+                'flower_image',
+                'fruit_image',
+                'another_image',
+                'garden_name',
                 'plant_lat',
                 'plant_long',
-                'garden_name'
             ]);
 
         $gardenName = session('selected_garden_name');

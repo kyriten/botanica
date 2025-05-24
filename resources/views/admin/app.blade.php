@@ -36,6 +36,7 @@
 
     <!-- Template POST CSS File -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/image-form.css') }}" rel="stylesheet">
 
     <style>
         /* Animasi tombol saat diklik */

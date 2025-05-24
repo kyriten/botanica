@@ -192,3 +192,26 @@
 .nav-link.active {
     font-weight: 700;
 }
+
+/* Sticky wrapper untuk freeze header dan nav */
+.search-header-wrapper {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1030;
+    border-bottom: 1px solid #ddd;
+}
+
+.search-header {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.google-nav {
+    /* sudah ada styling, hanya override margin-bottom supaya pas */
+    margin-bottom: 0;
+    border-bottom: 1px solid #e8e8e8;
+}

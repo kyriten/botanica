@@ -82,54 +82,66 @@
                     <td>
                         @if ($item->plant_image)
                             <img src="{{ asset('storage/' . $item->plant_image) }}" alt="Foto Tanaman"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->plant_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->stem_image)
                             <img src="{{ asset('storage/' . $item->stem_image) }}" alt="Foto Batang"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->stem_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->leaf_image)
                             <img src="{{ asset('storage/' . $item->leaf_image) }}" alt="Foto Daun"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->leaf_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->flower_image)
                             <img src="{{ asset('storage/' . $item->flower_image) }}" alt="Foto Bunga"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->flower_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->fruit_image)
                             <img src="{{ asset('storage/' . $item->fruit_image) }}" alt="Foto Buah"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->fruit_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->another_image)
                             <img src="{{ asset('storage/' . $item->another_image) }}" alt="Foto Lainnya"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->another_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
@@ -176,7 +188,8 @@
         <ul class="pagination justify-content-center pagination-circle mt-2">
             {{-- Previous Page Link --}}
             @if ($map->onFirstPage())
-                <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+                <li class="page-item disabled"><span class="page-link"><i
+                            class="bi bi-chevron-double-left"></i></span>
                 </li>
             @else
                 <li class="page-item">
@@ -203,7 +216,8 @@
                 @if ($i == $currentPage)
                     <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
                 @else
-                    <li class="page-item"><a class="page-link" href="{{ $map->url($i) }}">{{ $i }}</a></li>
+                    <li class="page-item"><a class="page-link" href="{{ $map->url($i) }}">{{ $i }}</a>
+                    </li>
                 @endif
             @endfor
 
