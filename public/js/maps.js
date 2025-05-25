@@ -626,6 +626,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("selectedGardenIdEdit").value = data.garden_id;
         document.getElementById("editProvinceName").value = data.province_name;
         document.getElementById("editCityName").value = data.city_name;
+        document.getElementById("editCategory").value = data.category;
         document.getElementById("editLocal").value = data.local;
         document.getElementById("editLatin").value = data.latin;
         document.getElementById("editSlug").value = data.slug;
