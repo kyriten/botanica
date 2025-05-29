@@ -1,0 +1,8 @@
+[11-May-2025 14:38:18 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Application" not found in /home/abiilaco/public_html/botanica.abiila.com/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/bootstrap/app.php on line 14
+[12-May-2025 12:15:39 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Application" not found in /home/abiilaco/public_html/botanica.abiila.com/bootstrap/app.php:14
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/bootstrap/app.php on line 14

@@ -1,0 +1,52 @@
+[12-May-2025 12:15:53 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2014_10_12_000000_create_users_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2014_10_12_000000_create_users_table.php on line 7
+[12-May-2025 12:15:53 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2014_10_12_100000_create_password_resets_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2014_10_12_100000_create_password_resets_table.php on line 7
+[12-May-2025 12:15:54 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2019_08_19_000000_create_failed_jobs_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2019_08_19_000000_create_failed_jobs_table.php on line 7
+[12-May-2025 12:15:55 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2019_12_14_000001_create_personal_access_tokens_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2019_12_14_000001_create_personal_access_tokens_table.php on line 7
+[12-May-2025 12:15:55 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_135248_create_posts_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_135248_create_posts_table.php on line 7
+[12-May-2025 12:15:56 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_140855_create_provinces_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_140855_create_provinces_table.php on line 7
+[12-May-2025 12:15:57 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_140919_create_cities_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_140919_create_cities_table.php on line 7
+[12-May-2025 12:15:57 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_143255_create_post_provinces_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_143255_create_post_provinces_table.php on line 7
+[12-May-2025 12:15:58 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_143321_create_post_cities_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_03_30_143321_create_post_cities_table.php on line 7
+[12-May-2025 12:15:59 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_053551_create_districts_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_053551_create_districts_table.php on line 7
+[12-May-2025 12:16:00 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_055106_create_villages_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_055106_create_villages_table.php on line 7
+[12-May-2025 12:16:00 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_055332_create_gardens_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_055332_create_gardens_table.php on line 7
+[12-May-2025 12:16:01 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Migrations\Migration" not found in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_143347_create_maps_table.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/database/migrations/2025_04_08_143347_create_maps_table.php on line 7

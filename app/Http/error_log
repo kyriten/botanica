@@ -1,0 +1,4 @@
+[12-May-2025 12:15:14 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Http\Kernel" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Kernel.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Kernel.php on line 7

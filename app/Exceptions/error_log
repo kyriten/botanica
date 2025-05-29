@@ -1,0 +1,4 @@
+[12-May-2025 12:15:12 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Exceptions\Handler" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Exceptions/Handler.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Exceptions/Handler.php on line 8

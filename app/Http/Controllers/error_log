@@ -1,0 +1,48 @@
+[12-May-2025 12:15:15 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/AdminController.php:12
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/AdminController.php on line 12
+[12-May-2025 12:15:16 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/CityController.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/CityController.php on line 9
+[12-May-2025 12:15:17 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Routing\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/Controller.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/Controller.php on line 10
+[12-May-2025 12:15:17 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/DistrictController.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/DistrictController.php on line 9
+[12-May-2025 12:15:18 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/LoginController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/LoginController.php on line 8
+[12-May-2025 12:15:18 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/MapController.php:20
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/MapController.php on line 20
+[12-May-2025 12:15:20 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/PlantPostController.php:7
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/PlantPostController.php on line 7
+[12-May-2025 12:15:20 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/PostController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/PostController.php on line 8
+[12-May-2025 12:15:21 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/ProvinceController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/ProvinceController.php on line 8
+[12-May-2025 12:15:22 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/PublicController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/PublicController.php on line 8
+[12-May-2025 12:15:22 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/RegisterController.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/RegisterController.php on line 8
+[12-May-2025 12:15:23 UTC] PHP Fatal error:  Uncaught Error: Class "App\Http\Controllers\Controller" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/VillageController.php:9
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Http/Controllers/VillageController.php on line 9

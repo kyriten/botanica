@@ -1,0 +1,4 @@
+[12-May-2025 12:15:29 UTC] PHP Fatal error:  Uncaught Error: Interface "Maatwebsite\Excel\Concerns\ToModel" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Imports/SpotTanamanImport.php:10
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Imports/SpotTanamanImport.php on line 10

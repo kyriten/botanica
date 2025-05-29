@@ -1,0 +1,32 @@
+[12-May-2025 12:15:30 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Eloquent\Model" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/City.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/City.php on line 8
+[12-May-2025 12:15:31 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Eloquent\Model" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/District.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/District.php on line 8
+[12-May-2025 12:15:32 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Eloquent\Model" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Garden.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Garden.php on line 8
+[12-May-2025 12:15:32 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Eloquent\Model" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Map.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Map.php on line 8
+[12-May-2025 12:15:33 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Eloquent\Model" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Post.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Post.php on line 8
+[12-May-2025 12:15:34 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Eloquent\Model" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Province.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Province.php on line 8
+[12-May-2025 12:15:34 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Foundation\Auth\User" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/User.php:11
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/User.php on line 11
+[12-May-2025 12:15:35 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Database\Eloquent\Model" not found in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Village.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/app/Models/Village.php on line 8
