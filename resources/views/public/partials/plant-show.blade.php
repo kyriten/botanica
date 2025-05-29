@@ -28,48 +28,48 @@
                             </tr>
                             <tr>
                                 <th scope="row">Kingdom</th>
-                                <td>{{ $plant->kingdom }}</td>
+                                <td>{{ $plant->kingdom ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Sub Kingdom</th>
-                                <td>{{ $plant->sub_kingdom }}</td>
+                                <td>{{ $plant->sub_kingdom ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Super Division</th>
-                                <td>{{ $plant->super_division }}</td>
+                                <td>{{ $plant->super_division ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Division</th>
-                                <td>{{ $plant->division }}</td>
+                                <td>{{ $plant->division ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Kelas</th>
-                                <td>{{ $plant->class }}</td>
+                                <td>{{ $plant->class ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Sub Kelas</th>
-                                <td>{{ $plant->sub_class }}</td>
+                                <td>{{ $plant->sub_class ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Ordo</th>
-                                <td>{{ $plant->ordo }}</td>
+                                <td>{{ $plant->ordo ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Famili</th>
-                                <td>{{ $plant->famili }}</td>
+                                <td>{{ $plant->famili ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Genus</th>
-                                <td>{{ $plant->genus }}</td>
+                                <td>{{ $plant->genus ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Spesies</th>
-                                <td>{{ $plant->species }}</td>
+                                <td>{{ $plant->species ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Persebaran</th>
                                 <td>
-                                    @if(!empty($plant->city_name) || !empty($plant->province_name))
+                                    @if (!empty($plant->city_name) || !empty($plant->province_name))
                                         {{ $plant->city_name ?? '' }}{{ $plant->city_name && $plant->province_name ? ', ' : '' }}{{ $plant->province_name ?? '' }}
                                     @else
                                         -
@@ -78,7 +78,7 @@
                             </tr>
                             <tr>
                                 <th scope="row">Deskripsi</th>
-                                <td>{{ $plant->description }}</td>
+                                <td>{{ $plant->description ?? 'Tidak ada deskripsi' }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -201,67 +201,67 @@
                         aria-labelledby="detail-tab">
                         {{-- Detail tanaman --}}
                         <table class="table table-sm table-borderless mt-3 w-auto">
-                        <tbody>
-                            <tr>
-                                <th scope="row">Lokasi</th>
-                                <td>{{ $plant->garden_name ?? '-' }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Kingdom</th>
-                                <td>{{ $plant->kingdom }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Sub Kingdom</th>
-                                <td>{{ $plant->sub_kingdom }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Super Division</th>
-                                <td>{{ $plant->super_division }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Division</th>
-                                <td>{{ $plant->division }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Kelas</th>
-                                <td>{{ $plant->class }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Sub Kelas</th>
-                                <td>{{ $plant->sub_class }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Ordo</th>
-                                <td>{{ $plant->ordo }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Famili</th>
-                                <td>{{ $plant->famili }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Genus</th>
-                                <td>{{ $plant->genus }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Spesies</th>
-                                <td>{{ $plant->species }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Persebaran</th>
-                                <td>
-                                    @if(!empty($plant->city_name) || !empty($plant->province_name))
-                                        {{ $plant->city_name ?? '' }}{{ $plant->city_name && $plant->province_name ? ', ' : '' }}{{ $plant->province_name ?? '' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Deskripsi</th>
-                                <td>{{ $plant->description }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Lokasi</th>
+                                    <td>{{ $plant->garden_name ?? '-' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Kingdom</th>
+                                    <td>{{ $plant->kingdom ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Sub Kingdom</th>
+                                    <td>{{ $plant->sub_kingdom ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Super Division</th>
+                                    <td>{{ $plant->super_division ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Division</th>
+                                    <td>{{ $plant->division ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Kelas</th>
+                                    <td>{{ $plant->class ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Sub Kelas</th>
+                                    <td>{{ $plant->sub_class ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Ordo</th>
+                                    <td>{{ $plant->ordo ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Famili</th>
+                                    <td>{{ $plant->famili ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Genus</th>
+                                    <td>{{ $plant->genus ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Spesies</th>
+                                    <td>{{ $plant->species ?? 'Tidak diketahui' }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Persebaran</th>
+                                    <td>
+                                        @if (!empty($plant->city_name) || !empty($plant->province_name))
+                                            {{ $plant->city_name ?? '' }}{{ $plant->city_name && $plant->province_name ? ', ' : '' }}{{ $plant->province_name ?? '' }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Deskripsi</th>
+                                    <td>{{ $plant->description ?? 'Tidak ada deskripsi' }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="tab-pane fade" id="location-tab-pane" role="tabpanel" aria-labelledby="location-tab">
                         @if (!$plant->plant_lat || !$plant->plant_long)
@@ -300,106 +300,105 @@
         };
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-        const plant = window.plantData || {};
-        let mapMobile, mapDesktop;
-        let mapMobileInitialized = false;
-        let mapDesktopInitialized = false;
+        document.addEventListener("DOMContentLoaded", function() {
+            const plant = window.plantData || {};
+            let mapMobile, mapDesktop;
+            let mapMobileInitialized = false;
+            let mapDesktopInitialized = false;
 
-        function isValidCoordinate(value) {
-            return typeof value === "number" && !isNaN(value);
-        }
+            function isValidCoordinate(value) {
+                return typeof value === "number" && !isNaN(value);
+            }
 
-        function getPopupContent() {
-            const local = plant.local || "Tanaman";
-            const latin = plant.latin || "";
+            function getPopupContent() {
+                const local = plant.local || "Tanaman";
+                const latin = plant.latin || "";
 
-            return `<div>
+                return `<div>
                 <strong>${local}</strong><br>
                 <em>${latin}</em>
             </div>`;
-        }
-
-        function initMapMobile() {
-            if (mapMobileInitialized) return;
-            mapMobileInitialized = true;
-
-            const lat = plant.lat;
-            const lng = plant.lng;
-
-            const container = document.getElementById("plant-map");
-            if (!container) return;
-
-            if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
-                mapMobile = L.map(container).setView([lat, lng], 16);
-
-                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                    attribution: "© OpenStreetMap contributors",
-                }).addTo(mapMobile);
-
-                L.marker([lat, lng])
-                    .addTo(mapMobile)
-                    .bindPopup(getPopupContent())
-                    .openPopup();
-            } else {
-                container.innerHTML =
-                    '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
             }
-        }
 
-        function initMapDesktop() {
-            if (mapDesktopInitialized) return;
-            mapDesktopInitialized = true;
+            function initMapMobile() {
+                if (mapMobileInitialized) return;
+                mapMobileInitialized = true;
 
-            const lat = plant.lat;
-            const lng = plant.lng;
+                const lat = plant.lat;
+                const lng = plant.lng;
 
-            const container = document.getElementById("plant-map-desktop");
-            if (!container) return;
+                const container = document.getElementById("plant-map");
+                if (!container) return;
 
-            if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
-                mapDesktop = L.map(container).setView([lat, lng], 16);
+                if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
+                    mapMobile = L.map(container).setView([lat, lng], 16);
 
-                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                    attribution: "© OpenStreetMap contributors",
-                }).addTo(mapDesktop);
+                    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                        attribution: "© OpenStreetMap contributors",
+                    }).addTo(mapMobile);
 
-                L.marker([lat, lng])
-                    .addTo(mapDesktop)
-                    .bindPopup(getPopupContent())
-                    .openPopup();
-            } else {
-                container.innerHTML =
-                    '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
+                    L.marker([lat, lng])
+                        .addTo(mapMobile)
+                        .bindPopup(getPopupContent())
+                        .openPopup();
+                } else {
+                    container.innerHTML =
+                        '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
+                }
             }
-        }
 
-        function initMapsByViewport() {
-            if (window.innerWidth >= 768) {
-                initMapDesktop();
-            } else {
-                if (
-                    document
+            function initMapDesktop() {
+                if (mapDesktopInitialized) return;
+                mapDesktopInitialized = true;
+
+                const lat = plant.lat;
+                const lng = plant.lng;
+
+                const container = document.getElementById("plant-map-desktop");
+                if (!container) return;
+
+                if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
+                    mapDesktop = L.map(container).setView([lat, lng], 16);
+
+                    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                        attribution: "© OpenStreetMap contributors",
+                    }).addTo(mapDesktop);
+
+                    L.marker([lat, lng])
+                        .addTo(mapDesktop)
+                        .bindPopup(getPopupContent())
+                        .openPopup();
+                } else {
+                    container.innerHTML =
+                        '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
+                }
+            }
+
+            function initMapsByViewport() {
+                if (window.innerWidth >= 768) {
+                    initMapDesktop();
+                } else {
+                    if (
+                        document
                         .getElementById("location-tab-pane")
                         ?.classList.contains("show")
-                ) {
-                    initMapMobile();
-                }
-
-                const locationTabBtn = document.getElementById("location-tab");
-                if (locationTabBtn) {
-                    locationTabBtn.addEventListener("shown.bs.tab", function () {
+                    ) {
                         initMapMobile();
-                    });
+                    }
+
+                    const locationTabBtn = document.getElementById("location-tab");
+                    if (locationTabBtn) {
+                        locationTabBtn.addEventListener("shown.bs.tab", function() {
+                            initMapMobile();
+                        });
+                    }
                 }
             }
-        }
 
-        initMapsByViewport();
-        window.addEventListener("resize", function () {
             initMapsByViewport();
+            window.addEventListener("resize", function() {
+                initMapsByViewport();
+            });
         });
-    });
     </script>
-
 @endpush
