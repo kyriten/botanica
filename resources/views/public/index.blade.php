@@ -6,7 +6,7 @@
             <div class="d-flex justify-content-center align-items-center mb-2">
                 <!-- Logo untuk mobile -->
                 <img src="{{ asset('images/logo.png') }}" alt="Logo" height="40" class="d-block">
-                
+
                 <h1 class="fw-bold text-botanica fs-2 fs-md-3 fs-lg-4 mb-0 ms-sm-1">
                     {{ config('app.name') }}
                 </h1>

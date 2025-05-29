@@ -18,7 +18,7 @@
                     <div class="d-flex justify-content-center align-items-center mb-2">
                         <!-- Logo untuk mobile -->
                         <img src="{{ asset('images/logo.png') }}" alt="Logo" height="40" class="d-block d-sm-block">
-    
+
                         <!-- Judul untuk desktop -->
                         <h1 class="fw-bold text-botanica d-none d-sm-block m-0 ms-sm-1">
                             {{ config('app.name') }}
@@ -102,7 +102,7 @@
                     @include('public.partials.plant-list-image', ['plants' => $plants])
                 </div>
             </div>
-            
+
             {{-- Tab Garden --}}
             <div class="tab-pane fade {{ $activeTab === 'garden' ? 'show active' : '' }}" id="garden" role="tabpanel"
                 aria-labelledby="garden-tab">
