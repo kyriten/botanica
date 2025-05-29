@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-end mb-2 d-md-none d-block">
+<div class="d-flex justify-content-start mb-2 d-md-none d-block">
     <button id="refreshTableBtn" class="btn btn-dark btn-sm" data-url="{{ route('spot.table.refresh') }}">
         <i class="bi bi-arrow-clockwise"></i> Muat Ulang Tabel
     </button>
@@ -82,54 +82,66 @@
                     <td>
                         @if ($item->plant_image)
                             <img src="{{ asset('storage/' . $item->plant_image) }}" alt="Foto Tanaman"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->plant_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->stem_image)
                             <img src="{{ asset('storage/' . $item->stem_image) }}" alt="Foto Batang"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->stem_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->leaf_image)
                             <img src="{{ asset('storage/' . $item->leaf_image) }}" alt="Foto Daun"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->leaf_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->flower_image)
                             <img src="{{ asset('storage/' . $item->flower_image) }}" alt="Foto Bunga"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->flower_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->fruit_image)
                             <img src="{{ asset('storage/' . $item->fruit_image) }}" alt="Foto Buah"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->fruit_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
                     <td>
                         @if ($item->another_image)
                             <img src="{{ asset('storage/' . $item->another_image) }}" alt="Foto Lainnya"
-                                style="max-width: 100px; height: auto;">
+                                class="img-clickable" style="max-width: 100px; height: auto; cursor: pointer;"
+                                data-bs-toggle="modal" data-bs-target="#imageModal"
+                                data-imgsrc="{{ asset('storage/' . $item->another_image) }}">
                         @else
-                            <span>Foto belum diunggah</span>
+                            <span class="badge badge-warning">Foto belum diunggah</span>
                         @endif
                     </td>
 
@@ -143,23 +155,61 @@
                     </td>
                     <td>{{ $item->plant_lat }}</td>
                     <td>{{ $item->plant_long }}</td>
-                    <td>
-                        <div class="d-flex gap-3">
+                    <td class="action-col">
+                        <!-- Tombol edit & hapus untuk desktop (md ke atas) -->
+                        <div class="d-none d-md-flex gap-3">
                             <a href="#" class="btn btn-warning btn-edit-spot" data-id="{{ $item->id }}"
                                 data-bs-toggle="modal" data-bs-target="#editSpotModal">
                                 <i class="bi bi-pencil"></i>
                             </a>
 
-                            <form action="{{ route('map.destroy', $item->id) }}" method="post" class="d-inline">
+                            <form action="{{ route('map.destroy', $item->id) }}" method="post" class="d-inline"
+                                onsubmit="return confirm('Apakah kamu yakin menghapus data?');">
                                 @method('delete')
                                 @csrf
-                                <button class="btn btn-danger"
-                                    onclick="return confirm('Apakah kamu yakin menghapus data?')">
+                                <button class="btn btn-danger" type="submit">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
                         </div>
+
+                        <!-- Tombol titik tiga dengan dropdown untuk mobile (sm ke bawah) -->
+                        <div class="d-flex d-md-none" style="position: relative; z-index: 1051;">
+                            <div class="dropdown dropup">
+                                <button class="btn btn-secondary btn-sm p-1 dropdown-toggle no-arrow p-0" type="button"
+                                    id="dropdownMenuButton{{ $item->id }}" data-bs-toggle="dropdown"
+                                    data-bs-display="static" aria-expanded="false"
+                                    style="width: 2.5rem; height: 2.5rem;">
+                                    <i class="bi bi-three-dots-vertical fs-5"></i>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-menu-end"
+                                    aria-labelledby="dropdownMenuButton{{ $item->id }}"
+                                    style="position: absolute !important; bottom: 100% !important; top: auto !important; margin-bottom: 0.125rem !important; z-index: 1050 !important;">
+                                    <li>
+                                        <a href="#" class="dropdown-item btn-edit-spot"
+                                            data-id="{{ $item->id }}" data-bs-toggle="modal"
+                                            data-bs-target="#editSpotModal">
+                                            <i class="bi bi-pencil me-2"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <form action="{{ route('map.destroy', $item->id) }}" method="post"
+                                            onsubmit="return confirm('Apakah kamu yakin menghapus data?');">
+                                            @method('delete')
+                                            @csrf
+                                            <button class="dropdown-item text-danger" type="submit">
+                                                <i class="bi bi-trash me-2"></i> Hapus
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
                     </td>
+
                 </tr>
             @empty
                 <tr>
@@ -176,7 +226,8 @@
         <ul class="pagination justify-content-center pagination-circle mt-2">
             {{-- Previous Page Link --}}
             @if ($map->onFirstPage())
-                <li class="page-item disabled"><span class="page-link"><i class="bi bi-chevron-double-left"></i></span>
+                <li class="page-item disabled"><span class="page-link"><i
+                            class="bi bi-chevron-double-left"></i></span>
                 </li>
             @else
                 <li class="page-item">
@@ -203,7 +254,8 @@
                 @if ($i == $currentPage)
                     <li class="page-item active"><span class="page-link">{{ $i }}</span></li>
                 @else
-                    <li class="page-item"><a class="page-link" href="{{ $map->url($i) }}">{{ $i }}</a></li>
+                    <li class="page-item"><a class="page-link" href="{{ $map->url($i) }}">{{ $i }}</a>
+                    </li>
                 @endif
             @endfor
 

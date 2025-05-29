@@ -27,7 +27,12 @@
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/search-landing.css') }}">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <style>
         body {
@@ -36,6 +41,12 @@
 
         .search-container {
             margin-top: 10vh;
+        }
+        
+        @media (max-width: 767.98px) {
+        .plant-latin {
+                font-size: 14px !important;
+            }
         }
     </style>
 </head>
@@ -50,16 +61,16 @@
         };
     </script>
 
-    @stack('scriptPlantShow')
-
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="{{ asset('js/search-landing.js') }}"></script>
 
     <!-- Vendor JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous">
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    @stack('scriptPlantShow')
+    
+    <script src="{{ asset('js/search-landing.js') }}"></script>
 
 </body>
 

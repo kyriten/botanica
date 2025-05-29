@@ -3,50 +3,90 @@
 namespace App\Http\Controllers;
 
 use App\Models\Map;
+use App\Models\Garden;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
 {
     public function index()
     {
-        return view('public.index');
+        $categories = Map::select('category')->distinct()->whereNotNull('category')->pluck('category')->sort()->toArray();
+
+        return view('public.index', compact('categories'));
     }
 
     public function search(Request $request)
     {
         $query = $request->input('search');
-        $plants = collect();
+        $category = $request->input('category');
         $hasSearch = false;
-
+    
+        $plantsQuery = Map::query();
+    
+        // Filter berdasarkan teks pencarian
         if (!empty($query)) {
             $hasSearch = true;
-            $plants = Map::where('local', 'like', "%{$query}%")
-                ->orWhere('latin', 'like', "%{$query}%")
-                ->get();
+            $plantsQuery->where(function ($q) use ($query) {
+                $q->where('local', 'like', "%{$query}%")
+                    ->orWhere('latin', 'like', "%{$query}%")
+                    ->orWhere('category', 'like', "%{$query}%")
+                    ->orWhere('garden_name', 'like', "%{$query}%")
+                    ->orWhere('kingdom', 'like', "%{$query}%")
+                    ->orWhere('sub_kingdom', 'like', "%{$query}%")
+                    ->orWhere('super_division', 'like', "%{$query}%")
+                    ->orWhere('division', 'like', "%{$query}%")
+                    ->orWhere('class', 'like', "%{$query}%")
+                    ->orWhere('sub_class', 'like', "%{$query}%")
+                    ->orWhere('ordo', 'like', "%{$query}%")
+                    ->orWhere('famili', 'like', "%{$query}%")
+                    ->orWhere('genus', 'like', "%{$query}%")
+                    ->orWhere('species', 'like', "%{$query}%");
+            });
         }
-
+    
+        // Filter berdasarkan kategori
+        if (!empty($category)) {
+            $plantsQuery->where('category', $category);
+        }
+    
+        // Ambil data kategori unik untuk dropdown filter
+        $categories = Map::select('category')->distinct()->whereNotNull('category')->pluck('category')->sort()->toArray();
+    
+        $plants = $plantsQuery->paginate(10)->appends([
+            'search' => $query,
+            'category' => $category,
+            'tab' => $request->input('tab', 'all'),
+        ]);
+    
         if ($request->ajax()) {
-            return view('public.partials.plant-list', [
+            $tab = $request->input('tab', 'all');
+    
+            $html = view($tab === 'image' ? 'public.partials.plant-list-image' : 'public.partials.plant-list', [
                 'plants' => $plants,
-                'hasSearch' => $hasSearch
+                'hasSearch' => $hasSearch,
             ])->render();
+    
+            return '<div class="search-results-all">' . $html . '</div>';
         }
-
-        if (!$request->has('search')) {
-            // Redirect atau tampilkan semua data
-            return redirect('/'); // atau tampilkan semua spot misalnya
+    
+        if (!$request->has('search') && !$request->has('category')) {
+            return redirect('/');
         }
-
-        $total = $plants->count();
-
+    
+        $total = $plants->total();
+        
+        $gardens = Garden::all();
+    
         return view('public.search-results', [
             'plants' => $plants,
             'query' => $query,
+            'category' => $category,
+            'categories' => $categories,
             'hasSearch' => $hasSearch,
-            'total' => $total
+            'total' => $total,
+            'gardens' => $gardens
         ]);
     }
-
 
     public function show($id)
     {

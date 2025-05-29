@@ -2,31 +2,86 @@
 
 @section('content')
     <div class="container py-3 py-md-5">
-        <a href="{{ url()->previous() }}" class="btn btn-light mb-4">
-            <i class="bi bi-arrow-left"></i> Kembali
-        </a>
+        <div class="row d-flex justify-content-between mb-3">
+            <div class="col">
+                <a href="{{ url()->previous() }}" class="btn btn-light mb-4">
+                    <i class="bi bi-arrow-left"></i> Kembali
+                </a>
+            </div>
+
+            <div class="col p-0 text-end mb-3 pe-3">
+                <h3><strong>{{ $plant->local }}</strong> </h3>
+                <i class="plant-latin" style="font-size: 16px">{{ $plant->latin }}</i>
+            </div>
+        </div>
 
         <div class="card shadow-sm">
             <div class="row g-0 d-none d-md-flex">
                 {{-- Desktop mode: info kiri, carousel kanan, peta di bawah --}}
                 <div class="col-md-6 order-md-1 px-4">
                     {{-- Detail tanaman --}}
-                    <ul class="list-unstyled mt-3">
-                        <li><strong>Persebaran:</strong> {{ $plant->city_name ?? '-' }}, {{ $plant->province_name ?? '-' }}
-                        </li>
-                        <li><strong>Lokasi:</strong> {{ $plant->garden_name ?? '-' }}</li>
-                        <li><strong>Kingdom:</strong> {{ $plant->kingdom }}</li>
-                        <li><strong>Sub Kingdom:</strong> {{ $plant->sub_kingdom }}</li>
-                        <li><strong>Super Division:</strong> {{ $plant->super_division }}</li>
-                        <li><strong>Division:</strong> {{ $plant->division }}</li>
-                        <li><strong>Kelas:</strong> {{ $plant->class }}</li>
-                        <li><strong>Sub Kelas:</strong> {{ $plant->sub_class }}</li>
-                        <li><strong>Ordo:</strong> {{ $plant->ordo }}</li>
-                        <li><strong>Famili:</strong> {{ $plant->famili }}</li>
-                        <li><strong>Genus:</strong> {{ $plant->genus }}</li>
-                        <li><strong>Spesies:</strong> {{ $plant->species }}</li>
-                        <li><strong>Deskripsi:</strong> {{ $plant->description }}</li>
-                    </ul>
+                    <table class="table table-sm table-borderless mt-3 w-auto">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Lokasi</th>
+                                <td>{{ $plant->garden_name ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Kingdom</th>
+                                <td>{{ $plant->kingdom }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sub Kingdom</th>
+                                <td>{{ $plant->sub_kingdom }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Super Division</th>
+                                <td>{{ $plant->super_division }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Division</th>
+                                <td>{{ $plant->division }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Kelas</th>
+                                <td>{{ $plant->class }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sub Kelas</th>
+                                <td>{{ $plant->sub_class }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Ordo</th>
+                                <td>{{ $plant->ordo }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Famili</th>
+                                <td>{{ $plant->famili }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Genus</th>
+                                <td>{{ $plant->genus }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Spesies</th>
+                                <td>{{ $plant->species }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Persebaran</th>
+                                <td>
+                                    @if(!empty($plant->city_name) || !empty($plant->province_name))
+                                        {{ $plant->city_name ?? '' }}{{ $plant->city_name && $plant->province_name ? ', ' : '' }}{{ $plant->province_name ?? '' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Deskripsi</th>
+                                <td>{{ $plant->description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="col-md-6 order-md-2 px-3 px-md-4">
                     {{-- Carousel --}}
@@ -51,6 +106,24 @@
                                             ? asset('storage/' . $plant->stem_image)
                                             : asset('images/no-image.png'),
                                         'label' => 'Batang',
+                                    ],
+                                    [
+                                        'src' => $plant->flower_image
+                                            ? asset('storage/' . $plant->flower_image)
+                                            : asset('images/no-image.png'),
+                                        'label' => 'Bunga',
+                                    ],
+                                    [
+                                        'src' => $plant->fruit_image
+                                            ? asset('storage/' . $plant->fruit_image)
+                                            : asset('images/no-image.png'),
+                                        'label' => 'Buah',
+                                    ],
+                                    [
+                                        'src' => $plant->another_image
+                                            ? asset('storage/' . $plant->another_image)
+                                            : asset('images/no-image.png'),
+                                        'label' => 'Lain-lain',
                                     ],
                                 ];
                             @endphp
@@ -127,22 +200,68 @@
                     <div class="tab-pane fade show active" id="detail-tab-pane" role="tabpanel"
                         aria-labelledby="detail-tab">
                         {{-- Detail tanaman --}}
-                        <ul class="list-unstyled">
-                            <li><strong>Persebaran:</strong> {{ $plant->city_name ?? '-' }},
-                                {{ $plant->province_name ?? '-' }}</li>
-                            <li><strong>Lokasi:</strong> {{ $plant->garden_name ?? '-' }}</li>
-                            <li><strong>Kingdom:</strong> {{ $plant->kingdom }}</li>
-                            <li><strong>Sub Kingdom:</strong> {{ $plant->sub_kingdom }}</li>
-                            <li><strong>Super Division:</strong> {{ $plant->super_division }}</li>
-                            <li><strong>Division:</strong> {{ $plant->division }}</li>
-                            <li><strong>Kelas:</strong> {{ $plant->class }}</li>
-                            <li><strong>Sub Kelas:</strong> {{ $plant->sub_class }}</li>
-                            <li><strong>Ordo:</strong> {{ $plant->ordo }}</li>
-                            <li><strong>Famili:</strong> {{ $plant->famili }}</li>
-                            <li><strong>Genus:</strong> {{ $plant->genus }}</li>
-                            <li><strong>Spesies:</strong> {{ $plant->species }}</li>
-                            <li><strong>Deskripsi:</strong> {{ $plant->description }}</li>
-                        </ul>
+                        <table class="table table-sm table-borderless mt-3 w-auto">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Lokasi</th>
+                                <td>{{ $plant->garden_name ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Kingdom</th>
+                                <td>{{ $plant->kingdom }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sub Kingdom</th>
+                                <td>{{ $plant->sub_kingdom }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Super Division</th>
+                                <td>{{ $plant->super_division }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Division</th>
+                                <td>{{ $plant->division }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Kelas</th>
+                                <td>{{ $plant->class }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sub Kelas</th>
+                                <td>{{ $plant->sub_class }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Ordo</th>
+                                <td>{{ $plant->ordo }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Famili</th>
+                                <td>{{ $plant->famili }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Genus</th>
+                                <td>{{ $plant->genus }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Spesies</th>
+                                <td>{{ $plant->species }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Persebaran</th>
+                                <td>
+                                    @if(!empty($plant->city_name) || !empty($plant->province_name))
+                                        {{ $plant->city_name ?? '' }}{{ $plant->city_name && $plant->province_name ? ', ' : '' }}{{ $plant->province_name ?? '' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Deskripsi</th>
+                                <td>{{ $plant->description }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                     </div>
                     <div class="tab-pane fade" id="location-tab-pane" role="tabpanel" aria-labelledby="location-tab">
                         @if (!$plant->plant_lat || !$plant->plant_long)
@@ -150,7 +269,8 @@
                                 Koordinat tidak tersedia.
                             </div>
                         @else
-                            <div id="plant-map" style="height: 400px;" class="rounded"></div>
+                            <div id="plant-map" style="height: 400px;" class="rounded d-block d-md-none"></div>
+                            <div id="distance-display" class="text-center mt-2 text-muted"></div>
                         @endif
                     </div>
 
@@ -160,6 +280,7 @@
             {{-- Peta desktop --}}
             @if ($plant->plant_lat && $plant->plant_long)
                 <div id="plant-map-desktop" style="height: 400px;" class="rounded d-none d-md-block"></div>
+                <div id="distance-display" class="text-center mt-2 text-muted"></div>
             @else
                 <div class="alert alert-warning text-center d-none d-md-block mx-4" role="alert">
                     Data tidak tersedia.
@@ -172,9 +293,113 @@
 @push('scriptPlantShow')
     <script>
         window.plantData = {
-            lat: @json($plant->plant_lat),
-            lng: @json($plant->plant_long),
-            name: @json($plant->local),
+            lat: {{ $plant->plant_lat ?? 'null' }},
+            lng: {{ $plant->plant_long ?? 'null' }},
+            local: @json($plant->local),
+            latin: @json($plant->latin)
         };
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const plant = window.plantData || {};
+        let mapMobile, mapDesktop;
+        let mapMobileInitialized = false;
+        let mapDesktopInitialized = false;
+
+        function isValidCoordinate(value) {
+            return typeof value === "number" && !isNaN(value);
+        }
+
+        function getPopupContent() {
+            const local = plant.local || "Tanaman";
+            const latin = plant.latin || "";
+
+            return `<div>
+                <strong>${local}</strong><br>
+                <em>${latin}</em>
+            </div>`;
+        }
+
+        function initMapMobile() {
+            if (mapMobileInitialized) return;
+            mapMobileInitialized = true;
+
+            const lat = plant.lat;
+            const lng = plant.lng;
+
+            const container = document.getElementById("plant-map");
+            if (!container) return;
+
+            if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
+                mapMobile = L.map(container).setView([lat, lng], 16);
+
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    attribution: "© OpenStreetMap contributors",
+                }).addTo(mapMobile);
+
+                L.marker([lat, lng])
+                    .addTo(mapMobile)
+                    .bindPopup(getPopupContent())
+                    .openPopup();
+            } else {
+                container.innerHTML =
+                    '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
+            }
+        }
+
+        function initMapDesktop() {
+            if (mapDesktopInitialized) return;
+            mapDesktopInitialized = true;
+
+            const lat = plant.lat;
+            const lng = plant.lng;
+
+            const container = document.getElementById("plant-map-desktop");
+            if (!container) return;
+
+            if (isValidCoordinate(lat) && isValidCoordinate(lng)) {
+                mapDesktop = L.map(container).setView([lat, lng], 16);
+
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                    attribution: "© OpenStreetMap contributors",
+                }).addTo(mapDesktop);
+
+                L.marker([lat, lng])
+                    .addTo(mapDesktop)
+                    .bindPopup(getPopupContent())
+                    .openPopup();
+            } else {
+                container.innerHTML =
+                    '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
+            }
+        }
+
+        function initMapsByViewport() {
+            if (window.innerWidth >= 768) {
+                initMapDesktop();
+            } else {
+                if (
+                    document
+                        .getElementById("location-tab-pane")
+                        ?.classList.contains("show")
+                ) {
+                    initMapMobile();
+                }
+
+                const locationTabBtn = document.getElementById("location-tab");
+                if (locationTabBtn) {
+                    locationTabBtn.addEventListener("shown.bs.tab", function () {
+                        initMapMobile();
+                    });
+                }
+            }
+        }
+
+        initMapsByViewport();
+        window.addEventListener("resize", function () {
+            initMapsByViewport();
+        });
+    });
+    </script>
+
 @endpush

@@ -36,8 +36,13 @@
 
     <!-- Template POST CSS File -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/image-form.css') }}" rel="stylesheet">
 
     <style>
+        .btn.dropdown-toggle.no-arrow::after {
+            display: none;
+        }
+
         /* Animasi tombol saat diklik */
         #mobile-bottom-bar .small {
             transition: transform 0.2s ease-in-out, background-color 0.2s ease, color 0.2s ease;
@@ -203,6 +208,36 @@
         .input-group .input-group-text {
             height: 38px;
             font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+
+            table,
+            table td,
+            table th {
+                font-size: 12px !important;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            /* Kolom header "Aksi" */
+            th.action-col {
+                font-size: 12px !important;
+                width: 30px !important;
+                /* custom width untuk header */
+                padding: 0.3rem 0.5rem !important;
+                white-space: nowrap;
+                /* supaya gak pecah baris */
+            }
+
+            /* Kolom isi "Aksi" */
+            td.action-col {
+                font-size: 12px !important;
+                width: 30px !important;
+                /* custom width untuk cell */
+                padding: 0.3rem 0.5rem !important;
+                white-space: nowrap;
+            }
         }
     </style>
 

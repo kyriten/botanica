@@ -50,6 +50,21 @@ function generatePopupHTML(spot) {
                     ? `<img src="/storage/${spot.stem_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
                     : ""
             }
+            ${
+                spot.flower_image
+                    ? `<img src="/storage/${spot.flower_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
+                    : ""
+            }
+            ${
+                spot.fruit_image
+                    ? `<img src="/storage/${spot.fruit_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
+                    : ""
+            }
+            ${
+                spot.another_image
+                    ? `<img src="/storage/${spot.another_image}" onclick="showImageModal(this.src)" style="width: 150px; height: 150px; object-fit: cover; cursor: zoom-in;">`
+                    : ""
+            }
         </div>
 
         <ul class="nav nav-tabs" style="font-size: 12px; margin-bottom: 6px; display: flex; gap: 10px; flex-wrap: nowrap;">
@@ -626,6 +641,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("selectedGardenIdEdit").value = data.garden_id;
         document.getElementById("editProvinceName").value = data.province_name;
         document.getElementById("editCityName").value = data.city_name;
+        document.getElementById("editCategory").value = data.category;
         document.getElementById("editLocal").value = data.local;
         document.getElementById("editLatin").value = data.latin;
         document.getElementById("editSlug").value = data.slug;
@@ -664,6 +680,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("imgPreviewStemEdit").src = data.stem_image
             ? `/storage/${data.stem_image}`
+            : "http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg";
+
+        document.getElementById("imgPreviewFlowerEdit").src = data.flower_image
+            ? `/storage/${data.flower_image}`
+            : "http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg";
+
+        document.getElementById("imgPreviewFruitEdit").src = data.fruit_image
+            ? `/storage/${data.fruit_image}`
+            : "http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg";
+
+        document.getElementById("imgPreviewAnotherEdit").src = data.another_image
+            ? `/storage/${data.another_image}`
             : "http://www.proedsolutions.com/wp-content/themes/micron/images/placeholders/placeholder_large.jpg";
 
         document.getElementById("editForm").dataset.spotId = spotId;
@@ -1094,3 +1122,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+function showPreview(event, id) {
+    const input = event.target;
+    const preview = document.getElementById(id);
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            preview.src = e.target.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.img-clickable').forEach(function(img) {
+            img.addEventListener('click', function() {
+                var src = this.getAttribute('data-imgsrc');
+                document.getElementById('zoomedImage').setAttribute('src', src);
+            });
+        });
+    });

@@ -45,7 +45,7 @@ const fetchSuggestions = debounce(function () {
                     "border-0"
                 );
                 item.innerHTML = `
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column text-start">
                         <span class="fw-medium">${highlightMatch(
                             plant.local,
                             query
@@ -123,94 +123,48 @@ document.querySelectorAll(".google-nav button").forEach((button) => {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const plant = window.plantData || {};
-    let mapMobile, mapDesktop;
-    let mapMobileInitialized = false;
-    let mapDesktopInitialized = false;
 
-    function initMapMobile() {
-        if (mapMobileInitialized) return;
-        mapMobileInitialized = true;
 
-        const lat = plant.lat;
-        const lng = plant.lng;
+function loadTabPage(url, tab) {
+    const spinner = document.getElementById("loading-spinner");
 
-        const container = document.getElementById("plant-map-tab");
-        if (!container) return;
+    // Mapping tab ke container hasil pencarian
+    const containerIds = {
+        all: "search-results-all",
+        image: "search-results-image",
+    };
 
-        if (lat && lng) {
-            mapMobile = L.map("plant-map-tab").setView([lat, lng], 16);
-
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: "© OpenStreetMap contributors",
-            }).addTo(mapMobile);
-
-            L.marker([lat, lng])
-                .addTo(mapMobile)
-                .bindPopup(plant.name || "")
-                .openPopup();
-        } else {
-            container.innerHTML =
-                '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
-        }
+    const containerId = containerIds[tab];
+    if (!containerId) {
+        console.error("Unknown tab:", tab);
+        return;
     }
 
-    function initMapDesktop() {
-        if (mapDesktopInitialized) return;
-        mapDesktopInitialized = true;
+    const resultsContainer = document.getElementById(containerId);
 
-        const lat = plant.lat;
-        const lng = plant.lng;
-
-        const container = document.getElementById("plant-map-desktop");
-        if (!container) return;
-
-        if (lat && lng) {
-            mapDesktop = L.map("plant-map-desktop").setView([lat, lng], 16);
-
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                attribution: "© OpenStreetMap contributors",
-            }).addTo(mapDesktop);
-
-            L.marker([lat, lng])
-                .addTo(mapDesktop)
-                .bindPopup(plant.name || "")
-                .openPopup();
-        } else {
-            container.innerHTML =
-                '<p class="text-muted text-center">Koordinat tidak tersedia.</p>';
-        }
+    if (!resultsContainer) {
+        console.error("Container not found for tab:", tab);
+        return;
     }
 
-    // Cek viewport untuk load map yang sesuai
-    function initMapsByViewport() {
-        if (window.innerWidth >= 768) {
-            // Desktop
-            initMapDesktop();
-        } else {
-            // Mobile (pakai tab)
-            // Init map saat tab lokasi aktif
-            if (
-                document
-                    .getElementById("location-tab-pane")
-                    .classList.contains("show")
-            ) {
-                initMapMobile();
-            }
+    spinner.classList.remove("d-none");
 
-            // Event bootstrap tab untuk mobile
-            const locationTabBtn = document.getElementById("location-tab");
-            locationTabBtn.addEventListener("shown.bs.tab", function () {
-                initMapMobile();
-            });
-        }
-    }
+    const fetchUrl = url.includes("?")
+        ? `${url}&tab=${tab}`
+        : `${url}?tab=${tab}`;
 
-    initMapsByViewport();
-
-    // Optional: re-init peta saat resize (bisa dioptimasi kalau mau)
-    window.addEventListener("resize", function () {
-        initMapsByViewport();
-    });
-});
+    fetch(fetchUrl, {
+        headers: {
+            "X-Requested-With": "XMLHttpRequest",
+        },
+    })
+        .then((response) => response.text())
+        .then((html) => {
+            resultsContainer.innerHTML = html;
+            spinner.classList.add("d-none");
+        })
+        .catch((error) => {
+            console.error("Error fetching pagination:", error);
+            spinner.classList.add("d-none");
+        });
+}
