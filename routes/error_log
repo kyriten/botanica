@@ -1,0 +1,32 @@
+[12-May-2025 12:16:28 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/api.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/api.php on line 18
+[12-May-2025 12:16:28 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Broadcast" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/channels.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/channels.php on line 16
+[12-May-2025 12:16:29 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Artisan" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/console.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/console.php on line 17
+[12-May-2025 12:16:30 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/web.php:35
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/web.php on line 35
+[13-May-2025 20:08:32 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/api.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/api.php on line 18
+[13-May-2025 20:45:32 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Broadcast" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/channels.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/channels.php on line 16
+[13-May-2025 22:01:28 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Artisan" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/console.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/console.php on line 17
+[14-May-2025 00:34:00 UTC] PHP Fatal error:  Uncaught Error: Class "Illuminate\Support\Facades\Route" not found in /home/abiilaco/public_html/botanica.abiila.com/routes/web.php:36
+Stack trace:
+#0 {main}
+  thrown in /home/abiilaco/public_html/botanica.abiila.com/routes/web.php on line 36
