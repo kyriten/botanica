@@ -8,7 +8,15 @@
             <a class="nav-link {{ Request::routeIs('admin.index') ? '' : 'collapsed' }}"
                 href="{{ route('admin.index') }}">
                 <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <span>Dasbor</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::routeIs('garden.index') ? '' : 'collapsed' }}"
+                href="{{ route('garden.index') }}">
+                <i class="bi bi-tree-fill"></i>
+                <span>Kebun</span>
             </a>
         </li>
 

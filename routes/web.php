@@ -8,12 +8,11 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\GardenController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\VillageController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\ProvinceController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\PlantPostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +39,8 @@ Route::post('/welcome/admin/auth', [LoginController::class, 'authenticate'])->na
 Route::post('/logout', [LoginController::class, 'logout']);
 
 // Authenticated Route
+Route::resource('garden', GardenController::class)->except(['edit', 'show', 'update', 'destroy']);
+
 Route::middleware(['auth'])->group(function () {
     Route::resources([
         'admin' => AdminController::class,
@@ -48,10 +49,13 @@ Route::middleware(['auth'])->group(function () {
         'city' => CityController::class,
         'district' => DistrictController::class,
         'village' => VillageController::class,
-        'map' => MapController::class
+        'map' => MapController::class,
     ]);
-
+    Route::get('/garden/{slug}/edit', [GardenController::class, 'edit'])->name('garden.edit');
+    Route::patch('/garden/{slug}', [GardenController::class, 'update'])->name('garden.update');
+    Route::delete('/garden/{slug}', [GardenController::class, 'destroy'])->name('garden.destroy');
     Route::post('/delete-spots', [MapController::class, 'deleteSpots']);
+    Route::post('/delete-gardens', [GardenController::class, 'deleteGardens']);
     Route::put('/map/update/{id}', [MapController::class, 'update'])->name('map.updateData');
     Route::post('/import-from-excel/data/spot/tanaman', [MapController::class, 'import'])->name('map.import');
     Route::get('/export-to-excel/data/spot/tanaman', [MapController::class, 'export'])->name('map.export');
@@ -67,6 +71,9 @@ Route::post('/logout', function () {
 
 // Public Route
 // Route::get('/', [PublicController::class, 'landing'])->name('public.landing');
+Route::get('/garden/spots/{slug}/nodata', [PublicController::class, 'showNoGardenData'])->name('garden.showNoGardenData');
+Route::get('/garden/spots/{slug}', [PublicController::class, 'showMaps'])->name('garden.showMaps');
+Route::get('/garden/spots/', [PublicController::class, 'showGardens'])->name('garden.showGardens');
 Route::get('/search', [PublicController::class, 'search'])->name('public.search');
 Route::get('/tanaman/{id}', [PublicController::class, 'show'])->name('plant.show');
 Route::get('/autocomplete', [PublicController::class, 'autocomplete'])->name('plant.autocomplete');

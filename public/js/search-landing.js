@@ -4,7 +4,9 @@ const form = document.getElementById("plant-search-form");
 const spinner = document.getElementById("loading-spinner");
 const results = document.getElementById("search-results");
 
-// Debounce helper
+const MAX_HISTORY = 50;
+const STORAGE_KEY = "plantSearchHistory";
+
 function debounce(fn, delay) {
     let timeoutId;
     return function (...args) {
@@ -13,13 +15,55 @@ function debounce(fn, delay) {
     };
 }
 
-// Highlight matching query in text
 function highlightMatch(text, query) {
     const regex = new RegExp(`(${query})`, "gi");
     return text.replace(regex, "<strong>$1</strong>");
 }
 
-// Fetch and render autocomplete suggestions
+function saveSearchToHistory(keyword) {
+    if (!keyword) return;
+
+    let history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    history = history.filter(
+        (item) => item.toLowerCase() !== keyword.toLowerCase()
+    );
+    history.unshift(keyword);
+    if (history.length > MAX_HISTORY) history = history.slice(0, MAX_HISTORY);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+}
+
+function showSearchHistory() {
+    const query = searchInput.value.trim();
+    if (query.length >= 2) return;
+
+    const history = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    if (history.length === 0) {
+        autocompleteList.innerHTML = "";
+        autocompleteList.style.display = "none";
+        return;
+    }
+
+    autocompleteList.innerHTML = "";
+    history.forEach((item) => {
+        const li = document.createElement("li");
+        li.classList.add("list-group-item", "autocomplete-item", "border-0");
+        li.innerHTML = `
+            <div class="d-flex text-start align-items-center">
+                <i class="bi bi-clock-history me-2 text-muted"></i>
+                <span>${item}</span>
+            </div>
+        `;
+        li.onclick = () => {
+            searchInput.value = item;
+            autocompleteList.innerHTML = "";
+            form.submit();
+        };
+        autocompleteList.appendChild(li);
+    });
+
+    autocompleteList.style.display = "block";
+}
+
 const fetchSuggestions = debounce(function () {
     const query = searchInput.value.trim();
     if (query.length < 2) {
@@ -45,15 +89,16 @@ const fetchSuggestions = debounce(function () {
                     "border-0"
                 );
                 item.innerHTML = `
-                    <div class="d-flex flex-column text-start">
-                        <span class="fw-medium">${highlightMatch(
+                    <div class="d-flex flex-column flex-md-row text-start">
+                        <i class="bi bi-search me-2 text-muted"></i>
+                        <span class="fw-medium me-2">${highlightMatch(
                             plant.local,
                             query
                         )}</span>
-                        <small class="text-muted fst-italic">${highlightMatch(
+                        <span class="text-muted fst-italic">${highlightMatch(
                             plant.latin,
                             query
-                        )}</small>
+                        )}</span>
                     </div>
                 `;
                 item.onclick = () => {
@@ -74,7 +119,8 @@ const fetchSuggestions = debounce(function () {
 
 searchInput.addEventListener("input", fetchSuggestions);
 
-// Hide suggestions when clicking outside
+searchInput.addEventListener("focus", showSearchHistory);
+
 document.addEventListener("click", function (e) {
     if (!autocompleteList.contains(e.target) && e.target !== searchInput) {
         autocompleteList.innerHTML = "";
@@ -82,8 +128,12 @@ document.addEventListener("click", function (e) {
     }
 });
 
-// AJAX form submit
 form.addEventListener("submit", function (e) {
+    const queryValue = searchInput.value.trim();
+    if (queryValue) {
+        saveSearchToHistory(queryValue);
+    }
+
     const query = new URLSearchParams(new FormData(form)).toString();
 
     spinner.classList.remove("d-none");
@@ -106,7 +156,6 @@ form.addEventListener("submit", function (e) {
         });
 });
 
-// Tab nav behavior
 document.querySelectorAll(".google-nav button").forEach((button) => {
     button.addEventListener("click", () => {
         document
@@ -123,12 +172,9 @@ document.querySelectorAll(".google-nav button").forEach((button) => {
     });
 });
 
-
-
 function loadTabPage(url, tab) {
     const spinner = document.getElementById("loading-spinner");
 
-    // Mapping tab ke container hasil pencarian
     const containerIds = {
         all: "search-results-all",
         image: "search-results-image",
@@ -168,3 +214,63 @@ function loadTabPage(url, tab) {
             spinner.classList.add("d-none");
         });
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-description").forEach(function (link) {
+        link.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const container = this.closest(".description-container");
+            const shortDesc = container.querySelector(".short-description");
+            const fullDesc = container.querySelector(".full-description");
+
+            if (fullDesc.classList.contains("d-none")) {
+                shortDesc.classList.add("d-none");
+                fullDesc.classList.remove("d-none");
+                this.textContent = "Sembunyikan";
+            } else {
+                fullDesc.classList.add("d-none");
+                shortDesc.classList.remove("d-none");
+                this.textContent = "Lihat Selengkapnya";
+            }
+        });
+    });
+});
+
+document.addEventListener("click", function (e) {
+    const target = e.target.closest("[data-value]");
+    if (!target) return;
+
+    e.preventDefault();
+    const value = target.getAttribute("data-value");
+
+    const parentDropdown = target.closest(".dropdown-menu");
+    if (!parentDropdown) return;
+
+    const triggerId = parentDropdown.getAttribute("aria-labelledby");
+
+    if (triggerId === "filterDropdown") {
+        const categoryInput = document.getElementById("category-input");
+        const form = document.getElementById("plant-search-form");
+        if (categoryInput && form) {
+            categoryInput.value = value;
+            form.submit();
+        }
+    } else if (triggerId === "gardenDropdown") {
+        const gardenBtn = document.getElementById("gardenDropdown");
+
+        // Dapatkan base URL & list URL
+        const baseUrl = gardenBtn?.getAttribute("data-base-url");
+        const listUrl = gardenBtn?.getAttribute("data-list-url");
+
+        if (value === "") {
+            if (listUrl) {
+                window.location.href = listUrl;
+            }
+        } else {
+            if (baseUrl) {
+                window.location.href = `${baseUrl}/${value}`;
+            }
+        }
+    }
+});

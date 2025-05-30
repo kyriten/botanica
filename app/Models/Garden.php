@@ -15,4 +15,9 @@ class Garden extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    public function maps()
+    {
+        return $this->hasMany(Map::class);
+    }
 }

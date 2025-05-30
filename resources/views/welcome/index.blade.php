@@ -2,9 +2,9 @@
 
 @section('formLogin')
     <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="row d-flex justify-content-center align-items-center" style="min-height: 100dvh;">
             <div class="col-12 col-md-9 col-lg-6 col-xl-5">
-                <img src="{{ asset('images/Welcome to Botanica.webp') }}" class="img-fluid" alt="Sample image">
+                <img src="{{ asset('images/Welcome to Botanica.webp') }}" class="img-fluid" alt="botanica-login">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 p-3">
                 <div class="divider d-flex align-items-center">
@@ -82,19 +82,18 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div
-        class="bg-botanica d-flex flex-column flex-md-row text-center text-md-start justify-content-center justify-content-md-between py-4 px-4 px-xl-5 bg-primary">
-        <!-- Copyright -->
-        <div class="text-white mb-3 mb-md-0 text-center">
-            Copyright © 2025. All rights reserved.
-        </div>
-        <!-- Copyright -->
+            <div
+                class="bg-botanica d-flex flex-column flex-md-row text-center text-md-start justify-content-center justify-content-md-between py-4 px-4 px-xl-5">
+                <!-- Copyright -->
+                <div class="text-white mb-3 mb-md-0 text-center">
+                    Copyright © 2025. All rights reserved.
+                </div>
 
-        <!-- Right -->
-        <a href="#!" class="text-white">
-            <i class="fa-solid fa-globe"></i> www.botanica.abiila.com
-        </a>
+                <!-- Right -->
+                <a href="{{ route('login') }}" class="text-white">
+                    <i class="fa-solid fa-globe"></i> www.botanica.abiila.com
+                </a>
+            </div>
+        </div>
     </div>
 @endsection

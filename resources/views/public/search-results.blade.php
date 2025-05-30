@@ -7,27 +7,43 @@
 @php
     $activeTab = request('tab', 'all');
     $hasCategory = request()->filled('category');
+    $hasGarden = request()->filled('garden');
     $hasSearchTerm = !empty($query);
 @endphp
 
 @section('content')
     <div class="container py-4 py-md-3" style="max-width: 900px;">
         <div class="search-header-wrapper">
-            <div class="search-header d-flex align-items-center justify-content-center">
-                <a href="/" class="text-decoration-none flex-shrink-0">
-                    <div class="d-flex justify-content-center align-items-center mb-2">
-                        <!-- Logo untuk mobile -->
-                        <img src="{{ asset('images/logo.png') }}" alt="Logo" height="40" class="d-block d-sm-block">
+            <div class="search-header-wrapper">
+                <div
+                    class="search-header d-flex flex-column flex-sm-row align-items-center justify-content-center text-center text-sm-start">
+                    <!-- Logo dan Judul -->
+                    <a href="/" class="text-decoration-none mb-sm-0 me-sm-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <!-- Logo -->
+                            <img src="{{ asset('images/logo.png') }}" alt="Logo" height="42" class="d-block">
 
-                        <!-- Judul untuk desktop -->
-                        <h1 class="fw-bold text-botanica d-none d-sm-block m-0 ms-sm-1">
-                            {{ config('app.name') }}
-                        </h1>
+                            <!-- Judul -->
+                            <h1 class="fw-bold text-botanica m-0 ms-2 d-block d-sm-block" style="font-size:42px">
+                                {{ config('app.name') }}
+                            </h1>
+                        </div>
+                    </a>
+
+                    <!-- Search Bar -->
+                    <div class="search-bar w-100 w-sm-auto">
+                        @include('public.partials.search-form', ['action' => route('public.search')])
                     </div>
-                </a>
+                </div>
 
-                <div class="search-bar flex-grow-1 w-100 w-sm-auto">
-                    @include('public.partials.search-form', ['action' => route('public.search')])
+                {{-- Nav mirip Google Search --}}
+                <div class="google-nav" role="tablist" aria-label="Search result tabs">
+                    <button class="active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" role="tab"
+                        aria-selected="true" aria-controls="all">Semua</button>
+                    <button id="image-tab" data-bs-toggle="tab" data-bs-target="#image" role="tab" aria-selected="false"
+                        aria-controls="image">Gambar</button>
+                    <button id="garden-tab" data-bs-toggle="tab" data-bs-target="#garden" role="tab"
+                        aria-selected="false" aria-controls="garden">Kebun Raya</button>
                 </div>
             </div>
 

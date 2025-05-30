@@ -27,10 +27,11 @@
 
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/search-landing.css') }}">
-    
+    <link rel="stylesheet" href="{{ asset('css/font.css') }}">
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -42,11 +43,60 @@
         .search-container {
             margin-top: 10vh;
         }
-        
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        /* Efek redup saat hover */
+        .image-hover:hover {
+            filter: brightness(70%);
+            transition: filter 0.3s ease;
+        }
+
+
+        /* Modal dark background override (optional aesthetic) */
+        .modal-content {
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .modal-body img {
+            max-height: 80vh;
+        }
+
         @media (max-width: 767.98px) {
-        .plant-latin {
+            .plant-latin {
                 font-size: 14px !important;
             }
+
+            .logo-botanica-mobile {
+                height: 48px !important;
+            }
+
+            .title-botanica-mobile {
+                font-size: 48px !important;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .fs-desktop {
+                font-size: 5rem !important;
+            }
+        }
+
+        .note-flag {
+            background-color: #e6ebe0;
+            /* Sage green light */
+            color: #4b6043;
+            /* Sage green dark text */
+            padding: 0.25rem 0.5rem;
+            border-left: 4px solid #94a98a;
+            /* Medium sage green border */
+            border-radius: 0.25rem;
+            display: inline-block;
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -67,9 +117,9 @@
         integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous">
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
+
     @stack('scriptPlantShow')
-    
+
     <script src="{{ asset('js/search-landing.js') }}"></script>
 
 </body>

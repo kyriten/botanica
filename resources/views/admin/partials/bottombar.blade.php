@@ -8,7 +8,14 @@
         <a href="{{ route('admin.index') }}"
             class="small px-2 py-1 rounded {{ Request::routeIs('admin.index') ? 'fw-bold bg-custom text-light' : 'text-dark' }}">
             <i class="bi bi-grid fs-5 d-block"></i>
-            <span class="small">Dashboard</span>
+            <span class="small">Dasbor</span>
+        </a>
+
+        <!-- Kebun Raya -->
+        <a href="{{ route('garden.index') }}"
+            class="small px-2 py-1 rounded {{ Request::routeIs('garden.index') ? 'fw-bold bg-custom text-light' : 'text-dark' }}">
+            <i class="bi bi-tree-fill fs-5 d-block"></i>
+            <span class="small">Kebun</span>
         </a>
 
         <!-- Spot Tanaman -->

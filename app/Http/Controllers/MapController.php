@@ -16,7 +16,6 @@ use App\Imports\SpotTanamanImport;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 
 
 class MapController extends Controller

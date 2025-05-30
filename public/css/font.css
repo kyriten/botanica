@@ -1,10 +1,32 @@
 @font-face {
     font-family: "Welcome Home";
-    src: url("/fonts/Welcome-Home.otf") format("opentype");
+    src: url("/font/welcome-home.otf") format("opentype");
     font-weight: normal;
     font-style: normal;
 }
 
 .welcome-font {
     font-family: "Welcome Home", cursive;
+}
+
+@font-face {
+  font-family: 'Hello Botuna';
+  src: url('/font/hello-botuna.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.botuna-font {
+  font-family: 'Hello Botuna', cursive;
+}
+
+@font-face {
+  font-family: 'Playthings';
+  src: url('/font/playthings.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.playthings-font {
+  font-family: 'Playthings', cursive;
 }

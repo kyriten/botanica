@@ -11,8 +11,8 @@ class PublicController extends Controller
     public function index()
     {
         $categories = Map::select('category')->distinct()->whereNotNull('category')->pluck('category')->sort()->toArray();
-
-        return view('public.index', compact('categories'));
+        $gardens = Garden::all();
+        return view('public.index', compact('categories', 'gardens'));
     }
 
     public function search(Request $request)
@@ -90,7 +90,8 @@ class PublicController extends Controller
 
     public function show($id)
     {
-        $plant = Map::findOrFail($id);
+        // $plant = Map::findOrFail($id);
+        $plant = Map::with('garden')->findOrFail($id);
         return view('public.partials.plant-show', compact('plant'));
     }
 
@@ -104,5 +105,42 @@ class PublicController extends Controller
             ->get(['id', 'local', 'latin']);
 
         return response()->json($plants);
+    }
+
+    public function showMaps($slug)
+    {
+        $garden = Garden::where('slug', $slug)->firstOrFail();
+
+        $count = Map::where('garden_id', $garden->id)->count();
+
+        if ($count === 0) {
+            // Redirect ke halaman aman (misalnya search) dengan query ?garden=slug&nodata=true
+            return redirect()->route('garden.showNoGardenData', [
+                'slug' => $slug,
+                'nodata' => 'true'
+            ]);
+        }
+
+        $maps = Map::where('garden_id', $garden->id)->paginate(5);
+        $map = Map::where('garden_id', $garden->id)->firstOrFail();
+
+        return view('public.partials.spots-in-garden', compact('maps', 'map', 'count', 'garden'));
+    }
+
+
+    public function showGardens()
+    {
+        $gardens = Garden::all();
+        $count = Garden::all()->count();
+
+        return view('public.garden-results', compact('gardens', 'count'));
+    }
+
+    public function showNoGardenData($slug)
+    {
+        $garden = Garden::where('slug', $slug)->firstOrFail();
+        $count = Map::where('garden_id', $garden->id)->count();
+
+        return view('public.partials.no-garden-data', compact('garden', 'count'));
     }
 }

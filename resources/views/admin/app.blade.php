@@ -258,6 +258,7 @@
     @include('admin.partials.sidebar')
     @include('admin.partials.bottombar')
     @yield('dashboard')
+    @yield('garden')
     @yield('post')
     @yield('profile')
     @yield('dbProvinsi')
@@ -284,6 +285,7 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/garden.js') }}"></script>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
 

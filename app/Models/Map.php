@@ -12,7 +12,7 @@ class Map extends Model
 
     public function garden()
     {
-        return $this->belongsTo(Garden::class);
+        return $this->belongsTo(Garden::class, 'garden_id');
     }
 
     public function province()

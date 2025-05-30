@@ -1,10 +1,45 @@
 @extends('public.app')
 
+@section('title')
+{{ $plant->local }} ({{ $plant->latin ?? 'Latin tidak diketahui' }})
+@endsection
+
 @section('content')
+    @php
+        $images = [
+            [
+                'src' => $plant->plant_image ? asset('storage/' . $plant->plant_image) : asset('images/no-image.png'),
+                'label' => 'Tanaman',
+            ],
+            [
+                'src' => $plant->leaf_image ? asset('storage/' . $plant->leaf_image) : asset('images/no-image.png'),
+                'label' => 'Daun',
+            ],
+            [
+                'src' => $plant->stem_image ? asset('storage/' . $plant->stem_image) : asset('images/no-image.png'),
+                'label' => 'Batang',
+            ],
+            [
+                'src' => $plant->flower_image ? asset('storage/' . $plant->flower_image) : asset('images/no-image.png'),
+                'label' => 'Bunga',
+            ],
+            [
+                'src' => $plant->fruit_image ? asset('storage/' . $plant->fruit_image) : asset('images/no-image.png'),
+                'label' => 'Buah',
+            ],
+            [
+                'src' => $plant->another_image
+                    ? asset('storage/' . $plant->another_image)
+                    : asset('images/no-image.png'),
+                'label' => 'Lain-lain',
+            ],
+        ];
+    @endphp
+
     <div class="container py-3 py-md-5">
         <div class="row d-flex justify-content-between mb-3">
             <div class="col">
-                <a href="{{ url()->previous() }}" class="btn btn-light mb-4">
+                <a href="{{ url()->previous() }}" class="btn btn-transparent mb-4">
                     <i class="bi bi-arrow-left"></i> Kembali
                 </a>
             </div>
@@ -24,7 +59,19 @@
                         <tbody>
                             <tr>
                                 <th scope="row">Lokasi</th>
-                                <td>{{ $plant->garden_name ?? '-' }}</td>
+                                <td>
+                                    @if ($plant->garden)
+                                        <a class="text-botanica text-decoration-none alert alert-success pt-1 pb-1 ps-1" href="{{ route('garden.showMaps', $plant->garden->slug) }}">
+                                            {{ $plant->garden_name }}
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Jenis Tanaman</th>
+                                <td>{{ $plant->category ?? 'Tidak diketahui' }}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Kingdom</th>
@@ -85,100 +132,14 @@
                 </div>
                 <div class="col-md-6 order-md-2 px-3 px-md-4">
                     {{-- Carousel --}}
-                    <div id="plantImageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
-                        <div class="carousel-inner rounded position-relative">
-                            @php
-                                $images = [
-                                    [
-                                        'src' => $plant->plant_image
-                                            ? asset('storage/' . $plant->plant_image)
-                                            : asset('images/no-image.png'),
-                                        'label' => 'Tanaman',
-                                    ],
-                                    [
-                                        'src' => $plant->leaf_image
-                                            ? asset('storage/' . $plant->leaf_image)
-                                            : asset('images/no-image.png'),
-                                        'label' => 'Daun',
-                                    ],
-                                    [
-                                        'src' => $plant->stem_image
-                                            ? asset('storage/' . $plant->stem_image)
-                                            : asset('images/no-image.png'),
-                                        'label' => 'Batang',
-                                    ],
-                                    [
-                                        'src' => $plant->flower_image
-                                            ? asset('storage/' . $plant->flower_image)
-                                            : asset('images/no-image.png'),
-                                        'label' => 'Bunga',
-                                    ],
-                                    [
-                                        'src' => $plant->fruit_image
-                                            ? asset('storage/' . $plant->fruit_image)
-                                            : asset('images/no-image.png'),
-                                        'label' => 'Buah',
-                                    ],
-                                    [
-                                        'src' => $plant->another_image
-                                            ? asset('storage/' . $plant->another_image)
-                                            : asset('images/no-image.png'),
-                                        'label' => 'Lain-lain',
-                                    ],
-                                ];
-                            @endphp
-                            @foreach ($images as $index => $img)
-                                <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                    <div class="position-relative text-center">
-                                        <div
-                                            class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm z-3">
-                                            {{ $img['label'] }}
-                                        </div>
-                                        <img src="{{ $img['src'] }}" class="d-block w-100 rounded"
-                                            style="height: 400px; object-fit: cover;" alt="Gambar {{ $img['label'] }}">
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#plantImageCarousel"
-                            data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon"></span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#plantImageCarousel"
-                            data-bs-slide="next">
-                            <span class="carousel-control-next-icon"></span>
-                        </button>
-                    </div>
+                    @include('public.partials.grid-images', ['images' => $images])
                 </div>
             </div>
 
             {{-- Mobile mode: carousel di atas, tab Detil & Lokasi --}}
             <div class="d-md-none px-3 px-md-4">
                 {{-- Carousel --}}
-                <div id="plantImageCarouselMobile" class="carousel slide mb-3" data-bs-ride="carousel">
-                    <div class="carousel-inner rounded position-relative">
-                        @foreach ($images as $index => $img)
-                            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                                <div class="position-relative text-center">
-                                    <div
-                                        class="position-absolute top-0 start-50 translate-middle-x bg-primary text-white px-3 py-1 rounded-bottom text-sm z-3">
-                                        {{ $img['label'] }}
-                                    </div>
-                                    <img src="{{ $img['src'] }}" class="d-block w-100 rounded"
-                                        style="height: 400px; object-fit: cover;" alt="Gambar {{ $img['label'] }}">
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#plantImageCarouselMobile"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#plantImageCarouselMobile"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon"></span>
-                    </button>
-                </div>
+                @include('public.partials.carousel-images-mobile', ['images' => $images])
 
                 {{-- Tabs --}}
                 <ul class="nav nav-tabs" id="plantTab" role="tablist">
@@ -194,7 +155,6 @@
                     </li>
                 </ul>
 
-
                 {{-- Tab content --}}
                 <div class="tab-content mt-3" id="plantTabContent">
                     <div class="tab-pane fade show active" id="detail-tab-pane" role="tabpanel"
@@ -204,7 +164,16 @@
                             <tbody>
                                 <tr>
                                     <th scope="row">Lokasi</th>
-                                    <td>{{ $plant->garden_name ?? '-' }}</td>
+                                    <td>
+                                        @if ($plant->garden_id && $plant->garden_name)
+                                            <a class="text-botanica"
+                                                href="{{ route('garden.showMaps', $plant->garden_id) }}">
+                                                {{ $plant->garden_name }}
+                                            </a>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Kingdom</th>
@@ -283,7 +252,7 @@
                 <div id="distance-display" class="text-center mt-2 text-muted"></div>
             @else
                 <div class="alert alert-warning text-center d-none d-md-block mx-4" role="alert">
-                    Data tidak tersedia.
+                    Data tidak tersedia atau format titik koordinat salah.
                 </div>
             @endif
         </div>
@@ -399,6 +368,20 @@
             window.addEventListener("resize", function() {
                 initMapsByViewport();
             });
+        });
+    </script>
+    <script>
+        const imageModal = document.getElementById('imageModal');
+        const modalImage = document.getElementById('modal-image');
+        const modalLabel = document.getElementById('modal-label');
+
+        imageModal.addEventListener('show.bs.modal', function(event) {
+            const trigger = event.relatedTarget;
+            const imgSrc = trigger.getAttribute('data-img');
+            const label = trigger.getAttribute('data-label');
+
+            modalImage.src = imgSrc;
+            modalLabel.textContent = label;
         });
     </script>
 @endpush
