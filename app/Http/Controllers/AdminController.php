@@ -21,17 +21,17 @@ class AdminController extends Controller
         $gardenFirstName = $garden->name;
 
         // Total Data by Garden == 2
-        $cibodasCount = Post::where('garden_id', 2)->count();
+        $cibodasCount = Map::where('garden_id', 2)->count();
         $garden = Garden::where('id', 2)->first();
         $gardenSecondName = $garden->name;
 
         // Total Data by Garden == 3
-        $purwodadiCount = Post::where('garden_id', 3)->count();
+        $purwodadiCount = Map::where('garden_id', 3)->count();
         $garden = Garden::where('id', 3)->first();
         $gardenThirdName = $garden->name;
 
         // Total Data by Garden == 4
-        $bedugulCount = Post::where('garden_id', 4)->count();
+        $bedugulCount = Map::where('garden_id', 4)->count();
         $garden = Garden::where('id', 4)->first();
         $gardenFourthName = $garden->name;
 
@@ -54,8 +54,8 @@ class AdminController extends Controller
         }
 
         // Menampilkan Jumlah Data Baru pada kategori 1 Ditambahkan dalam 24 jam terakhir
-        $previousCountCatOne = Post::where('garden_id', 1)->where('created_at', '>', $previousTime)->count();
-        $currentCountCatOne = Post::where('garden_id', 1)->count();
+        $previousCountCatOne = Map::where('garden_id', 1)->where('created_at', '>', $previousTime)->count();
+        $currentCountCatOne = Map::where('garden_id', 1)->count();
 
         $bogorAdded = $currentCountCatOne - $previousCountCatOne;
 
@@ -68,8 +68,8 @@ class AdminController extends Controller
         }
 
         // Menampilkan Jumlah Data Baru pada kategori 2 Ditambahkan dalam 24 jam terakhir
-        $previousCountCatTwo = Post::where('garden_id', 2)->where('created_at', '>', $previousTime)->count();
-        $currentCountCatTwo = Post::where('garden_id', 2)->count();
+        $previousCountCatTwo = Map::where('garden_id', 2)->where('created_at', '>', $previousTime)->count();
+        $currentCountCatTwo = Map::where('garden_id', 2)->count();
 
         $cibodasAdded = $currentCountCatTwo - $previousCountCatTwo;
 
@@ -82,8 +82,8 @@ class AdminController extends Controller
         }
 
         // Menampilkan Jumlah Data Baru pada kategori 3 Ditambahkan dalam 24 jam terakhir
-        $previousCountCatThree = Post::where('garden_id', 3)->where('created_at', '>', $previousTime)->count();
-        $currentCountCatThree = Post::where('garden_id', 3)->count();
+        $previousCountCatThree = Map::where('garden_id', 3)->where('created_at', '>', $previousTime)->count();
+        $currentCountCatThree = Map::where('garden_id', 3)->count();
 
         $purwodadiAdded = $currentCountCatThree - $previousCountCatThree;
 
@@ -96,8 +96,8 @@ class AdminController extends Controller
         }
 
         // Menampilkan Jumlah Data Baru pada kategori 4 Ditambahkan dalam 24 jam terakhir
-        $previousCountCatFour = Post::where('garden_id', 4)->where('created_at', '>', $previousTime)->count();
-        $currentCountCatFour = Post::where('garden_id', 4)->count();
+        $previousCountCatFour = Map::where('garden_id', 4)->where('created_at', '>', $previousTime)->count();
+        $currentCountCatFour = Map::where('garden_id', 4)->count();
 
         $bedugulAdded = $currentCountCatFour - $previousCountCatFour;
 
@@ -121,12 +121,16 @@ class AdminController extends Controller
             "mapCount",
             "bogorCount",
             "gardenFirstName",
+            
             "cibodasCount",
             "gardenSecondName",
+            
             "purwodadiCount",
             "gardenThirdName",
+            
             "bedugulCount",
             "gardenFourthName",
+            
             "addedCount",
             "message",
             "bogorAdded",

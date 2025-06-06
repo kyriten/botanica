@@ -328,12 +328,36 @@
                 </div>
 
                 <div class="row mb-3">
+                    <div class="col-md-12 text-muted mb-2">
+                        <table class="table table-bordered w-100">
+                            <thead class="table">
+                                <tr>
+                                    <th>Jenis Format</th>
+                                    <th>Contoh</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Desimal</strong></td>
+                                    <td>-7.797556, 112.736861</td>
+                                    <td class="text-success"><strong>Didukung</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DMS (Derajat, Menit, Detik)</strong></td>
+                                    <td>6°44'28.4"S 107°00'27.4"E</td>
+                                    <td class="text-danger"><strong>Tidak Didukung</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
                     <!-- Latitude -->
                     <div class="col-md-6">
                         <label class="form-label text-dark" for="editPlantLat">Latitude<span
                                 class="text-danger">*</span></label>
                         <input type="text" id="editPlantLat" class="form-control" name="plant_lat"
-                            value="{{ old('plant_lat', $map->plant_lat ?? '') }}" readonly />
+                            value="{{ old('plant_lat', $map->plant_lat ?? '') }}" pattern="^-?\d*\.?\d*$" inputmode="decimal" />
                     </div>
 
                     <!-- Longitude -->
@@ -341,7 +365,7 @@
                         <label class="form-label text-dark" for="editPlantLong">Longitude<span
                                 class="text-danger">*</span></label>
                         <input type="text" id="editPlantLong" class="form-control" name="plant_long"
-                            value="{{ old('plant_long', $map->plant_long ?? '') }}" readonly />
+                            value="{{ old('plant_long', $map->plant_long ?? '') }}" pattern="^-?\d*\.?\d*$" inputmode="decimal" />
                     </div>
                 </div>
 

@@ -24,8 +24,12 @@ class MapController extends Controller
     {
         $map = Map::query();
 
-        if ($request->filled('garden_id')) {
-            $map->where('garden_id', $request->garden_id);
+        $selectedGardenId = $request->filled('garden_id')
+            ? $request->garden_id
+            : session('garden_id');
+
+        if ($selectedGardenId) {
+            $map->where('garden_id', $selectedGardenId);
         }
 
         if ($request->filled('search')) {
@@ -42,7 +46,7 @@ class MapController extends Controller
             return view('admin.peta.partials.table', compact('map'))->render();
         }
 
-        // Ini untuk tampilan awal non-AJAX
+        // Data lain untuk tampilan awal
         $province = Province::all();
         $city = City::all();
         $district = District::all();
@@ -53,7 +57,6 @@ class MapController extends Controller
             $item->polygon = json_decode($item->polygon, true);
             return $item;
         });
-
         $gardenData = Garden::all();
 
         return view("admin.peta.index", compact(
@@ -199,6 +202,7 @@ class MapController extends Controller
 
             // Aturan validasi input
             $rules = [
+                'category'       => 'nullable',
                 'garden_id'       => 'required|exists:gardens,id',
                 'province_id'     => 'nullable|integer|exists:provinces,id',
                 'city_id'         => 'nullable|integer|exists:cities,id',
@@ -221,7 +225,7 @@ class MapController extends Controller
                 'famili'          => 'nullable|string|max:255',
                 'genus'           => 'nullable|string|max:255',
                 'species'         => 'nullable|string|max:255',
-                'description'     => 'nullable|string|max:255',
+                'description'     => 'nullable',
                 'plant_image'     => 'nullable|image|file|max:2048',
                 'leaf_image'      => 'nullable|image|file|max:2048',
                 'stem_image'      => 'nullable|image|file|max:2048',
@@ -347,6 +351,7 @@ class MapController extends Controller
             'genus',
             'species',
             'description',
+            'garden_name',
             'plant_image',
             'stem_image',
             'leaf_image',
@@ -468,9 +473,10 @@ class MapController extends Controller
 
     public function setGardenSession(Request $request)
     {
-        // Simpan ID dan nama kebun yang dipilih dalam session
-        session(['selected_garden_id' => $request->input('garden_id')]);
-        session(['selected_garden_name' => $request->input('garden_name')]);
+        session([
+            'garden_id' => $request->garden_id,
+            'garden_name' => $request->garden_name,
+        ]);
 
         return response()->json(['message' => 'Kebun telah disimpan di session']);
     }

@@ -3,6 +3,8 @@
         <i class="bi bi-arrow-clockwise"></i> Muat Ulang Tabel
     </button>
 </div>
+
+<!--<input type="text" name="garden_id" value="{{ session('garden_id') }}">-->
 <div class="table-responsive">
     <table class="table" id="spot-table">
 
@@ -46,19 +48,19 @@
                         <input type="checkbox" class="spot-checkbox" data-id="{{ $item->id }}">
                     </td>
                     <td>{{ $loop->iteration + ($map->firstItem() - 1) }}</td>
-                    <td>{{ $item->category }}</td>
-                    <td>{{ $item->famili }}</td>
-                    <td>{{ $item->local }}</td>
-                    <td>{{ $item->latin }}</td>
-                    <td>{{ $item->kingdom }}</td>
-                    <td>{{ $item->sub_kingdom }}</td>
-                    <td>{{ $item->super_division }}</td>
-                    <td>{{ $item->division }}</td>
-                    <td>{{ $item->class }}</td>
-                    <td>{{ $item->sub_class }}</td>
-                    <td>{{ $item->ordo }}</td>
-                    <td>{{ $item->genus }}</td>
-                    <td>{{ $item->species }}</td>
+                    <td>{{ $item->category ?? "-" }}</td>
+                    <td>{{ $item->famili ?? "-" }}</td>
+                    <td>{{ $item->local ?? "-" }}</td>
+                    <td>{{ $item->latin ?? "-" }}</td>
+                    <td>{{ $item->kingdom ?? "-" }}</td>
+                    <td>{{ $item->sub_kingdom ?? "-" }}</td>
+                    <td>{{ $item->super_division ?? "-" }}</td>
+                    <td>{{ $item->division ?? "-" }}</td>
+                    <td>{{ $item->class ?? "-" }}</td>
+                    <td>{{ $item->sub_class ?? "-" }}</td>
+                    <td>{{ $item->ordo ?? "-" }}</td>
+                    <td>{{ $item->genus ?? "-" }}</td>
+                    <td>{{ $item->species ?? "-" }}</td>
                     <td>
                         <div class="description-container" style="max-width: 250px;">
                             {{-- Deskripsi singkat --}}
@@ -145,7 +147,7 @@
                         @endif
                     </td>
 
-                    <td>{{ $item->garden_name }}</td>
+                    <td>{{ $item->garden_name ?? "-" }}</td>
                     <td>
                         @if ($item->city_name || $item->province_name)
                             {{ $item->city_name ?? '-' }}, {{ $item->province_name ?? '-' }}
@@ -153,15 +155,21 @@
                             -
                         @endif
                     </td>
-                    <td>{{ $item->plant_lat }}</td>
-                    <td>{{ $item->plant_long }}</td>
+                    <td>{{ $item->plant_lat ?? "-" }}</td>
+                    <td>{{ $item->plant_long ?? "-" }}</td>
                     <td class="action-col">
                         <!-- Tombol edit & hapus untuk desktop (md ke atas) -->
                         <div class="d-none d-md-flex gap-3">
                             <a href="#" class="btn btn-warning btn-edit-spot" data-id="{{ $item->id }}"
-                                data-bs-toggle="modal" data-bs-target="#editSpotModal">
+                                data-bs-toggle="modal" data-garden-id="{{ $item->garden_id }}" data-bs-target="#editSpotModal">
                                 <i class="bi bi-pencil"></i>
                             </a>
+                            
+                            <!--<a href="#" class="btn btn-warning btn-edit-spot"-->
+                            <!--   data-id="{{ $item->id }}" data-bs-toggle="modal"-->
+                            <!--   data-garden-id="{{ $item->garden_id }}">-->
+                            <!--   <i class="bi bi-pencil me-2"></i> Edit-->
+                            <!--</a>-->
 
                             <form action="{{ route('map.destroy', $item->id) }}" method="post" class="d-inline"
                                 onsubmit="return confirm('Apakah kamu yakin menghapus data?');">

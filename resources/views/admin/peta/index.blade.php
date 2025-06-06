@@ -40,6 +40,7 @@
                             <li class="breadcrumb-item active">Daftar Spot Tanaman</li>
                         </ol>
                     </nav>
+                    <label for="map" class="text-sm form-label alert alert-warning">Harap muat ulang halaman untuk <strong>tambah spot baru</strong> kebun raya yang lain dan <strong>melihat pratinjau peta.</strong></label>
                 </div>
             </div>
         </div>
@@ -81,10 +82,24 @@
 
                                 <!-- Search Bar -->
                                 <div class="col-12 col-md-4">
-                                    <form id="search-form" action="{{ route('map.index') }}" method="GET">
+                                    <form id="search-form" data-url="{{ route('map.index') }}" method="GET">
                                         <div class="input-group">
-                                            <input type="text" name="search" class="form-control" placeholder="Search"
-                                                value="{{ request('search') }}">
+                                            <!-- Select Garden -->
+                                            <select name="garden_id" class="form-select" style="max-width: 160px;">
+                                                <option value="">Semua</option>
+                                                @foreach ($gardenData as $garden)
+                                                    <option value="{{ $garden->id }}"
+                                                        {{ request('garden_id') == $garden->id ? 'selected' : '' }}>
+                                                        {{ $garden->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+
+                                            <!-- Search Input -->
+                                            <input type="text" name="search" class="form-control"
+                                                placeholder="Cari nama lokal atau latin" value="{{ request('search') }}">
+
+                                            <!-- Submit -->
                                             <button class="btn btn-outline-secondary" type="submit">
                                                 <i class="fas fa-search"></i>
                                             </button>
@@ -104,6 +119,7 @@
                 <!-- Map Preview -->
                 <div class="col-12 mt-4">
                     <h5 id="previewGardenArea">Peta Pratinjau</h5>
+                    <label for="map" class="text-sm form-label">Harap muat ulang halaman untuk mengganti kebun raya</label>
                     <div id="map" style="height: 400px; width: 100%;"></div>
                 </div>
             </div>

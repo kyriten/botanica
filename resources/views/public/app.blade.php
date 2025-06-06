@@ -70,7 +70,6 @@
             .plant-latin {
                 font-size: 14px !important;
             }
-
             .logo-botanica-mobile {
                 height: 48px !important;
             }

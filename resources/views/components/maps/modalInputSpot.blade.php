@@ -436,6 +436,30 @@
                 </div>
 
                 <div class="row mb-3">
+                    <div class="col-md-12 text-muted mb-2">
+                        <table class="table table-bordered w-100">
+                            <thead class="table">
+                                <tr>
+                                    <th>Jenis Format</th>
+                                    <th>Contoh</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Desimal</strong></td>
+                                    <td>-7.797556, 112.736861</td>
+                                    <td class="text-success"><strong>Didukung</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DMS (Derajat, Menit, Detik)</strong></td>
+                                    <td>6¡Æ44'28.4"S 107¡Æ00'27.4"E</td>
+                                    <td class="text-danger"><strong>Tidak Didukung</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <!-- Latitude -->
                     <div class="col-md-6">
                         <label for="latTanaman" class="form-label text-dark">Latitude<span class="text-danger"
@@ -480,3 +504,10 @@
         </div>
     </div>
 </div>
+<style>
+    table tr td, table tr th {
+        padding-top: 2px !important;
+        padding-bottom: 2px !important;
+        font-size: 0.875rem;
+    }
+</style>
